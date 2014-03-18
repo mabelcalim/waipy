@@ -23,7 +23,7 @@ def load_nc(file,var,dt,date1):
            file = archive.nc
 	   var  = variable from archive.nc
 	   dt 	= data sampling
-	   date1= data intial time 
+	   date1= data intial time
 	"""
         f = netCDF4.Dataset(file,'r+')
         data = f.variables[var][:]
@@ -38,16 +38,23 @@ def load_txt(archive,dt,date1):
 	""" OPEN ARCHIVE .TXT/.DAT
 	    archive = file.txt
 	    dt 	    = data sampling
-	    date1   = data initial time		
+	    date1   = data initial time
   	"""
-        pkgs_pth = os.path.join(sys.prefix, 'lib', 'python'+sys.version[:3],'site-packages','wavelet','lib','wavelet','data','txt',archive)
-        data = np.loadtxt(pkgs_pth)
+        if(os.path.isfile(archive)):
+            filename = archive
+        else:
+            filename = os.path.join(sys.prefix, 'lib',
+                                    'python' + sys.version[:3],
+                                    'site-packages', 'wavelet',
+                                    'lib', 'wavelet', 'data',
+                                    'txt', archive)
+        data = np.loadtxt(filename)
         n = len(data)
-        time = np.arange(n)*dt + date1  
+        time = np.arange(n)*dt + date1
 	return data,time
 #data,time = load_txt('sst_nino3.dat',0.25,1871)
 
-	
+
 def normalize(data):
         """NORMALIZE FUNCTION by - mean/sqrt(variance)
  	"""
@@ -57,7 +64,7 @@ def normalize(data):
 #data_norm = normalize(data)
 
 
-def cwt (data, dt, pad, dj,s0,j1,lag1,param,mother): 
+def cwt (data, dt, pad, dj,s0,j1,lag1,param,mother):
 	"""CONTINUOUS WAVELET TRANSFORM
 	   pad = 1         # pad the time series with zeroes (recommended)
 	   dj = 0.25       # this will do 4 sub-octaves per octave
@@ -87,14 +94,14 @@ def cwt (data, dt, pad, dj,s0,j1,lag1,param,mother):
 	# Daughter wavelet
 	joint_wavelet = np.concatenate((np.fft.ifft(ondaleta)[np.ceil(n/2.):],np.fft.ifft(ondaleta)[np.ceil(n/2.):][::-1]), axis =1) #joint Wavelet
 	imag_wavelet = np.concatenate((np.fft.ifft(ondaleta).imag[np.ceil(n/2.):],np.fft.ifft(ondaleta).imag[np.ceil(n/2.):][::-1]), axis =1)
-	nw = np.size(joint_wavelet)  # daughter's number of points 
+	nw = np.size(joint_wavelet)  # daughter's number of points
 	# admissibility condition
 	mean_wavelet = mean(joint_wavelet.real)
 	mean_wavelet = np.ones(nw)*mean_wavelet
         result = {'ondaleta':ondaleta,'wave':wave ,'period': period,'scale':scale ,'coi':coi,'power': power,'sig95':sig95, 'global_ws':global_ws,
 			'global_signif':global_signif,'joint_wavelet':joint_wavelet,'imag_wavelet':imag_wavelet,'nw':nw ,'mean_wavelet':mean_wavelet ,'dj':dj, 'j1':j1, 'dt':dt, 'fft':f }
 	return result
- 
+
 #result = cwt(data_norm,0.25,1,0.25,2*0.25,7/0.25,0.72,6,'Morlet')
 
 def fft(data):
@@ -108,7 +115,7 @@ def fft(data):
         return f,sxx
 
 # ---------------------------
-#           Ploting 
+#           Ploting
 # ---------------------------
 def levels(result,dtmin):
 	""" Power levels
@@ -127,8 +134,8 @@ def wavelet_plot(var,time,data,dtmin,result,impath):
 	   var 	 = title name from data
 	   time  = vector get in load function
 	   data  = from normalize function
-	   dtmin = minimum resolution :1 octave		 
-	   result= dict from cwt function 
+	   dtmin = minimum resolution :1 octave
+	   result= dict from cwt function
 	"""
         from numpy import log2
         import numpy as np
@@ -155,7 +162,7 @@ def wavelet_plot(var,time,data,dtmin,result,impath):
 	title('$\psi$ (t/s)')
 	# ----------------------------------------------------------------------------------------------------------------#
 	subplot(7,4,15)
-	plot(result['ondaleta'],'k') 
+	plot(result['ondaleta'],'k')
 	title('$\psi^-$  ')
 	# ----------------------------------------------------------------------------------------------------------------#
 	""" Contour plot wavelet power spectrum """
@@ -168,12 +175,12 @@ def wavelet_plot(var,time,data,dtmin,result,impath):
 	yt =  range(int(np.log2(result['period'][0])),int(np.log2(result['period'][-1])+1)) 		# create the vector of periods
 	Yticks = [float(math.pow(2,p)) for p in yt]							# make 2^periods
 	yticks(yt, map(str,Yticks))
-	xlim(time[0],time[-1])                  							# date on the x axis 
+	xlim(time[0],time[-1])                  							# date on the x axis
 	# 95% significance contour, levels at -99 (fake) and 1 (95% signif)
 	contour(time,np.log2(result['period']),result['sig95'], [-99,1],linewidths= 2)
 	# cone-of-influence , anything "below"is dubious
 	plot(time,np.log2(result['coi']),'k')
-	#ax.fill(time,np.log2(result['coi']),'k', alpha =0.3, hatch = '/') 
+	#ax.fill(time,np.log2(result['coi']),'k', alpha =0.3, hatch = '/')
 	ax.fill_between(time,np.log2(result['coi']),int(np.log2(result['period'][-1])+1), alpha =0.5, hatch = '/')
 	xlabel('Time')
 	ylabel('Period')
