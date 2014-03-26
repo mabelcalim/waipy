@@ -40,14 +40,18 @@ def load_txt(archive,dt,date1):
 	    dt 	    = data sampling
 	    date1   = data initial time
   	"""
-        if(os.path.isfile(archive)):
+        filename = os.path.join(sys.prefix, 'lib',
+                                'python' + sys.version[:3],
+                                'site-packages', 'wavelet',
+                                'lib', 'wavelet', 'data',
+                                'txt', archive)
+        if(not os.path.isfile(filename) and os.path.isfile(archive)):
             filename = archive
         else:
-            filename = os.path.join(sys.prefix, 'lib',
-                                    'python' + sys.version[:3],
-                                    'site-packages', 'wavelet',
-                                    'lib', 'wavelet', 'data',
-                                    'txt', archive)
+            raise IOError(
+                'File {0} not found either here {1} or here {1}'.format(
+                    filename, archive))
+
         data = np.loadtxt(filename)
         n = len(data)
         time = np.arange(n)*dt + date1
