@@ -13,20 +13,14 @@ Installation
 
 A local install can be done using the provided setup.py file:
 
-::
-
     python setup.py install
 
 The installation path can be changed using the **--prefix** switch, e.g.:
-
-::
 
     python setup.py install --prefix $HOME/inst
 
 If you plan on modifying the code, use the **develop** target in combination
 with the **--user** swich:
-
-::
 
     export PYTHONUSERBASE=$HOME/inst/pip_installs
     export PYTHONPATH=/home/mweigand/inst/pip_installs/lib/python2.7/\
