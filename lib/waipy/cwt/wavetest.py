@@ -79,6 +79,8 @@ def cwt (data, dt, pad, dj,s0,j1,lag1,param,mother):
            mother = 'Morlet'
 
         """
+
+
 	variance = np.var(data)
 	n = len(data)
 	# Wavelet transform
@@ -103,7 +105,7 @@ def cwt (data, dt, pad, dj,s0,j1,lag1,param,mother):
 	mean_wavelet = mean(joint_wavelet.real)
 	mean_wavelet = np.ones(nw)*mean_wavelet
         result = {'ondaleta':ondaleta,'wave':wave ,'period': period,'scale':scale ,'coi':coi,'power': power,'sig95':sig95, 'global_ws':global_ws,
-			'global_signif':global_signif,'joint_wavelet':joint_wavelet,'imag_wavelet':imag_wavelet,'nw':nw ,'mean_wavelet':mean_wavelet ,'dj':dj, 'j1':j1, 'dt':dt, 'fft':f }
+			'global_signif':global_signif,'joint_wavelet':joint_wavelet,'imag_wavelet':imag_wavelet,'nw':nw ,'mean_wavelet':mean_wavelet ,'dj':dj, 'j1':j1, 'dt':dt, 'fft':f ,'mother':mother}
 	return result
 
 #result = cwt(data_norm,0.25,1,0.25,2*0.25,7/0.25,0.72,6,'Morlet')
@@ -111,8 +113,10 @@ def cwt (data, dt, pad, dj,s0,j1,lag1,param,mother):
 def fft(data):
         """FFT spectrum
         """
-        n,X = len(data), np.fft.fft(data)
-        sxx = (X * np.conj(X))/(n)
+        variance = np.var(data)
+        n = len(data)
+        X = np.fft.fft(data)
+        sxx = variance*((X * np.conj(X))/(n))
         f = -np.fft.fftfreq(n)[np.ceil(n/2.):]
         sxx = np.abs(sxx)
         sxx = sxx[np.ceil(n/2.):]
@@ -144,7 +148,7 @@ def wavelet_plot(var,time,data,dtmin,result,impath):
         from numpy import log2
         import numpy as np
 	import wavetest
-	fig = plt.figure(figsize=(15,10), dpi=100)
+	fig = plt.figure(figsize=(15,10), dpi=300)
 	ax = fig.add_subplot(411)
         # frequency limit
         lim = np.where(result['period'] == result['period'][-1]/2)[0][0]
@@ -152,28 +156,33 @@ def wavelet_plot(var,time,data,dtmin,result,impath):
 	"""Plot time series """
 	subplot(3,1,1)
 	plot(time,data)
-	xlabel('Time')
-	ylabel('%s'%var)
-	title('TIME SERIES')
+	xlabel('Time', fontsize=15)
+	ylabel('%s'%var, fontsize=15)
+	title('TIME SERIES', fontsize=20)
 	# ----------------------------------------------------------------------------------------------------------------#
-	subplot(7,4,14)
-	plot(range(-result['nw']/2,result['nw']/2),result['joint_wavelet'],'k')
-	plot(range(-result['nw']/2,result['nw']/2),result['imag_wavelet'],'--k')
-	plot(range(-result['nw']/2,result['nw']/2),result['mean_wavelet'],'g')
+	subplot(3,2,3)
+	plot(range(-result['nw']/2,result['nw']/2),result['joint_wavelet'],'k', label ='Real part')
+	plot(range(-result['nw']/2,result['nw']/2),result['imag_wavelet'],'--k', label ='Imag part')
+	plot(range(-result['nw']/2,result['nw']/2),result['mean_wavelet'],'g', label ='Mean')
+	legend()
 	xlim(-50,50)
 	ylim(-0.2,0.2)
-	text(20,0.10,'Morlet')
-	title('$\psi$ (t/s)')
+	xlabel('Time', fontsize=10)
+	ylabel('Amplitude', fontsize=10)
+	title('$\psi$ (t/s) {0} in time domain'.format(result['mother']))
 	# ----------------------------------------------------------------------------------------------------------------#
-	subplot(7,4,15)
+	subplot(3,2,4)
 	plot(result['ondaleta'],'k')
-	title('$\psi^-$  ')
+	xlabel('Frequency', fontsize=10)
+	ylabel('Amplitude', fontsize=10)
+	title('$\psi^-$  Frequency domain', fontsize=15)
 	# ----------------------------------------------------------------------------------------------------------------#
 	""" Contour plot wavelet power spectrum """
 	subplot(3,2,5)
 	lev = wavetest.levels(result,dtmin)									# call levels - power levels
 	contourf(time, np.log2(result['period']),np.log2(result['power']),np.log2(lev))
 	colorbar()
+	#colorbar.set_label('{0}'.format(var))
 	ax = gca()											# handle to the current axes
 	ax.set_ylim(ax.get_ylim()[::-1])								# reverse plot along y axis
 	yt =  range(int(np.log2(result['period'][0])),int(np.log2(result['period'][-1])+1)) 		# create the vector of periods
@@ -186,28 +195,32 @@ def wavelet_plot(var,time,data,dtmin,result,impath):
 	plot(time,np.log2(result['coi']),'k')
 	#ax.fill(time,np.log2(result['coi']),'k', alpha =0.3, hatch = '/')
 	ax.fill_between(time,np.log2(result['coi']),int(np.log2(result['period'][-1])+1), alpha =0.5, hatch = '/')
-	xlabel('Time')
-	ylabel('Period')
-	title('Wavelet Power Spectrum')
+	plt.setp( plt.gca().get_xticklabels(), rotation=45, horizontalalignment='right')
+	xlabel('Time', fontsize=15)
+	ylabel('Period(Minutes)', fontsize=15)
+	title('Wavelet Power Spectrum', fontsize=16)
 	# ----------------------------------------------------------------------------------------------------------------#
 	""" Plot global wavelet spectrum"""
+	f,sxx = wavetest.fft(data)
 	subplot(3,2,6)
-        f,sxx = wavetest.fft(data)
-        #yt_fft = np.linspace(result['period'][0],result['period'][lim],len(f))
-        plot(sxx,np.log2(1/f*result['dt']),'gray', label = 'Fourier spectrum')
-        yticks(yt, map(str,Yticks))
+#yt_fft = np.linspace(result['period'][0],result['period'][lim],len(f))
+	plot(sxx,np.log2(1/f*result['dt']),'gray', label = 'Fourier spectrum')
+	yticks(yt, map(str,Yticks))
 	plot(result['global_ws'], np.log2(result['period']),'b', label = 'Wavelet spectrum')
-	plot(result['global_signif'],np.log2(result['period']),'r--')
+	plot(result['global_signif'],np.log2(result['period']),'r--', label='95% confidence spectrum')
+	legend()
 	ax = gca()                              # handle to the current axes
 	ax.set_ylim(ax.get_ylim()[::-1])        # reverse plot along y axis
 	yticks(yt, map(str,Yticks))
-	##xlim(0,1.25*np.max(global_ws))
-	##xlabel('Power (units of %var $^{2})$'%var)
-	xlabel('Power')
-	title('Global Wavelet Spectrum')
+	#xlim(0,1.25*np.max(global_ws))
+	#xlabel('Power (units of %var $^{2})$'%var)
+	xlabel('Power', fontsize=15)
+	ylabel('Period', fontsize=15)
+	title('Global Wavelet Spectrum', fontsize=16)
+	fig.tight_layout()
         #legend = ax.legend(loc='lower right', shadow=True)
 	#plt.savefig('%var.png'%var)
-        plt.savefig(os.path.join(impath,'%s.png'%var))
+	plt.savefig(os.path.join(impath,'%s.png'%var))
 	pylab.show()
         return
 #wavelet_plot('SST_NINO3',time,data,0.03125,result,impath)
