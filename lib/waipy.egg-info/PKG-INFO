@@ -1,8 +1,8 @@
-Metadata-Version: 1.0
+Metadata-Version: 1.1
 Name: waipy
 Version: 0.0.9.0
 Summary: Wavelet Analysis in Python
-Home-page: https://wavelet-analysis.readthedocs.org/en/latest/index.html
+Home-page: UNKNOWN
 Author: Mabel Calim Costa
 Author-email: mabelcalim@gmail.com
 License: UNKNOWN
@@ -11,3 +11,4 @@ Description:
         tests from based on Torrence and Compo (1998) and Cross Wavelet Analysis 
         (CWA) based on Maraun and Kurths(2004).
 Platform: UNKNOWN
+Classifier: License :: OSI Approved :: BSD License
