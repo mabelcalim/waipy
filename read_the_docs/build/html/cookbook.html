@@ -1,0 +1,152 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cookbook &mdash; Wavelet Analysis 1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Wavelet Analysis 1 documentation" href="index.html" />
+    <link rel="next" title="DIY" href="diy.html" />
+    <link rel="prev" title="Cross Wavelet Analysis (CWA)" href="cwa.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="diy.html" title="DIY"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="cwa.html" title="Cross Wavelet Analysis (CWA)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Wavelet Analysis 1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="cookbook">
+<h1>Cookbook<a class="headerlink" href="#cookbook" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic simple">
+<li>Download de package</li>
+</ol>
+<p>Go to the page:</p>
+<div class="highlight-python"><pre>https://pypi.python.org/pypi/waipy/</pre>
+</div>
+<p>Download waipy-version.tar.gz</p>
+<ol class="arabic" start="2">
+<li><p class="first">Unpacked in you download dir:</p>
+<div class="highlight-python"><pre>tar -vzxf waipy-version.tar.gz</pre>
+</div>
+</li>
+<li><p class="first">Enter into the directory:</p>
+<div class="highlight-python"><pre>cd waipy-version</pre>
+</div>
+</li>
+<li><p class="first">Install package:</p>
+<div class="highlight-python"><pre>python setup.py install</pre>
+</div>
+</li>
+<li><p class="first">Open ipython:</p>
+<div class="highlight-python"><pre>ipython
+import waipy
+# loading data for test
+data,time = waipy.load_txt('sst_nino3.dat',0.25,1871)
+# normalizing time series
+data_norm = waipy.normalize(data)
+# calculating continuos wavelet transform using Morlet wavelet
+result = waipy.cwt(data_norm,0.25,1,0.25,2*0.25,7/0.25,0.72,6,'Morlet')
+# ploting the result - impath: 'Users/you/figures/'
+waipy.wavelet_plot('SST_NINO3',time,data,0.03125,result,impath)
+
+
+CROSS ANALYSIS
+cross_power, coherence = waipy.cross_wavelet(result['wave'],result['wave'])
+waipy.plot_cross(cross_power,time,result)
+waipy.plot_cohere(coherence,time,result)</pre>
+</div>
+</li>
+</ol>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cwa.html"
+                        title="previous chapter">Cross Wavelet Analysis (CWA)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="diy.html"
+                        title="next chapter">DIY</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/cookbook.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="diy.html" title="DIY"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="cwa.html" title="Cross Wavelet Analysis (CWA)"
+             >previous</a> |</li>
+        <li><a href="index.html">Wavelet Analysis 1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mabel Calim Costa.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

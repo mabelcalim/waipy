@@ -1,0 +1,156 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Wavelet Analysis Example - Niño3 SST &mdash; Wavelet Analysis 1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Wavelet Analysis 1 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="index.html">Wavelet Analysis 1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="wavelet-analysis-example-nino3-sst">
+<h1>Wavelet Analysis Example  - Niño3 SST<a class="headerlink" href="#wavelet-analysis-example-nino3-sst" title="Permalink to this headline">¶</a></h1>
+<p>This is the final result:</p>
+<img alt="_images/wavelet_nino.png" src="_images/wavelet_nino.png" style="width: 650pt;" />
+<p>How can anyone turn a 1D to 2D information?
+The code will explain to you!</p>
+<p>The code is structed in two scripts:</p>
+<ul class="simple">
+<li>lib_wavelet.py : python&#8217;s functions library</li>
+<li>wavetest.py    : call functions and plot</li>
+</ul>
+<div class="highlight-python"><pre>                     +----------------+
+                     |  wavetest.py   |
+                     +----------------+
+                            |
+                    +----------------+
+                    | lib_wavelet.py |
+                    +----------------+
+                            |
+          +----------------+  +----------------+
+          |  def wavelet   |--| def wave_signif|
+          +----------------+  +----------------+
+                  |
++----------------+  +----------------+
+| def nextpow2   |--| def wave_bases |
++----------------+  +----------------+</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Morlet wavelet is used as default in this code.</p>
+</div>
+<p>Building the puzzle ...</p>
+<div class="section" id="you-have-to-choose-the-wavelet-function">
+<h2>1. You have to choose the wavelet function<a class="headerlink" href="#you-have-to-choose-the-wavelet-function" title="Permalink to this headline">¶</a></h2>
+<p>To be called a wavelet, the function (psi) has to satisfy the admissibility condition:</p>
+<ul class="simple">
+<li>&#8220;(...) for an integrable function, means that its average should be zero&#8221; (Farge, 1992).</li>
+<li>Wavelet function must have energy equal to one. &#8220;This ensures that the wavelet function has compact support(e-folding time),ensuring spatial location.&#8221;(Domingues <em>et al</em>, 2012).</li>
+</ul>
+<p>The most popular wavelet function was created by Jean Morlet in 1980, a French research scientist working on seismic data analysis (Farge, 1992),whose complex function satisfied the <em>Heseinberg-type equality</em>. This means the Morlet wavelet allows to analyze the phase and modulus of the decomposed signal (Domingues <em>et al</em>, 2012) and localized time and frequency in the same extent.</p>
+<p>In the following, the Morlet wavelet equation proposed by Torrence and Compo (1998) -  a plane wave modulated by Gaussian envelope of unit width (Farge, 1992) - Morlet wavelet:</p>
+<div class="math">
+<p><img src="_images/math/54b039b3d2eac361bb58e50047638976e0cb2bcf.png" alt="\psi_{0}(\eta) = \pi^{-1/4} e^{i\omega_{0}\eta} e^{-\eta^2/2}"/></p>
+</div><dl class="docutils">
+<dt>Where:</dt>
+<dd><p class="first">omega_{0}          : nondimensional frequency - time/scale resolution is adjust by this param (Maraun and Kurths, 2004)</p>
+<p class="last">eta                : nondimensional parameter of time</p>
+</dd>
+</dl>
+<p>The wavelet scale and the Fourier frequency are not direct reciprocals of each other, so, one has to rescale the result of wavelet analysis with a factor depending on the mother wavelet (Maraun and Kurths, 2004). The normalization for Morlet wavelet (Torrence and Compo, 1998; Maraun and Kurths, 2004):</p>
+<div class="math">
+<p><img src="_images/math/0bf3e2a7848591ec8e77198823eb5927caa6d5d2.png" alt="1/f = 4\pi s / (\omega_{0} + \sqrt{2+\omega_{0}^2})"/></p>
+</div><p>The Morlet wavelet is only marginally admissible (zero average),so some small correction terms are added (Farge, 1992).In practice, for omega0 (k0 in the code) = 6, s.f = 1 (Maraun and Kurths, 2004).</p>
+</div>
+<div class="section" id="compute-wavelet-power-spectrum">
+<h2>2. Compute wavelet power spectrum<a class="headerlink" href="#compute-wavelet-power-spectrum" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Wavelet Analysis Example  - Niño3 SST</a><ul>
+<li><a class="reference internal" href="#you-have-to-choose-the-wavelet-function">1. You have to choose the wavelet function</a></li>
+<li><a class="reference internal" href="#compute-wavelet-power-spectrum">2. Compute wavelet power spectrum</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/toolkit.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="index.html">Wavelet Analysis 1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mabel Calim Costa.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,201 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Continuous Wavelet Transform (CWT) Niño3 SST &mdash; Wavelet Analysis 1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Wavelet Analysis 1 documentation" href="index.html" />
+    <link rel="up" title="Examples" href="example.html" />
+    <link rel="next" title="Cross Wavelet Analysis (CWA)" href="cwa.html" />
+    <link rel="prev" title="Examples" href="example.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="cwa.html" title="Cross Wavelet Analysis (CWA)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="example.html" title="Examples"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Wavelet Analysis 1 documentation</a> &raquo;</li>
+          <li><a href="example.html" accesskey="U">Examples</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="continuous-wavelet-transform-cwt-nino3-sst">
+<h1>Continuous Wavelet Transform (CWT) Niño3 SST<a class="headerlink" href="#continuous-wavelet-transform-cwt-nino3-sst" title="Permalink to this headline">¶</a></h1>
+<p>This is the final result:</p>
+<img alt="_images/nino_wavelet.png" src="_images/nino_wavelet.png" style="width: 650pt;" />
+<p>How can anyone turn a 1D to 2D information?
+The code will explain to you!</p>
+<p>The code is structed in two scripts:</p>
+<ul class="simple">
+<li>lib_wavelet.py : python&#8217;s functions library</li>
+<li>wavetest.py    : call functions and plot</li>
+</ul>
+<div class="highlight-python"><pre>                     +----------------+
+                     |  wavetest.py   |
+                     +----------------+
+                            |
+                    +----------------+
+                    | lib_wavelet.py |
+                    +----------------+
+                            |
+          +----------------+  +----------------+
+          |  def wavelet   |--| def wave_signif|
+          +----------------+  +----------------+
+                  |
++----------------+  +----------------+
+| def nextpow2   |--| def wave_bases |
++----------------+  +----------------+</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Morlet wavelet is used as default in this code.</p>
+</div>
+<p>Building the puzzle ...</p>
+<div class="section" id="why-when-should-i-use-the-wavelet-analysis">
+<h2>Why/when should I use the wavelet analysis<a class="headerlink" href="#why-when-should-i-use-the-wavelet-analysis" title="Permalink to this headline">¶</a></h2>
+<p>The wavelet analysis is used for detecting and characterizing its possible singularities, and in particular the continuous wavelet transform is well suited for analyzing the local differentiability of a function (Farge, 1992).</p>
+<p>&#8220;Therefore the wavelet analysis or synthesis can be performed locally on the signal, as opposed to the Fourier transform which is inherently nonlocal due to the space-filling nature of the trigonometric functions. &#8221; (Farge,1992).</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="40%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&nbsp;</th>
+<th class="head">Fourier</th>
+<th class="head">Wavelet</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>context</td>
+<td>sound</td>
+<td>image</td>
+</tr>
+<tr class="row-odd"><td>character</td>
+<td>stationary</td>
+<td>nonstationary</td>
+</tr>
+<tr class="row-even"><td>to see</td>
+<td>global features</td>
+<td>singularities</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>Choose the right glasses for what you want to see !</p>
+<img alt="_images/lennon_glasses.png" src="_images/lennon_glasses.png" style="width: 150pt;" />
+</div>
+<div class="section" id="more-info">
+<h2>More info:<a class="headerlink" href="#more-info" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/info.png" src="_images/info.png" style="width: 500pt;" />
+<p>Fonte: Domingues (2012)</p>
+</div>
+<div class="section" id="papers">
+<h2>Papers:<a class="headerlink" href="#papers" title="Permalink to this headline">¶</a></h2>
+<p>Farge, M. 1992. Wavelet transforms and their applications to turbulence. Annu. Rev. Mech., 24: 395-457</p>
+<p>Domingues, M. O.; Kaibar, M.K. 2012. Wavelet biortogonais. Revista brasileira de Ensino de Física,n.3, 34: 3701</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Continuous Wavelet Transform (CWT) Niño3 SST</a><ul>
+<li><a class="reference internal" href="#why-when-should-i-use-the-wavelet-analysis">Why/when should I use the wavelet analysis</a></li>
+<li><a class="reference internal" href="#more-info">More info:</a></li>
+<li><a class="reference internal" href="#papers">Papers:</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="example.html"
+                        title="previous chapter">Examples</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="cwa.html"
+                        title="next chapter">Cross Wavelet Analysis (CWA)</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/ex_nino.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="cwa.html" title="Cross Wavelet Analysis (CWA)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="example.html" title="Examples"
+             >previous</a> |</li>
+        <li><a href="index.html">Wavelet Analysis 1 documentation</a> &raquo;</li>
+          <li><a href="example.html" >Examples</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mabel Calim Costa.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
