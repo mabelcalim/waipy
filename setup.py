@@ -20,13 +20,14 @@ setup(
     author='Mabel Calim Costa',
     author_email='mabelcalim@gmail.com',
     #url='https://wavelet-analysis.readthedocs.org/en/latest/index.html',
-    URL = 'https://github.com/mabelcalim/waipy',
+    url = 'https://bitbucket.org/mabel/waipy/overview',
     long_description="""
-This guide includes a Continuous Wavelet Transform (CWT), significance 
-tests from based on Torrence and Compo (1998) and Cross Wavelet Analysis 
+This guide includes a Continuous Wavelet Transform (CWT), significance
+tests from based on Torrence and Compo (1998) and Cross Wavelet Analysis
 (CWA) based on Maraun and Kurths(2004).""",
     packages=['waipy', 'waipy.cwt', 'waipy.cwa' ],
     package_dir={'':'lib'},
-    classifiers=['License :: OSI Approved :: BSD License'],
+    classifiers=[
+	'License :: OSI Approved :: BSD License'],
 )
 
