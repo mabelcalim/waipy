@@ -151,12 +151,18 @@ def wavelet(Y,dt,mother,param):#,pad,dj,s0,J1,mother,param):
         #cone-of-influence, differ for uneven len of timeseries:
         if (((n1) / 2.0).is_integer()) == True:
            mat = np.concatenate((range(1,n1/2),range(1,n1/2)[::-1]), axis=1)	# create mirrored array)
+           print 'mat1:', mat, len(mat)
            mat = np.insert(mat,0,0)						# insert zero at the begining of the array
+           print 'mat2:', mat, len(mat)
            mat = np.append(mat,0)						# insert zero at the end of the array
+           print 'mat3:', mat, len(mat)
         elif (((n1) / 2.0).is_integer()) == False:
            mat = np.concatenate((range(1,n1/2+1),range(1,n1/2)[::-1]), axis=1)	# create mirrored array
+           print 'mat1:', mat, len(mat)
            mat = np.insert(mat,0,0)						# insert zero at the begining of the array
+           print 'mat2:', mat, len(mat)
            mat = np.append(mat,0)						# insert zero at the end of the array
+           print 'mat3:', mat, len(mat)
         coi = [coi*dt*m for m in mat] 						# create coi matrix
         wave = wave[:,0:n1]
         return ondaleta, wave, period, scale, coi, f

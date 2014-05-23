@@ -80,12 +80,13 @@ def plot_cohere (coherence,time,result):
 	xt = range(int(time[0]),int(time[-1]))
         Yticks = [(math.pow(2,p)) for p in yt]                          # make 2^periods
         yticks(yt, map(str,Yticks))
-	xticks(xt, map(str,xt),rotation=45)
+	xticks(xt, map(str,xt))
         xlim(time[0],time[-1])                                          # date on the x axis 
         xlabel('Time')
         ylabel('Period')
         title('Coherence')
         plot(time,np.log2(result['coi']),'k')
         ax.fill_between(time,np.log2(result['coi']),int(np.log2(result['period'][-1])*2), alpha =0.5, hatch = '/')
+        plt.setp( plt.gca().get_xticklabels(), rotation=45, horizontalalignment='right')
         return
 

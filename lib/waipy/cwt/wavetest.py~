@@ -224,5 +224,6 @@ def wavelet_plot(var,time,data,dtmin,result,impath):
         #legend = ax.legend(loc='lower right', shadow=True)
 	#plt.savefig('%var.png'%var)
 	plt.savefig(os.path.join(impath,'%s.png'%var))
+	pylab.show()
         return
 #wavelet_plot('SST_NINO3',time,data,0.03125,result,impath)
