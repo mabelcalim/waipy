@@ -57,6 +57,7 @@ def load_txt(archive,dt,date1):
     return data,time
 
 def normalize(data):
+
     """
     NORMALIZE FUNCTION by - mean/sqrt(variance)
     """
@@ -108,13 +109,12 @@ def cwt (data, dt, pad, dj, s0, j1, lag1, param, mother, name):
 #result = cwt(data_norm,0.25,1,0.25,2*0.25,7/0.25,0.72,6,'Morlet')
 
 def fft(data):
-    """
-    FFT spectrum
-    """
 
+    """FFT spectrum
+    """
     n = len(data)
     X = np.fft.fft(data)
-    sxx = (X * np.conj(X))/(n)
+    sxx = ((X * np.conj(X))/(n))
     f = -np.fft.fftfreq(n)[np.ceil(n/2.):]
     sxx = np.abs(sxx)
     sxx = sxx[np.ceil(n/2.):]
@@ -124,10 +124,10 @@ def fft(data):
 #           Ploting
 # ---------------------------
 def levels(result,dtmin):
+
     """
     Power levels
     """
-
 
     dtmax = result['power'].max()
     lev = []
@@ -236,5 +236,3 @@ def wavelet_plot(var,time,data,dtmin,result):
     ax5.set_title('Global Wavelet Spectrum', fontsize=12)
     #save fig
     plt.savefig('%s.png'%var,dpi=300)
-
-

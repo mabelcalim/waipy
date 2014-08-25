@@ -28,6 +28,6 @@ tests from based on Torrence and Compo (1998) and Cross Wavelet Analysis
     packages=['waipy', 'waipy.cwt', 'waipy.cwa' ],
     package_dir={'':'lib'},
     classifiers=[
-	'License :: OSI Approved :: BSD License',],
+	'License :: OSI Approved :: BSD License'],
 )
 

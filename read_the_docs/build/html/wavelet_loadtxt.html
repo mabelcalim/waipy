@@ -1,0 +1,168 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Wavelet.load_txt &mdash; Wavelet Analysis 1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Wavelet Analysis 1 documentation" href="index.html" />
+    <link rel="up" title="Manual" href="manual.html" />
+    <link rel="next" title="Wavelet.normalize" href="wavelet_normalize.html" />
+    <link rel="prev" title="Manual" href="manual.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="wavelet_normalize.html" title="Wavelet.normalize"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="manual.html" title="Manual"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Wavelet Analysis 1 documentation</a> &raquo;</li>
+          <li><a href="manual.html" accesskey="U">Manual</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="wavelet-load-txt">
+<h1>Wavelet.load_txt<a class="headerlink" href="#wavelet-load-txt" title="Permalink to this headline">¶</a></h1>
+<p>wavelet.load_txt(archive,dt,date1)</p>
+<blockquote>
+<div><p>Open and read an archive .txt with data only (without date)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>archive <span class="classifier-delimiter">:</span> <span class="classifier">vector</span></dt>
+<dd><p class="first last">Vector archive to be open.</p>
+</dd>
+<dt>dt:             number</dt>
+<dd><p class="first last">Time-sample of the vector. Example: Hourly, daily, monthly, etc...</p>
+</dd>
+<dt>date1:          number</dt>
+<dd><p class="first last">The initial time of the data. Example: 1985.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>data:           array_like</dt>
+<dd><p class="first last">Raw of data</p>
+</dd>
+<dt>n:              number</dt>
+<dd><p class="first last">The length of the data</p>
+</dd>
+<dt>time:           array_like</dt>
+<dd><p class="first last">Raw of time sampling.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">wavelet.load_netcdf</p>
+</div>
+<p>Notes</p>
+<p>This function is linked to data/txt directory, so, if you have any file extension .txt put it in the following folder:
+::
+/lib/wavelet/data/txt</p>
+<p>Example:</p>
+<div class="highlight-python"><pre>&gt;&gt; dt = 0.25
+
+&gt;&gt; date1 = 1871
+
+# Test data = sst_nino3.dat is already in the package!
+
+&gt;&gt; data,n,time = load_txt('sst_nino3.dat',dt,date1)</pre>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="manual.html"
+                        title="previous chapter">Manual</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="wavelet_normalize.html"
+                        title="next chapter">Wavelet.normalize</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/wavelet_loadtxt.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="wavelet_normalize.html" title="Wavelet.normalize"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="manual.html" title="Manual"
+             >previous</a> |</li>
+        <li><a href="index.html">Wavelet Analysis 1 documentation</a> &raquo;</li>
+          <li><a href="manual.html" >Manual</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mabel Calim Costa.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
