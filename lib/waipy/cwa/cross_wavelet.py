@@ -41,12 +41,12 @@ def cross_wavelet(wave1, wave2):
     """
 
     cross_power = wave1 * wave2.conjugate()
-    cross_power1 = np.abs(wave1 * wave2.conjugate())
-    WPS1 = np.abs(wave1 * wave1.conjugate())
-    WPS2 = np.abs(wave2 * wave2.conjugate())
-    # coherence = np.sqrt(cross_power*cross_power)/ \
-    # np.sqrt(np.abs(wave1.real*wave1.imag)* np.abs(wave2.real*wave2.imag))
-    coherence = cross_power / (np.sqrt(WPS1 * WPS2))
+    cross_power1 = np.absolute(wave1 * wave2.conjugate())
+    WPS1 = np.absolute(wave1 * wave1.conjugate())
+    WPS2 = np.absolute(wave2 * wave2.conjugate())
+    #coherence = np.sqrt(cross_power*cross_power)/ \
+    #np.sqrt(np.absolute(wave1.real*wave1.imag)* np.absolute(wave2.real*wave2.imag))
+    coherence = (cross_power1) / (np.sqrt(WPS1 * WPS2))
     phase_angle = np.angle(cross_power)  # ,deg=True)
     return cross_power1, coherence, phase_angle
 
@@ -65,14 +65,16 @@ def plot_cross(var, cross_power, phase_angle, time, result, result1):
     ax1 = pylab.gca()
     ax1.xaxis.set_visible(False)
     plt.setp(ax1.get_xticklabels(), visible=False)
-    ax2 = plt.subplot(gs1[1:4, :], axisbg='#C0C0C0')
+    ax2 = plt.subplot(gs1[1:4, :])# axisbg='#C0C0C0')
     # plot timeseries
     ax1.plot(time, result['data'])
-    ax1.set_ylabel('SP [mV]', fontsize=15)
+    ax1.set_ylabel('Amplitude', fontsize=13)
+    ax1.axis('tight')
     ax3 = ax1.twinx()
     ax3.plot(time, result1['data'], color='c')
     ax3.set_ylabel(result1['name'])
-    ax1.set_title('%s' % var, fontsize=17)
+    ax3.axis('tight')
+    ax1.set_title('%s' % var, fontsize=15)
     ax1.yaxis.set_major_locator(MaxNLocator(prune='lower'))
     ax1.grid(True)
     ax1.xaxis.set_visible(False)
@@ -81,7 +83,6 @@ def plot_cross(var, cross_power, phase_angle, time, result, result1):
     tidx = np.arange(np.max(np.floor(phs_dt / 2)), len(time), phs_dt)
     tidx = [int(i) for i in tidx]
     tidx = np.array(tidx)
-    # print tidx
     phs_dp = round(len(result['period']) / 20)
     pidx = np.arange(
         np.max(np.floor(phs_dp / 2)), len(result['period']), phs_dp)
@@ -94,12 +95,6 @@ def plot_cross(var, cross_power, phase_angle, time, result, result1):
     cA = np.exp(1j * phase_angle1)
     U = np.real(cA)
     V = np.imag(cA)
-    # X = pd.DatetimeIndex(X)
-    # print V.shape
-    # print U.shape
-    # print
-    # print Y.shape
-    # plot cross
     ax4 = ax2.twiny()
     ax4.xaxis.set_visible(False)
     # ax4.set_xlim(0.9,4.4)
@@ -112,7 +107,7 @@ def plot_cross(var, cross_power, phase_angle, time, result, result1):
     # ,norm=normal)#,shrink=0.5,pad=0.08)
     cbar = plt.colorbar(CS, cax=position, orientation='horizontal')
     cbar.set_label('Power')
-    Q = ax4.quiver(X.astype(np.int64), Y, U, V)  # ,angles='uv',linewidth=1)
+    Q = ax4.quiver(X.astype(np.int64), Y, U, V, linewidth=0.1)
     ax4.axis('tight')
     yt = range(int(np.log2(result['period'][0])), int(
         np.log2(result['period'][-1]) + 1))  # create the vector of periods
@@ -123,8 +118,8 @@ def plot_cross(var, cross_power, phase_angle, time, result, result1):
     ax2.set_ylim(ymin=(np.log2(result['period'][0])), ymax=(
         np.log2(result['period'][-1])))
     ax2.invert_yaxis()
-    ax2.set_xlabel('Time', fontsize=15)
-    ax2.set_ylabel('Period (Minutes)', fontsize=15)
+    ax2.set_xlabel('Time', fontsize=13)
+    ax2.set_ylabel('Period', fontsize=13)
     ax2.axhline(y=10.5, xmin=0, xmax=1, linewidth=2, color='k')
     ax2.axhline(y=13.3, xmin=0, xmax=1, linewidth=2, color='k')
     ax2.set_title('Cross Power')
@@ -149,21 +144,22 @@ def plot_cohere(var, coherence, time, result, result1):
     ax1 = pylab.gca()
     ax1.xaxis.set_visible(False)
     plt.setp(ax1.get_xticklabels(), visible=False)
-    ax2 = plt.subplot(gs1[1:4, :], axisbg='#C0C0C0')
+    ax2 = plt.subplot(gs1[1:4, :])#, axisbg='#C0C0C0')
 
     # plot timeseries
     ax1.plot(time, result['data'])
-    ax1.set_ylabel('SP [mV]', fontsize=15)
+    ax1.set_ylabel('Amplitude', fontsize=13)
     ax3 = ax1.twinx()
-    ax3.plot(time, result1['data'], color='c')
+    ax3.plot(time, result1['data'], color='red')
     ax3.set_ylabel(result1['name'])
-    ax1.set_title('%s' % var, fontsize=17)
+    ax1.set_title('%s' % var, fontsize=15)
     ax1.yaxis.set_major_locator(MaxNLocator(prune='lower'))
     ax1.grid(True)
     ax1.xaxis.set_visible(False)
-
+    ax3.axis('tight')
+    ax1.axis('tight')
     # fig = plt.figure(figsize=(15,10), dpi=100)
-    lev = list(np.linspace(0, 1.0, 6))
+    lev = list(np.linspace(0, 1.0, 10))
     CS = ax2.contourf(time, np.log2(result['period']), coherence, lev)
     ax2.plot(time, np.log2(result['coi']), 'k')
     ax2.fill_between(time, np.log2(result['coi']), int(
@@ -182,10 +178,11 @@ def plot_cohere(var, coherence, time, result, result1):
         np.log2(result['period'][-1])))
     ax2.invert_yaxis()
     ax2.set_xlabel('Time', fontsize=15)
-    ax2.set_ylabel('Period (Minutes)', fontsize=15)
+    ax2.set_ylabel('Period', fontsize=15)
     # ax2.axhline(y=10.5, xmin=0, xmax=1, linewidth=2, color='k')
     # ax2.axhline(y=13.3, xmin=0, xmax=1, linewidth=2, color='k')
     ax2.set_title('Coherence')
+    #ax2.axis('tight')
     plt.savefig('Coherence {0} vs {1}'.format(
         result['name'], result1['name']), dpi=300)
     return

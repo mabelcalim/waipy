@@ -178,7 +178,7 @@ def wavelet_plot(var, time, data, dtmin, result):
     ax1 = pylab.gca()
     ax1.xaxis.set_visible(False)
     plt.setp(ax1.get_xticklabels(), visible=False)
-    ax2 = plt.subplot(gs1[1:4, :], axisbg='#C0C0C0')
+    ax2 = plt.subplot(gs1[1:4, :])#, axisbg='#C0C0C0')
 
     gs2 = gridspec.GridSpec(4, 1)
     gs2.update(left=0.7, right=0.98, hspace=0)
@@ -242,8 +242,8 @@ def wavelet_plot(var, time, data, dtmin, result):
     ax2.set_ylim(ymin=(np.log2(np.min(result['period']))), ymax=(
         np.log2(np.max(result['period']))))
     ax2.set_ylim(ax2.get_ylim()[::-1])
-    ax2.set_xlabel('Time', fontsize=15)
-    ax2.set_ylabel('Period (Minutes)', fontsize=15)
+    ax2.set_xlabel('Time', fontsize=12)
+    ax2.set_ylabel('Period', fontsize=12)
     ax2.axhline(y=10.5, xmin=0, xmax=1, linewidth=2, color='k')
     ax2.axhline(y=13.3, xmin=0, xmax=1, linewidth=2, color='k')
     # ----------------------------------------------------------------------------------------------------------------#

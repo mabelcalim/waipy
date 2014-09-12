@@ -145,7 +145,7 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
     """
 
     n1 = len(Y)  # time series length
-    s0 = 2 * dt  # smallest scale of the wavelet
+    #s0 = 2 * dt  # smallest scale of the wavelet
     # dj = 0.25  # spacing between discrete scales
     # J1 = int(np.floor((np.log10(n1*dt/s0))/np.log10(2)/dj))
     J1 = int(np.floor(np.log2(n1 * dt / s0) / dj))  # J1+1 total os scales
@@ -207,8 +207,11 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
         mat = np.insert(mat, 0, 0)
         mat = np.append(mat, 0)  # insert zero at the end of the array
     coi = [coi * dt * m for m in mat]  # create coi matrix
+    # problem with first and last entry in coi added next to lines because 
+    # log2 of zero is not defined and cannot be plottet later:
+    coi[0] = 0.1  # coi[0] is normally 0
+    coi[len(coi)-1] = 0.1 # coi[last entry] is normally 0 too
     wave = wave[:, 0:n1]
-    # print wave
     return ondaleta, wave, period, scale, coi, f
 
 
