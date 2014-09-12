@@ -7,6 +7,6 @@ A normalized time and scale resolved measure for the relationship between two ti
 
 	WCO_{i}(s) = \vert WCS_{i}(s)\vert / (WPS_{i}(s) WPS_{i}(s))^{1/2}
 
-.. image:: salt_OGCM_cross.png
+.. image:: Figures/salt_OGCM_cross.png
    :width: 650pt
 

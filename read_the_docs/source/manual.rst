@@ -8,7 +8,7 @@ Manual
     :maxdepth: 2
 
     wavelet_loadtxt.rst
-	
+
     wavelet_loadnc.rst
 
     wavelet_normalize.rst
@@ -16,4 +16,4 @@ Manual
     wavelet_cwt.rst
 
     wavelet_wavelet_plot.rst
-	
+

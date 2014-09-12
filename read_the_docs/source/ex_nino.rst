@@ -4,7 +4,7 @@ Continuous Wavelet Transform (CWT) Niño3 SST
 This is the final result:
 
  
-.. image:: nino_wavelet.png
+.. image:: Figures/nino_wavelet.png
    :width: 650pt
 
 How can anyone turn a 1D to 2D information?
@@ -63,7 +63,7 @@ The wavelet analysis is used for detecting and characterizing its possible singu
 
 Choose the right glasses for what you want to see !               
 
-.. image:: lennon_glasses.png
+.. image:: Figures/lennon_glasses.png
    :width: 150pt
 
 
@@ -71,7 +71,7 @@ Choose the right glasses for what you want to see !
 More info:
 ----------
 
-.. image:: info.png
+.. image:: Figures/info.png
    :width: 500pt
 
 Fonte: Domingues (2012)
