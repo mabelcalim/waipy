@@ -3,8 +3,8 @@ How Waipy works
 
 This chapter shows on the Example: Niño3 SST how waipy calculates the CWT from a given time series.
 
-CWT - Niño3 SST
----------------
+CWT of the Niño3 SST data.
+
 
 0. Import python libraries
 __________________________
@@ -221,7 +221,7 @@ _______________________________
     +---------------------------------------+
 
 6. Significance of Wavelet:
-_____________________________
+_____________________________ sketches
 ::
 
     # signif, fft_theor = lib_wavelet.wave_signif(1.0, dt, scale, 0, lag1, 0.95, -1, mother, param)
@@ -230,7 +230,7 @@ _____________________________
     :members: wave_signif
 
 7. FFT of data and Levels:
-______________________________________
+__________________________
 
 .. automodule:: wavetest
     :members: fft

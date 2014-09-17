@@ -9,7 +9,7 @@
     
     <title>How Waipy works &mdash; Wavelet Analysis 1 documentation</title>
     
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -26,9 +26,16 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Wavelet Analysis 1 documentation" href="index.html" />
     <link rel="next" title="Check it out" href="checkitout.html" />
-    <link rel="prev" title="Installation" href="cookbook.html" /> 
+    <link rel="prev" title="Installation" href="cookbook.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
   </head>
   <body>
+
     <div class="related">
       <h3>Navigation</h3>
       <ul>
@@ -56,10 +63,9 @@
   <div class="section" id="how-waipy-works">
 <h1>How Waipy works<a class="headerlink" href="#how-waipy-works" title="Permalink to this headline">¶</a></h1>
 <p>This chapter shows on the Example: Niño3 SST how waipy calculates the CWT from a given time series.</p>
-<div class="section" id="cwt-nino3-sst">
-<h2>CWT - Niño3 SST<a class="headerlink" href="#cwt-nino3-sst" title="Permalink to this headline">¶</a></h2>
+<p>CWT of the Niño3 SST data.</p>
 <div class="section" id="import-python-libraries">
-<h3>0. Import python libraries<a class="headerlink" href="#import-python-libraries" title="Permalink to this headline">¶</a></h3>
+<h2>0. Import python libraries<a class="headerlink" href="#import-python-libraries" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pylab</span>
 <span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="n">detrend_mean</span>
@@ -69,7 +75,7 @@
 </div>
 </div>
 <div class="section" id="load-the-data">
-<h3>1. Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">¶</a></h3>
+<h2>1. Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">¶</a></h2>
 <p>Before you can work with Waipy you have to load the data with eiter Waipy or another Python tool (eg. Pandas).</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># loading data with waipy.load_txt</span>
 <span class="n">data</span><span class="p">,</span><span class="n">time</span> <span class="o">=</span> <span class="n">waipy</span><span class="o">.</span><span class="n">load_txt</span><span class="p">(</span><span class="s">&#39;sst_nino3.dat&#39;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">1871</span><span class="p">)</span>
@@ -115,7 +121,7 @@
 
 </div>
 <div class="section" id="normalize-with-standard-score">
-<h3>2. Normalize with standard score<a class="headerlink" href="#normalize-with-standard-score" title="Permalink to this headline">¶</a></h3>
+<h2>2. Normalize with standard score<a class="headerlink" href="#normalize-with-standard-score" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># normalizing time series</span>
 <span class="n">data_norm</span> <span class="o">=</span> <span class="n">waipy</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
@@ -149,7 +155,7 @@
 
 </div>
 <div class="section" id="choose-wavelet-and-parameters-for-the-cwt">
-<h3>3. Choose Wavelet and parameters for the cwt<a class="headerlink" href="#choose-wavelet-and-parameters-for-the-cwt" title="Permalink to this headline">¶</a></h3>
+<h2>3. Choose Wavelet and parameters for the cwt<a class="headerlink" href="#choose-wavelet-and-parameters-for-the-cwt" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><pre>cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name):</pre>
 </div>
 <span class="target" id="module-wavetest"></span><dl class="function">
@@ -212,7 +218,7 @@
 </div>
 </div>
 <div class="section" id="calculate-the-daughter-wavelets">
-<h3>4. Calculate the daughter wavelets:<a class="headerlink" href="#calculate-the-daughter-wavelets" title="Permalink to this headline">¶</a></h3>
+<h2>4. Calculate the daughter wavelets:<a class="headerlink" href="#calculate-the-daughter-wavelets" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># lib_wavelet.wavelet(data, dt, param, dj, s0, j1, mother)</span>
 </pre></div>
 </div>
@@ -221,8 +227,8 @@
 <tt class="descclassname">lib_wavelet.</tt><tt class="descname">wavelet</tt><big>(</big><em>Y</em>, <em>dt</em>, <em>param</em>, <em>dj</em>, <em>s0</em>, <em>j1</em>, <em>mother</em><big>)</big><a class="reference internal" href="_modules/lib_wavelet.html#wavelet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib_wavelet.wavelet" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line">Computes the wavelet continuous transform of the vector Y, by definition:</div>
-<div class="line"><img class="math" src="_images/math/e46273e598ec7f10f3da914037b9300368d7430a.png" alt="W(a,b) = \sum(f(t)*psi[a,b](t) dt)"/> a dilation/contraction.</div>
-<div class="line"><img class="math" src="_images/math/ec192f02e4620daa1f5db88a6e6b3c279d09a393.png" alt="\Psi[a,b](t) = 1/\sqrt(a) psi(t-b/a)"/> b is displacement.</div>
+<div class="line"><img class="math" src="_images/math/45adb2009bbeb07ccc30468fb73c288ea43758dd.png" alt="W(a,b) = \sum(f(t)* \psi[a,b](t) dt)"/> a dilation/contraction.</div>
+<div class="line"><img class="math" src="_images/math/a6233cda2a8408cc1b785786ae45fcc82b00e535.png" alt="\Psi[a,b](t) = 1/\sqrt{(a)} \psi(t-b/a)"/> b is displacement.</div>
 <div class="line">The wavelet basis is normalized to have total energy = 1 at all scales</div>
 </div>
 <blockquote>
@@ -320,7 +326,7 @@
 </div>
 </div>
 <div class="section" id="wavebases">
-<h3>5. Wavebases:<a class="headerlink" href="#wavebases" title="Permalink to this headline">¶</a></h3>
+<h2>5. Wavebases:<a class="headerlink" href="#wavebases" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># daughter, fourier_factor, coi, dofmin = wave_bases(mother, k, scale[a1], param)</span>
 </pre></div>
 </div>
@@ -416,9 +422,8 @@
 |             +-----------------+       |
 +---------------------------------------+</pre>
 </div>
-</div>
-<div class="section" id="significance-of-wavelet">
-<h3>6. Significance of Wavelet:<a class="headerlink" href="#significance-of-wavelet" title="Permalink to this headline">¶</a></h3>
+<p>6. Significance of Wavelet:
+_____________________________ sketches</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># signif, fft_theor = lib_wavelet.wave_signif(1.0, dt, scale, 0, lag1, 0.95, -1, mother, param)</span>
 </pre></div>
 </div>
@@ -453,7 +458,7 @@
 
 </div>
 <div class="section" id="module-wavetest">
-<span id="fft-of-data-and-levels"></span><h3>7. FFT of data and Levels:<a class="headerlink" href="#module-wavetest" title="Permalink to this headline">¶</a></h3>
+<span id="fft-of-data-and-levels"></span><h2>7. FFT of data and Levels:<a class="headerlink" href="#module-wavetest" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="wavetest.fft">
 <tt class="descclassname">wavetest.</tt><tt class="descname">fft</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/wavetest.html#fft"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wavetest.fft" title="Permalink to this definition">¶</a></dt>
@@ -468,7 +473,7 @@
 
 </div>
 <div class="section" id="module-wavetest">
-<span id="cwt-plot"></span><h3>8. CWT Plot:<a class="headerlink" href="#module-wavetest" title="Permalink to this headline">¶</a></h3>
+<span id="cwt-plot"></span><h2>8. CWT Plot:<a class="headerlink" href="#module-wavetest" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="wavetest.wavelet_plot">
 <tt class="descclassname">wavetest.</tt><tt class="descname">wavelet_plot</tt><big>(</big><em>var</em>, <em>time</em>, <em>data</em>, <em>dtmin</em>, <em>result</em><big>)</big><a class="reference internal" href="_modules/wavetest.html#wavelet_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wavetest.wavelet_plot" title="Permalink to this definition">¶</a></dt>
@@ -482,7 +487,6 @@ result = dict from cwt function</p>
 
 </div>
 </div>
-</div>
 
 
           </div>
@@ -493,18 +497,14 @@ result = dict from cwt function</p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">How Waipy works</a><ul>
-<li><a class="reference internal" href="#cwt-nino3-sst">CWT - Niño3 SST</a><ul>
 <li><a class="reference internal" href="#import-python-libraries">0. Import python libraries</a></li>
 <li><a class="reference internal" href="#load-the-data">1. Load the data</a></li>
 <li><a class="reference internal" href="#normalize-with-standard-score">2. Normalize with standard score</a></li>
 <li><a class="reference internal" href="#choose-wavelet-and-parameters-for-the-cwt">3. Choose Wavelet and parameters for the cwt</a></li>
 <li><a class="reference internal" href="#calculate-the-daughter-wavelets">4. Calculate the daughter wavelets:</a></li>
 <li><a class="reference internal" href="#wavebases">5. Wavebases:</a></li>
-<li><a class="reference internal" href="#significance-of-wavelet">6. Significance of Wavelet:</a></li>
 <li><a class="reference internal" href="#module-wavetest">7. FFT of data and Levels:</a></li>
 <li><a class="reference internal" href="#module-wavetest">8. CWT Plot:</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -515,11 +515,6 @@ result = dict from cwt function</p>
   <h4>Next topic</h4>
   <p class="topless"><a href="checkitout.html"
                         title="next chapter">Check it out</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/diy.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">

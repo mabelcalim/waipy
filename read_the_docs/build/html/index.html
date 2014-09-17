@@ -9,7 +9,7 @@
     
     <title>Waipy’s documentation! &mdash; Wavelet Analysis 1 documentation</title>
     
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -25,9 +25,16 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Wavelet Analysis 1 documentation" href="#" />
-    <link rel="next" title="Introduction" href="intro.html" /> 
+    <link rel="next" title="Introduction" href="intro.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
   </head>
   <body>
+
     <div class="related">
       <h3>Navigation</h3>
       <ul>
@@ -58,22 +65,21 @@ email :  <a class="reference external" href="mailto:mabelcalim&#37;&#52;&#48;gma
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="intro.html#eye-of-thundera">Eye of Thundera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#why-when-should-i-use-the-wavelet-analysis">Why/when should I use the wavelet analysis?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#for-more-information">For more Information:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#papers">Papers:</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cookbook.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="diy.html">How Waipy works</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="diy.html#cwt-nino3-sst">CWT - Niño3 SST</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="diy.html#import-python-libraries">0. Import python libraries</a></li>
-<li class="toctree-l3"><a class="reference internal" href="diy.html#load-the-data">1. Load the data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="diy.html#normalize-with-standard-score">2. Normalize with standard score</a></li>
-<li class="toctree-l3"><a class="reference internal" href="diy.html#choose-wavelet-and-parameters-for-the-cwt">3. Choose Wavelet and parameters for the cwt</a></li>
-<li class="toctree-l3"><a class="reference internal" href="diy.html#calculate-the-daughter-wavelets">4. Calculate the daughter wavelets:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="diy.html#wavebases">5. Wavebases:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="diy.html#significance-of-wavelet">6. Significance of Wavelet:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="diy.html#module-wavetest">7. FFT of data and Levels:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="diy.html#module-wavetest">8. CWT Plot:</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="diy.html#import-python-libraries">0. Import python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diy.html#load-the-data">1. Load the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diy.html#normalize-with-standard-score">2. Normalize with standard score</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diy.html#choose-wavelet-and-parameters-for-the-cwt">3. Choose Wavelet and parameters for the cwt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diy.html#calculate-the-daughter-wavelets">4. Calculate the daughter wavelets:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diy.html#wavebases">5. Wavebases:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diy.html#module-wavetest">7. FFT of data and Levels:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diy.html#module-wavetest">8. CWT Plot:</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="checkitout.html">Check it out</a><ul>
@@ -90,22 +96,11 @@ email :  <a class="reference external" href="mailto:mabelcalim&#37;&#52;&#48;gma
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="manual.html">Manual</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="wavelet_loadtxt.html">Wavelet.load_txt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wavelet_loadnc.html">Wavelet.load_nc</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wavelet_normalize.html">Wavelet.normalize</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wavelet_cwt.html">Wavelet.cwt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wavelet_wavelet_plot.html">Wavelet.wavelet_plot</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ex_nino.html">Continuous Wavelet Transform (CWT) Niño3 SST</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="ex_nino.html#why-when-should-i-use-the-wavelet-analysis">Why/when should I use the wavelet analysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ex_nino.html#more-info">More info:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ex_nino.html#papers">Papers:</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="cwa.html">Cross Wavelet Analysis (CWA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example.html#continuous-wavelet-transform-cwt-nino3-sst">Continuous Wavelet Transform (CWT) Niño3 SST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example.html#example-1">Example 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example.html#example-2">Example 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example.html#example-3">Example 3</a></li>
 </ul>
 </li>
 </ul>
@@ -118,7 +113,6 @@ email :  <a class="reference external" href="mailto:mabelcalim&#37;&#52;&#48;gma
 <li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
 <li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
 </ul>
-<img alt="_images/wavelet.png" src="_images/wavelet.png" style="width: 250pt;" />
 </div>
 
 
@@ -138,11 +132,6 @@ email :  <a class="reference external" href="mailto:mabelcalim&#37;&#52;&#48;gma
   <h4>Next topic</h4>
   <p class="topless"><a href="intro.html"
                         title="next chapter">Introduction</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/index.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">

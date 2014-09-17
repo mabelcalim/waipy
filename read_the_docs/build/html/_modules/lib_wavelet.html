@@ -9,7 +9,7 @@
     
     <title>lib_wavelet &mdash; Wavelet Analysis 1 documentation</title>
     
-    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -25,9 +25,16 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="Wavelet Analysis 1 documentation" href="../index.html" />
-    <link rel="up" title="Module code" href="index.html" /> 
+    <link rel="up" title="Module code" href="index.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
   </head>
   <body>
+
     <div class="related">
       <h3>Navigation</h3>
       <ul>
@@ -77,30 +84,23 @@
 
 
 <div class="viewcode-block" id="wave_bases"><a class="viewcode-back" href="../diy.html#lib_wavelet.wave_bases">[docs]</a><span class="k">def</span> <span class="nf">wave_bases</span><span class="p">(</span><span class="n">mother</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Computes the wavelet function as a function of Fourier frequency</span>
-<span class="sd">    used for the CWT in Fourier space (Torrence and Compo, 1998)</span>
-<span class="sd">    -- This def is called automatically by def wavelet --</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the wavelet function as a function of Fourier frequency used for the CWT in Fourier space (Torrence and Compo, 1998)</span>
 
-<span class="sd">    _____________________________________________________________________</span>
-<span class="sd">    Inputs:</span>
-<span class="sd">    mother - a string equal to &#39;Morlet&#39;</span>
-<span class="sd">    k      - a vectorm the Fourier frequecies</span>
-<span class="sd">    scale  - a number, the wavelet scale</span>
-<span class="sd">    param  - the nondimensional parameter for the wavelet function</span>
+<span class="sd">    :Parameters:</span>
+<span class="sd">      |  **mother:** A string equal to &#39;Morlet&#39;.</span>
+<span class="sd">      |  **k:** A vectorm the Fourier frequecies.</span>
+<span class="sd">      |  **scale:** A number, the wavelet scale.</span>
+<span class="sd">      |  **param:** The nondimensional parameter for the wavelet functions.</span>
 
-<span class="sd">    Outputs:</span>
-<span class="sd">    daughter       - a vector, the wavelet function</span>
-<span class="sd">    fourier_factor - the ratio os Fourier period to scale</span>
-<span class="sd">    coi            - a number, the cone-of-influence size at the scale</span>
-<span class="sd">    dofmin         - a number, degrees of freedom for each point in the</span>
-<span class="sd">                     wavelet power (Morlet = 2)</span>
-
-<span class="sd">    Call function:</span>
-<span class="sd">    daughter,fourier_factor,coi,dofmin = wave_bases(mother,k,scale,param)</span>
-<span class="sd">    _____________________________________________________________________</span>
+<span class="sd">    :Returns:</span>
+<span class="sd">      |  **daughter:** A vector, the wavelet function.</span>
+<span class="sd">      |  **fourier_factor:** The ratio os Fourier period to scale.</span>
+<span class="sd">      |  **coi:** A number, the cone-of-influence size at the scale.</span>
+<span class="sd">      |  **dofmin:** A number, degrees of freedom for each point in the wavelet power (Morlet = 2).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>  <span class="c"># length of Fourier frequencies (came from wavelet.py)</span>
-    <span class="sd">&quot;&quot;&quot;CAUTION : default values&quot;&quot;&quot;</span>
+    <span class="c">#CAUTION : default values</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">mother</span> <span class="o">==</span> <span class="s">&#39;Morlet&#39;</span><span class="p">):</span>  <span class="c"># choose the wavelet function</span>
         <span class="n">param</span> <span class="o">=</span> <span class="mi">6</span>  <span class="c"># For Morlet this is k0 (wavenumber) default is 6</span>
         <span class="n">k0</span> <span class="o">=</span> <span class="n">param</span>
@@ -127,7 +127,7 @@
         <span class="n">expnt</span> <span class="o">=</span> <span class="o">-</span><span class="nb">pow</span><span class="p">(</span><span class="n">scale</span> <span class="o">*</span> <span class="n">k</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
         <span class="n">pws</span> <span class="o">=</span> <span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">scale</span> <span class="o">*</span> <span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
         <span class="n">pws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pws</span><span class="p">)</span>
-        <span class="sd">&quot;&quot;&quot;CAUTION gamma(m+0.5) = 1.3293&quot;&quot;&quot;</span>
+        <span class="c"># CAUTION gamma(m+0.5) = 1.3293</span>
         <span class="n">norm</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">scale</span> <span class="o">*</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1.3293</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="n">daughter</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">ex</span> <span class="ow">in</span> <span class="n">expnt</span><span class="p">:</span>
@@ -164,34 +164,24 @@
 
 </div>
 <div class="viewcode-block" id="wavelet"><a class="viewcode-back" href="../diy.html#lib_wavelet.wavelet">[docs]</a><span class="k">def</span> <span class="nf">wavelet</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">dj</span><span class="p">,</span> <span class="n">s0</span><span class="p">,</span> <span class="n">j1</span><span class="p">,</span> <span class="n">mother</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Computes the wavelet continuous transform of the vector Y,</span>
-<span class="sd">       by definition:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  |  Computes the wavelet continuous transform of the vector Y, by definition:</span>
+<span class="sd">  |  :math:`W(a,b) = \sum(f(t)* \psi[a,b](t) dt)` a dilation/contraction.</span>
+<span class="sd">  |  :math:`\Psi[a,b](t) = 1/\sqrt{(a)} \psi(t-b/a)` b is displacement.</span>
+<span class="sd">  |  The wavelet basis is normalized to have total energy = 1 at all scales</span>
 
-<span class="sd">    W(a,b) = sum(f(t)*psi[a,b](t) dt)        a dilate/contract</span>
-<span class="sd">    psi[a,b](t) = 1/sqrt(a) psi(t-b/a)       b displace</span>
+<span class="sd">    :Parameters:</span>
+<span class="sd">      |  **Y:** Time series.</span>
+<span class="sd">      |  **dt:** Sampling rate.</span>
+<span class="sd">      |  **mother:** The mother wavelet function.</span>
+<span class="sd">      |  **param:** The mother wavelet parameter.</span>
 
-<span class="sd">    Only Morlet wavelet (k0=6) is used</span>
-<span class="sd">    The wavelet basis is normalized to have total energy = 1 at all scales</span>
-
-<span class="sd">    _____________________________________________________________________</span>
-<span class="sd">    Input:</span>
-<span class="sd">    Y - time series</span>
-<span class="sd">    dt - sampling rate</span>
-<span class="sd">    mother - the mother wavelet function</span>
-<span class="sd">    param - the mother wavelet parameter</span>
-
-<span class="sd">    Output:</span>
-<span class="sd">    ondaleta - wavelet bases at scale 10 dt</span>
-<span class="sd">    wave - wavelet transform of Y</span>
-<span class="sd">    period - the vector of &quot;Fourier&quot;periods ( in time units) that correspond</span>
-<span class="sd">             to the scales</span>
-<span class="sd">    scale - the vector of scale indices, given by S0*2(j*DJ), j =0 ...J1</span>
-<span class="sd">    coi - cone of influence</span>
-
-<span class="sd">    Call function:</span>
-<span class="sd">    ondaleta, wave, period, scale, coi = wavelet(Y,dt,mother,param)</span>
-<span class="sd">    _____________________________________________________________________</span>
-
+<span class="sd">    :Return:</span>
+<span class="sd">      |  **ondaleta:** Wavelet bases at scale 10 dt.</span>
+<span class="sd">      |  **wave:** Wavelet transform of Y.</span>
+<span class="sd">      |  **period:** The vector of &quot;Fourier&quot;periods ( in time units) that correspond to the scales.</span>
+<span class="sd">      |  **scale:** The vector of scale indices, given by S0*2(j*DJ), j =0 ...J1.</span>
+<span class="sd">      |  **coi:** Cone of influence.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">n1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>  <span class="c"># time series length</span>
@@ -207,7 +197,7 @@
     <span class="k">if</span> <span class="p">(</span><span class="n">pad</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">base2</span> <span class="o">=</span> <span class="n">nextpow2</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>  <span class="c"># call det nextpow2</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">base2</span>
-    <span class="sd">&quot;&quot;&quot;CAUTION&quot;&quot;&quot;</span>
+    <span class="c"># CAUTION</span>
     <span class="c"># construct wavenumber array used in transform</span>
     <span class="c"># simetric eqn 5</span>
     <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
@@ -266,7 +256,25 @@
 
 </div>
 <div class="viewcode-block" id="wave_signif"><a class="viewcode-back" href="../diy.html#lib_wavelet.wave_signif">[docs]</a><span class="k">def</span> <span class="nf">wave_signif</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">scale1</span><span class="p">,</span> <span class="n">sigtest</span><span class="p">,</span> <span class="n">lag1</span><span class="p">,</span> <span class="n">sig1v1</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">mother</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;CAUTION : default values&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot; Significance testing for the CWT</span>
+
+<span class="sd">    :Parameters:</span>
+<span class="sd">      |  **Y:** The time series, or, the VARIANCE of the time series.</span>
+<span class="sd">      |  **dt:** Amount of time between each Y value, i.e. the sampling time.</span>
+<span class="sd">      |  **Scale1:** The vector of scale indices, from previous call to Wavelet.</span>
+<span class="sd">      |  **Sigtest:** = 0, 1, or 2.    If omitted, then assume 0.</span>
+<span class="sd">      |  **Lag1:** LAG 1 Autocorrelation, used for SIGNIF levels. Default is 0.0.</span>
+<span class="sd">      |  **Sig1v1:** Significance level to use. Default is 0.95.</span>
+<span class="sd">      |  **DOF:** Degrees-of-freedom for signif test.</span>
+
+<span class="sd">    :Returns:</span>
+<span class="sd">      |  **signif:** Significance levels as a function of SCALE.</span>
+<span class="sd">      |  **fft_theor:** Output theoretical red-noise spectrum as fn of PERIOD.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+<span class="c"># AUTION : default values</span>
     <span class="kn">import</span> <span class="nn">scipy</span>
     <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
 
@@ -274,12 +282,12 @@
     <span class="n">J1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">scale1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="n">s0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">scale1</span><span class="p">)</span>
     <span class="n">dj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">scale1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">scale1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;CAUTION&quot;&quot;&quot;</span>
+    <span class="c"># CAUTION</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">n1</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">variance</span> <span class="o">=</span> <span class="n">Y</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">variance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;CAUTION&quot;&quot;&quot;</span>
+    <span class="c"># CAUTION</span>
     <span class="c"># sig1v1 = 0.95</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">mother</span> <span class="o">==</span> <span class="s">&#39;Morlet&#39;</span><span class="p">):</span>
         <span class="c"># get the appropriate parameters [see table2]</span>
@@ -320,13 +328,13 @@
     <span class="n">signif</span> <span class="o">=</span> <span class="n">fft_theor</span>
     <span class="k">if</span><span class="p">(</span><span class="n">dof</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
         <span class="n">dof</span> <span class="o">=</span> <span class="n">dofmin</span>
-    <span class="sd">&quot;&quot;&quot;CAUTION&quot;&quot;&quot;</span>
+    <span class="c"># CAUTION</span>
     <span class="k">if</span><span class="p">(</span><span class="n">sigtest</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
         <span class="n">dof</span> <span class="o">=</span> <span class="n">dofmin</span>
         <span class="n">chisquare</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">gammaincinv</span><span class="p">(</span><span class="n">dof</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">sig1v1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="n">dof</span>
         <span class="n">signif</span> <span class="o">=</span> <span class="p">[</span><span class="n">ft</span> <span class="o">*</span> <span class="n">chisquare</span> <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="n">fft_theor</span><span class="p">]</span>
     <span class="k">elif</span> <span class="p">(</span><span class="n">sigtest</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;CAUTION: if len(dof) ==1&quot;&quot;&quot;</span>
+        <span class="c"># CAUTION: if len(dof) ==1</span>
         <span class="n">dof</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dof</span><span class="p">)</span>
         <span class="n">truncate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dof</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">dof</span><span class="p">[</span><span class="n">truncate</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">truncate</span><span class="p">))</span>
@@ -344,7 +352,7 @@
                 <span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">gammaincinv</span><span class="p">(</span><span class="n">dof</span><span class="p">[</span><span class="n">a1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">sig1v1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">2.0</span> <span class="o">/</span>
                 <span class="n">dof</span><span class="p">[</span><span class="n">a1</span><span class="p">])</span>
             <span class="n">signif</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fft_theor</span><span class="p">[</span><span class="n">a1</span><span class="p">]</span> <span class="o">*</span> <span class="n">chisquare</span><span class="p">[</span><span class="n">a1</span><span class="p">])</span>
-    <span class="sd">&quot;&quot;&quot;CAUTION : missing elif(sigtest ==2)&quot;&quot;&quot;</span>
+    <span class="c"># CAUTION : missing elif(sigtest ==2)</span>
     <span class="k">return</span> <span class="n">signif</span><span class="p">,</span> <span class="n">fft_theor</span></div>
 </pre></div>
 

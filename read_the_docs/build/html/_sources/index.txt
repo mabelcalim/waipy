@@ -18,7 +18,6 @@ email :  mabelcalim@gmail.com
    cookbook
    diy
    checkitout
-   manual
    example
 
 Indices and tables
@@ -27,7 +26,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-.. image:: Figures/wavelet.png
-   :width: 250pt
-

@@ -9,7 +9,7 @@
     
     <title>wavetest &mdash; Wavelet Analysis 1 documentation</title>
     
-    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -25,9 +25,16 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="Wavelet Analysis 1 documentation" href="../index.html" />
-    <link rel="up" title="Module code" href="index.html" /> 
+    <link rel="up" title="Module code" href="index.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
   </head>
   <body>
+
     <div class="related">
       <h3>Navigation</h3>
       <ul>
@@ -55,7 +62,7 @@
 <span class="c"># INPE</span>
 <span class="c"># 23/01/2013</span>
 
-<span class="s">&quot;Baseado : Torrence e Combo&quot;</span>
+<span class="c">#Baseado : Torrence e Combo</span>
 
 <span class="c"># data from http://paos.colorado.edu/research/wavelets/software.html</span>
 
@@ -68,15 +75,10 @@
 <span class="kn">import</span> <span class="nn">netCDF4</span>
 
 
-<div class="viewcode-block" id="load_nc"><a class="viewcode-back" href="../diy.html#wavetest.load_nc">[docs]</a><span class="k">def</span> <span class="nf">load_nc</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">date1</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">load_nc</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">date1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    OPEN ARCHIVE .NC</span>
-<span class="sd">    file = archive.nc</span>
-<span class="sd">    var  = variable from archive.nc</span>
-<span class="sd">    dt   = data sampling</span>
-<span class="sd">    date1= data intial time</span>
+<span class="sd">    Opens and reads an archive .txt with data only (without dates).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">f</span> <span class="o">=</span> <span class="n">netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="s">&#39;r+&#39;</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">var</span><span class="p">][:]</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -84,13 +86,33 @@
     <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">time</span>
 
-</div>
+
 <div class="viewcode-block" id="load_txt"><a class="viewcode-back" href="../diy.html#wavetest.load_txt">[docs]</a><span class="k">def</span> <span class="nf">load_txt</span><span class="p">(</span><span class="n">archive</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">date1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    OPEN ARCHIVE .TXT/.DAT</span>
-<span class="sd">    archive = file.txt</span>
-<span class="sd">    dt      = data sampling</span>
-<span class="sd">    date1   = data initial time</span>
+<span class="sd">    Opens and reads an archive .txt with data only (without dates).</span>
+
+<span class="sd">    :Parameters:</span>
+<span class="sd">      |  **file:** filename</span>
+<span class="sd">      |  **dt:** A number. Time-step of the vector. Example: Hourly, daily, monthly, etc.</span>
+<span class="sd">      |  **date1:** A number. The initial time of the data. Example: 1985.</span>
+<span class="sd">    :Returns:</span>
+<span class="sd">      |  **data:** array_like</span>
+<span class="sd">      |  **time:** array_like</span>
+
+<span class="sd">    :Notes:</span>
+<span class="sd">      |  This function is linked to data/txt directory, so, if you have any file extension .txt put it in the following folder:</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        /lib/wavelet/data/txt</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        &gt;&gt; dt = 0.25</span>
+<span class="sd">        &gt;&gt; date1 = 1871</span>
+<span class="sd">        # Test data = sst_nino3.dat is already in the package!</span>
+<span class="sd">        &gt;&gt; data, time = load_txt(&#39;sst_nino3.dat&#39;, dt, date1)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">prefix</span><span class="p">,</span> <span class="s">&#39;lib&#39;</span><span class="p">,</span> <span class="s">&#39;python&#39;</span> <span class="o">+</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">[</span>
@@ -110,23 +132,51 @@
 </div>
 <div class="viewcode-block" id="normalize"><a class="viewcode-back" href="../diy.html#wavetest.normalize">[docs]</a><span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    NORMALIZE FUNCTION by - mean/sqrt(variance)</span>
+<span class="sd">    Normalize by Standard Score - mean = 0 ; Variance = 1.</span>
+<span class="sd">    </span>
+<span class="sd">    :Parameters:</span>
+<span class="sd">      |  **Data, the loaded data.**</span>
+<span class="sd">    :Returns:</span>
+<span class="sd">      |  **normalized_data**</span>
+
+<span class="sd">    :Notes:</span>
+<span class="sd">      |  You can skip this function if it the normalization is not necessary (e.g. EOF data).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">variance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">variance</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">data</span>
 
 </div>
-<div class="viewcode-block" id="cwt"><a class="viewcode-back" href="../diy.html#wavetest.cwt">[docs]</a><span class="k">def</span> <span class="nf">cwt</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">pad</span><span class="p">,</span> <span class="n">dj</span><span class="p">,</span> <span class="n">s0</span><span class="p">,</span> <span class="n">j1</span><span class="p">,</span> <span class="n">lag1</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">mother</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="cwt"><a class="viewcode-back" href="../diy.html#wavetest.cwt">[docs]</a><span class="k">def</span> <span class="nf">cwt</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dj</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">s0</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">j1</span><span class="o">=</span><span class="mi">7</span><span class="o">/</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">lag1</span><span class="o">=</span><span class="mf">0.72</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">mother</span><span class="o">=</span><span class="s">&#39;Morlet&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;Name of Time series&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    CONTINUOUS WAVELET TRANSFORM</span>
-<span class="sd">    pad = 1         # pad the time series with zeroes (recommended)</span>
-<span class="sd">    dj = 0.25       # this will do 4 sub-octaves per octave</span>
-<span class="sd">    s0 = 2*dt       # this says start at a scale of 6 months</span>
-<span class="sd">    j1 = 7/dj       # this says do 7 powers-of-two with dj sub-octaves each</span>
-<span class="sd">    lag1 = 0.72     # lag-1 autocorrelation for red noise background</span>
-<span class="sd">    param = 6</span>
-<span class="sd">    mother = &#39;Morlet&#39;</span>
+<span class="sd">    Continuous wavelet transform from data. Wavelet params can be modified as you wish.</span>
+
+<span class="sd">    :Parameters:</span>
+<span class="sd">      |  **Data:** array_like. Raw of data or normalized data.</span>
+<span class="sd">      |  **pad:** 0 or 1 Pad the time series with zeroes to next pow of two length (recommended).</span>
+<span class="sd">      |  **dt:** Time-step of the vector. Example: Hourly, daily, monthly, etc...</span>
+<span class="sd">      |  **dj:** Divide octave in sub-octaves. If dj = 0.25 this will do 4 sub-octaves per octave.</span>
+<span class="sd">      |  **s0:** The maximum frequency resolution. If it is an annual data, s0 = 2*dt say start at a scale of 6 months.</span>
+<span class="sd">      |  **j1:** Divide the power-of-teo with dj sub-octaves each.</span>
+<span class="sd">      |  **lag1:** Lag-1 autocoorelation for red noise background.</span>
+<span class="sd">      |  **param:** The mother wavelet nondimensional time-parameter, depends on wavelet, for other wavelet than Morlet, see Torrence and Compo 1998.</span>
+<span class="sd">      |  **mother:** string. The mother wavelet funtion. Can be &#39;Morlet&#39;, &#39;PAUL&#39;, &#39;DOG&#39;.</span>
+<span class="sd">      |  **name:** Name of Time Series or your Plot.</span>
+
+<span class="sd">    :Returns:</span>
+<span class="sd">      |  **result:** as dict. Returns all parameters for plot</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        &gt;&gt; dt = 0.25</span>
+<span class="sd">        &gt;&gt; date1 = 1871</span>
+<span class="sd">        # Test data = sst_nino3.dat is already in the package!</span>
+<span class="sd">        &gt;&gt; data,n,time = load_txt(&#39;sst_nino3.dat&#39;,dt,date1)</span>
+<span class="sd">        # This normalize by variance</span>
+<span class="sd">        &gt;&gt; data_norm, variance = normalize(data)</span>
+<span class="sd">        # Continuous wavelet transform</span>
+<span class="sd">        &gt;&gt; result = cwt(data_norm,0.25,variance,n,1,0.25,2*0.25,7/0.25,0.72,6,&#39;Morlet&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="kn">import</span> <span class="nn">lib_wavelet</span>

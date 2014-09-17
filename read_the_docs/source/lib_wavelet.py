@@ -109,8 +109,8 @@ def wave_bases(mother, k, scale, param):
 def wavelet(Y, dt, param, dj, s0, j1, mother):
     """
   |  Computes the wavelet continuous transform of the vector Y, by definition:
-  |  :math:`W(a,b) = \sum(f(t)*psi[a,b](t) dt)` a dilation/contraction.
-  |  :math:`\Psi[a,b](t) = 1/\sqrt(a) psi(t-b/a)` b is displacement.
+  |  :math:`W(a,b) = \sum(f(t)* \psi[a,b](t) dt)` a dilation/contraction.
+  |  :math:`\Psi[a,b](t) = 1/\sqrt{(a)} \psi(t-b/a)` b is displacement.
   |  The wavelet basis is normalized to have total energy = 1 at all scales
 
     :Parameters:
