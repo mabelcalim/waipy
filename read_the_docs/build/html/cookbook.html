@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,9 +7,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Cookbook &mdash; Wavelet Analysis 1 documentation</title>
+    <title>Installation &mdash; Wavelet Analysis 1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -26,10 +25,17 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Wavelet Analysis 1 documentation" href="index.html" />
-    <link rel="next" title="DIY" href="diy.html" />
-    <link rel="prev" title="Cross Wavelet Analysis (CWA)" href="cwa.html" /> 
+    <link rel="next" title="How Waipy works" href="diy.html" />
+    <link rel="prev" title="Introduction" href="intro.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
   </head>
   <body>
+
     <div class="related">
       <h3>Navigation</h3>
       <ul>
@@ -37,10 +43,13 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="diy.html" title="DIY"
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="diy.html" title="How Waipy works"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="cwa.html" title="Cross Wavelet Analysis (CWA)"
+          <a href="intro.html" title="Introduction"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">Wavelet Analysis 1 documentation</a> &raquo;</li> 
       </ul>
@@ -51,48 +60,40 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="cookbook">
-<h1>Cookbook<a class="headerlink" href="#cookbook" title="Permalink to this headline">¶</a></h1>
-<ol class="arabic simple">
-<li>Download de package</li>
-</ol>
-<p>Go to the page:</p>
-<div class="highlight-python"><pre>https://pypi.python.org/pypi/waipy/</pre>
-</div>
-<p>Download waipy-version.tar.gz</p>
-<ol class="arabic" start="2">
-<li><p class="first">Unpacked in you download dir:</p>
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p><strong>1) Download the package &#8211;&gt; waipy-version.tar.gz</strong></p>
+<p><a class="reference external" href="https://pypi.python.org/pypi/waipy/">https://pypi.python.org/pypi/waipy/</a></p>
+<p><strong>2) Unpack it in you download directory</strong></p>
 <div class="highlight-python"><pre>tar -vzxf waipy-version.tar.gz</pre>
 </div>
-</li>
-<li><p class="first">Enter into the directory:</p>
+<p><strong>3) Enter the new directory</strong></p>
 <div class="highlight-python"><pre>cd waipy-version</pre>
 </div>
-</li>
-<li><p class="first">Install package:</p>
+<p><strong>4) Install package</strong></p>
 <div class="highlight-python"><pre>python setup.py install</pre>
 </div>
-</li>
-<li><p class="first">Open ipython:</p>
-<div class="highlight-python"><pre>ipython
-import waipy
-# loading data for test
-data,time = waipy.load_txt('sst_nino3.dat',0.25,1871)
-# normalizing time series
-data_norm = waipy.normalize(data)
-# calculating continuos wavelet transform using Morlet wavelet
-result = waipy.cwt(data_norm,0.25,1,0.25,2*0.25,7/0.25,0.72,6,'Morlet')
-# ploting the result - impath: 'Users/you/figures/'
-waipy.wavelet_plot('SST_NINO3',time,data,0.03125,result,impath)
-
-
-CROSS ANALYSIS
-cross_power, coherence = waipy.cross_wavelet(result['wave'],result['wave'])
-waipy.plot_cross(cross_power,time,result)
-waipy.plot_cohere(coherence,time,result)</pre>
+<p>or:</p>
+<div class="highlight-python"><pre>pip install -e .</pre>
 </div>
-</li>
-</ol>
+<p><strong>5) Open ipython or IpythonNotebook and copy the following for a test:</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">waipy</span>
+<span class="c"># loading data for test</span>
+<span class="n">data</span><span class="p">,</span><span class="n">time</span> <span class="o">=</span> <span class="n">waipy</span><span class="o">.</span><span class="n">load_txt</span><span class="p">(</span><span class="s">&#39;sst_nino3.dat&#39;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">1871</span><span class="p">)</span>
+<span class="c"># normalizing time series</span>
+<span class="n">data_norm</span> <span class="o">=</span> <span class="n">waipy</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="c"># calculating continuos wavelet transform using Morlet wavelet</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">waipy</span><span class="o">.</span><span class="n">cwt</span><span class="p">(</span><span class="n">data_norm</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="mf">0.25</span><span class="p">,</span> <span class="mi">7</span><span class="o">/</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.72</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="s">&#39;Morlet&#39;</span><span class="p">)</span>
+<span class="c"># ploting the result - impath: &#39;Users/you/figures/&#39;</span>
+<span class="n">waipy</span><span class="o">.</span><span class="n">wavelet_plot</span><span class="p">(</span><span class="s">&#39;SST_NINO3&#39;</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="mf">0.03125</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">impath</span><span class="p">)</span>
+
+
+<span class="c"># CROSS ANALYSIS</span>
+<span class="n">cross_power</span><span class="p">,</span> <span class="n">coherence</span> <span class="o">=</span> <span class="n">waipy</span><span class="o">.</span><span class="n">cross_wavelet</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s">&#39;wave&#39;</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="s">&#39;wave&#39;</span><span class="p">])</span>
+<span class="n">waipy</span><span class="o">.</span><span class="n">plot_cross</span><span class="p">(</span><span class="n">cross_power</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+<span class="n">waipy</span><span class="o">.</span><span class="n">plot_cohere</span><span class="p">(</span><span class="n">coherence</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 
 
@@ -102,16 +103,11 @@ waipy.plot_cohere(coherence,time,result)</pre>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="cwa.html"
-                        title="previous chapter">Cross Wavelet Analysis (CWA)</a></p>
+  <p class="topless"><a href="intro.html"
+                        title="previous chapter">Introduction</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="diy.html"
-                        title="next chapter">DIY</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/cookbook.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+                        title="next chapter">How Waipy works</a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -136,10 +132,13 @@ waipy.plot_cohere(coherence,time,result)</pre>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="diy.html" title="DIY"
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="diy.html" title="How Waipy works"
              >next</a> |</li>
         <li class="right" >
-          <a href="cwa.html" title="Cross Wavelet Analysis (CWA)"
+          <a href="intro.html" title="Introduction"
              >previous</a> |</li>
         <li><a href="index.html">Wavelet Analysis 1 documentation</a> &raquo;</li> 
       </ul>

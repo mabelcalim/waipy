@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,9 +7,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to Wavelet Analysis’s documentation! &mdash; Wavelet Analysis 1 documentation</title>
+    <title>Waipy’s documentation! &mdash; Wavelet Analysis 1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -26,9 +25,16 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Wavelet Analysis 1 documentation" href="#" />
-    <link rel="next" title="Eye of Thundera" href="intro.html" /> 
+    <link rel="next" title="Introduction" href="intro.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
   </head>
   <body>
+
     <div class="related">
       <h3>Navigation</h3>
       <ul>
@@ -36,7 +42,10 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="intro.html" title="Eye of Thundera"
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
              accesskey="N">next</a> |</li>
         <li><a href="#">Wavelet Analysis 1 documentation</a> &raquo;</li> 
       </ul>
@@ -47,35 +56,51 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="welcome-to-wavelet-analysis-s-documentation">
-<h1>Welcome to Wavelet Analysis&#8217;s documentation!<a class="headerlink" href="#welcome-to-wavelet-analysis-s-documentation" title="Permalink to this headline">¶</a></h1>
-<img alt="_images/wavelet.png" src="_images/wavelet.png" style="width: 500pt;" />
-<p>Author :  Mabel Calim Costa</p>
-<p>email  :  <a class="reference external" href="mailto:mabelcalim&#37;&#52;&#48;gmail&#46;com">mabelcalim<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
-<p>Contents:</p>
+  <div class="section" id="waipy-s-documentation">
+<h1>Waipy&#8217;s documentation!<a class="headerlink" href="#waipy-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Author :  Mabel Calim Costa
+email :  <a class="reference external" href="mailto:mabelcalim&#37;&#52;&#48;gmail&#46;com">mabelcalim<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+<p><strong>Contents:</strong></p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Eye of Thundera</a></li>
-<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ex_nino.html">Continuous Wavelet Transform (CWT) Niño3 SST</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cwa.html">Cross Wavelet Analysis (CWA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#eye-of-thundera">Eye of Thundera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#why-when-should-i-use-the-wavelet-analysis">Why/when should I use the wavelet analysis?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#for-more-information">For more Information:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#papers">Papers:</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="cookbook.html">Cookbook</a></li>
-<li class="toctree-l1"><a class="reference internal" href="diy.html">DIY</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="diy.html#cwt-nino3-sst">CWT - Niño3 SST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cookbook.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diy.html">How Waipy works</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="diy.html#import-python-libraries">0. Import python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diy.html#load-the-data">1. Load the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diy.html#normalize-with-standard-score">2. Normalize with standard score</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diy.html#choose-wavelet-and-parameters-for-the-cwt">3. Choose Wavelet and parameters for the cwt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diy.html#calculate-the-daughter-wavelets">4. Calculate the daughter wavelets:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diy.html#wavebases">5. Wavebases:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diy.html#module-wavetest">7. FFT of data and Levels:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diy.html#module-wavetest">8. CWT Plot:</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="checkitout.html">Check it out</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="checkitout.html#cwt-nino3-sst">CWT - Niño3 SST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="checkitout.html#cwt-nino3-sst">CWT - Niño3 SST</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="checkitout.html#nino3-sst-data">Niño3 SST data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="checkitout.html#expnt">expnt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="checkitout.html#norm">norm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="checkitout.html#daughter">daughter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="checkitout.html#j1">J1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="checkitout.html#n-base2">n = base2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="checkitout.html#k">k</a></li>
+<li class="toctree-l3"><a class="reference internal" href="checkitout.html#f">f</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="manual.html">Manual</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="wavelet_loadtxt.html">Wavelet.load_txt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wavelet_loadnc.html">Wavelet.load_nc</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wavelet_normalize.html">Wavelet.normalize</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wavelet_cwt.html">Wavelet.cwt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wavelet_wavelet_plot.html">Wavelet.wavelet_plot</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example.html#continuous-wavelet-transform-cwt-nino3-sst">Continuous Wavelet Transform (CWT) Niño3 SST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example.html#example-1">Example 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example.html#example-2">Example 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example.html#example-3">Example 3</a></li>
 </ul>
 </li>
 </ul>
@@ -98,7 +123,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Welcome to Wavelet Analysis&#8217;s documentation!</a><ul>
+<li><a class="reference internal" href="#">Waipy&#8217;s documentation!</a><ul>
 </ul>
 </li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
@@ -106,12 +131,7 @@
 
   <h4>Next topic</h4>
   <p class="topless"><a href="intro.html"
-                        title="next chapter">Eye of Thundera</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/index.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+                        title="next chapter">Introduction</a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -136,7 +156,10 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="intro.html" title="Eye of Thundera"
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
              >next</a> |</li>
         <li><a href="#">Wavelet Analysis 1 documentation</a> &raquo;</li> 
       </ul>

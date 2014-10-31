@@ -1,180 +1,107 @@
-DIY 
-===
+How Waipy works
+===============
 
-Do it Yourself (DIY) your own wavelet toolkit!
+This chapter shows on the Example: Niño3 SST how waipy calculates the CWT from a given time series.
 
-CWT - Niño3 SST
----------------
+CWT of the Niño3 SST data.
+
 
 0. Import python libraries
 __________________________
 ::
 
-	import numpy as np
-	import pylab
-	from pylab import detrend_mean
-	import math
+    import numpy as np
+    import pylab
+    from pylab import detrend_mean
+    import matplotlib.pyplot as plt
+    import math
 
 
-1.Choose and implement the wavelet function
+1. Load the data
+________________
+
+Before you can work with Waipy you have to load the data with eiter Waipy or another Python tool (eg. Pandas).
+
+::
+
+    # loading data with waipy.load_txt
+    data,time = waipy.load_txt('sst_nino3.dat', 0.25, 1871)
+
+.. automodule:: wavetest
+    :members: load_txt
+
+
+2. Normalize with standard score
+________________________________
+
+
+::
+
+    # normalizing time series
+    data_norm = waipy.normalize(data)
+
+.. automodule:: wavetest
+    :members: normalize
+
+3. Choose Wavelet and parameters for the cwt
 ____________________________________________
 
-    
- ::     
+::
 
-        
-	def wave_bases(mother,k,scale,param):
-          """Computes the wavelet function as a function of Fourier frequency
-           used for the CWT in Fourier space (Torrence and Compo, 1998) 
-           -- This def is called automatically by def wavelet --
+    cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name):
 
-           _____________________________________________________________________
-           Inputs:
-                  mother - a string equal to 'Morlet'
-                  k      - a vectorm the Fourier frequecies 
-                  scale  - a number, the wavelet scale
-                  param  - the nondimensional parameter for the wavelet function
+.. automodule:: wavetest
+    :members: cwt
 
-           Outputs:
-                  daughter       - a vector, the wavelet function 
-                  fourier_factor - the ratio os Fourier period to scale
-                  coi            - a number, the cone-of-influence size at the scale
-                  dofmin         - a number, degrees of freedom for each point in the wavelet power (Morlet = 2)
-           
-           Call function:
-                  daughter,fourier_factor,coi,dofmin = wave_bases(mother,k,scale,param) 
-           _____________________________________________________________________
-
-.. note::
-    The Morlet wavelet is used as default in this code.
-
-
-- expnt :doc:`checkitout`::
-
-	expnt = -pow(scale*k-k0,2)/2*(k>0) 
-
-.. note::
-    Only the values of the last scale are avaiable on checkitout.
-
-
+The CWT calls now lib_wavelet.py where the calculations are made.
 
 ::
 
-	+---------------------------------------+
-	|               scale[a1] = 32          |
-	|             +-----------------+       |
-	|             |-0               |       |
-	|             |                 |       |
-	|len(k) = 512 |                 |       |
-	|             |                 |       |
-	|             |               -0|       |
-	|             +-----------------+       |
-	+---------------------------------------+
+                                 +----------------+
+                                 |    cwt.py 	  |
+                                 +----------------+
+                                        |
+                                +----------------+
+                                | lib_wavelet.py |
+                                +----------------+
+                                        |
+                      +----------------+  +----------------+
+                      |  def wavelet   |--| def wave_signif|
+                      +----------------+  +----------------+
+                              |
+            +----------------+  +----------------+
+            | def nextpow2   |--| def wave_bases |
+            +----------------+  +----------------+
 
-- norm :doc:`checkitout`::
+4. Calculate the daughter wavelets:
+___________________________________
+::
 
-	norm = math.sqrt(scale*k[1])*(pow(math.pi,-0.25))*math.sqrt(len(k))
+    # lib_wavelet.wavelet(data, dt, param, dj, s0, j1, mother)
 
- 
-
+.. automodule:: lib_wavelet
+    :members: wavelet
 
 ::
 
-	+---------------------------------------+
-	|          scale[a1] = 32               |
-	|       +-----------------+             |
-	|       |2.66        39.07|             |
-	|       +-----------------+             |
-	|                                       |
-	+---------------------------------------+
-
-- daughter :doc:`checkitout`::
-
-                daughter = []                                           # define daughter as a list
-                for ex in expnt:                                        # for each value scale (equal to next pow of 2)
-                        daughter.append(norm*math.exp(ex))
-                k = np.array(k)                                         # turn k to array
-                daughter = np.array(daughter)                           # transform in array
-                daughter = daughter*(k>0)                               # Heaviside step function
-.. note::
-    Only the values of the last scale are avaiable on checkitout.    
-
-
-
-
-::
-
-	+---------------------------------------+
-	|               scale[a1] = 32          |
-	|             +-----------------+       | 
-	|             |0.0              |       |
-	|             |                 |       |
-	|len(k) = 512 |                 |       |
-	|             |                 |       |
-	|             |              0.0|       |
-	|             +-----------------+       |
-	+---------------------------------------+
-
-
-2. Find the next pow of 2 
-___________________________
- ::
-
-  def nextpow2(i):
-      n = 2
-      while n < i: n = n * 2
-      return n
-
-
-
-3. Compute wavelet power spectrum
-_________________________________
- ::
-
-  def wavelet(Y,dt,mother,param):#,pad,dj,s0,J1,mother,param):
-        """Computes the wavelet continuous transform of the vector Y, by definition:
-        
-           W(a,b) = sum(f(t)*psi[a,b](t) dt)               a dilate/contract 
-           psi[a,b](t) = 1/sqrt(a) psi(t-b/a)              b displace 
-
-           Only Morlet wavelet (k0=6) is used
-           The wavelet basis is normalized to have total energy = 1 at all scales 
-           _____________________________________________________________________
-           Input:
-                Y - time series 
-                dt - sampling rate
-                mother - the mother wavelet function
-                param - the mother wavelet parameter
-
-           Output:
-                ondaleta - wavelet bases at scale 10 dt
-                wave - wavelet transform of Y
-                period - the vector of "Fourier"periods ( in time units) that correspond to the scales
-                scale - the vector of scale indices, given by S0*2(j*DJ), j =0 ...J1
-                coi - cone of influence                   
-      
-           Call function:
-           ondaleta, wave, period, scale, coi = wavelet(Y,dt,mother,param)  
-           _____________________________________________________________________
-
-::
-
-        n1 = len(Y)                                                     # time series length 
-        s0 = 2*dt                                                       # smallest scale of the wavelet
-        dj = 0.25                                                       # spacing between discrete scales
+        n1 = len(Y)  # time series length 
+        s0 = 2*dt  # smallest scale of the wavelet
+        dj = 0.25  # spacing between discrete scales
 
 
 - J1 :doc:`checkitout`
+
 ::
 
-	J1= int(np.floor((np.log10(n1*dt/s0))/np.log10(2)/dj))          # J1+1 total os scales
+    J1= int(np.floor((np.log10(n1*dt/s0))/np.log10(2)/dj))  # J1+1 total os scales
 
 
 - Call nextpow2 :doc:`checkitout`
+
 ::
 
-        if (pad ==1) :
-                base2 = nextpow2(n1)                                    #call det nextpow2
+    if (pad ==1):
+        base2 = nextpow2(n1) #call det nextpow2
         n = base2
 
 - k :doc:`checkitout`::
@@ -185,11 +112,11 @@ _________________________________
         import math
         k_pos,k_neg=[],[]
         for i in range(0,n/2+1):
-                k_pos.append(i*((2*math.pi)/(n*dt)))                    # frequencies as in eqn5
-                k_neg = k_pos[::-1]                                     # inversion vector
+                k_pos.append(i*((2*math.pi)/(n*dt)))  # frequencies as in eqn5
+                k_neg = k_pos[::-1]  # inversion vector
                 k_neg = [e * (-1) for e in k_neg]                       # negative part 
-                k_neg = k_neg[1:-1]                                     # delete the first value of k_neg = last value of k_pos
-        k = np.concatenate((k_pos,k_neg), axis =1)                      # vector of symmetric
+                k_neg = k_neg[1:-1]  # delete the first value of k_neg = last value of k_pos
+        k = np.concatenate((k_pos,k_neg), axis =1)  # vector of symmetric
 
 
 ::
@@ -223,3 +150,98 @@ _________________________________
         |             +------------+            |
         +---------------------------------------+
       
+
+5. Wavebases:
+_______________________________
+::
+
+    # daughter, fourier_factor, coi, dofmin = wave_bases(mother, k, scale[a1], param)
+
+.. automodule:: lib_wavelet
+    :members: wave_bases
+
+- expnt :doc:`checkitout`::
+
+    expnt = -pow(scale*k-k0,2)/2*(k>0) 
+
+.. note::
+    Only the values of the last scale are avaiable on checkitout.
+
+
+
+::
+
+    +---------------------------------------+
+    |               scale[a1] = 32          |
+    |             +-----------------+       |
+    |             |-0               |       |
+    |             |                 |       |
+    |len(k) = 512 |                 |       |
+    |             |                 |       |
+    |             |               -0|       |
+    |             +-----------------+       |
+    +---------------------------------------+
+
+- norm :doc:`checkitout`::
+
+    norm = math.sqrt(scale*k[1])*(pow(math.pi,-0.25))*math.sqrt(len(k))
+
+::
+
+    +---------------------------------------+
+    |          scale[a1] = 32               |
+    |       +-----------------+             |
+    |       |2.66        39.07|             |
+    |       +-----------------+             |
+    |                                       |
+    +---------------------------------------+
+
+- daughter :doc:`checkitout`::
+
+                daughter = []  # define daughter as a list
+                for ex in expnt:  # for each value scale (equal to next pow of 2)
+                        daughter.append(norm*math.exp(ex))
+                k = np.array(k)  # turn k to array
+                daughter = np.array(daughter)  # transform in array
+                daughter = daughter*(k>0)  # Heaviside step function
+
+.. note:: Only the values of the last scale are avaiable on checkitout.
+
+::
+
+    +---------------------------------------+
+    |               scale[a1] = 32          |
+    |             +-----------------+       | 
+    |             |0.0              |       |
+    |             |                 |       |
+    |len(k) = 512 |                 |       |
+    |             |                 |       |
+    |             |              0.0|       |
+    |             +-----------------+       |
+    +---------------------------------------+
+
+6. Significance of Wavelet:
+_____________________________ sketches
+::
+
+    # signif, fft_theor = lib_wavelet.wave_signif(1.0, dt, scale, 0, lag1, 0.95, -1, mother, param)
+
+.. automodule:: lib_wavelet
+    :members: wave_signif
+
+7. FFT of data and Levels:
+__________________________
+
+.. automodule:: wavetest
+    :members: fft
+
+.. automodule:: wavetest
+    :members: levels
+
+
+8. CWT Plot:
+__________________
+
+.. automodule:: wavetest
+    :members: wavelet_plot
+

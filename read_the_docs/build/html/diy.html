@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,9 +7,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>DIY &mdash; Wavelet Analysis 1 documentation</title>
+    <title>How Waipy works &mdash; Wavelet Analysis 1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -27,9 +26,16 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Wavelet Analysis 1 documentation" href="index.html" />
     <link rel="next" title="Check it out" href="checkitout.html" />
-    <link rel="prev" title="Cross Wavelet Analysis (CWA)" href="cwa.html" /> 
+    <link rel="prev" title="Installation" href="cookbook.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
   </head>
   <body>
+
     <div class="related">
       <h3>Navigation</h3>
       <ul>
@@ -37,10 +43,13 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="checkitout.html" title="Check it out"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="cwa.html" title="Cross Wavelet Analysis (CWA)"
+          <a href="cookbook.html" title="Installation"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">Wavelet Analysis 1 documentation</a> &raquo;</li> 
       </ul>
@@ -51,50 +60,304 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="diy">
-<h1>DIY<a class="headerlink" href="#diy" title="Permalink to this headline">¶</a></h1>
-<p>Do it Yourself (DIY) your own wavelet toolkit!</p>
-<div class="section" id="cwt-nino3-sst">
-<h2>CWT - Niño3 SST<a class="headerlink" href="#cwt-nino3-sst" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="how-waipy-works">
+<h1>How Waipy works<a class="headerlink" href="#how-waipy-works" title="Permalink to this headline">¶</a></h1>
+<p>This chapter shows on the Example: Niño3 SST how waipy calculates the CWT from a given time series.</p>
+<p>CWT of the Niño3 SST data.</p>
 <div class="section" id="import-python-libraries">
-<h3>0. Import python libraries<a class="headerlink" href="#import-python-libraries" title="Permalink to this headline">¶</a></h3>
+<h2>0. Import python libraries<a class="headerlink" href="#import-python-libraries" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pylab</span>
 <span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="n">detrend_mean</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">math</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="choose-and-implement-the-wavelet-function">
-<h3>1.Choose and implement the wavelet function<a class="headerlink" href="#choose-and-implement-the-wavelet-function" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="load-the-data">
+<h2>1. Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">¶</a></h2>
+<p>Before you can work with Waipy you have to load the data with eiter Waipy or another Python tool (eg. Pandas).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># loading data with waipy.load_txt</span>
+<span class="n">data</span><span class="p">,</span><span class="n">time</span> <span class="o">=</span> <span class="n">waipy</span><span class="o">.</span><span class="n">load_txt</span><span class="p">(</span><span class="s">&#39;sst_nino3.dat&#39;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">1871</span><span class="p">)</span>
+</pre></div>
+</div>
+<span class="target" id="module-wavetest"></span><dl class="function">
+<dt id="wavetest.load_txt">
+<tt class="descclassname">wavetest.</tt><tt class="descname">load_txt</tt><big>(</big><em>archive</em>, <em>dt</em>, <em>date1</em><big>)</big><a class="reference internal" href="_modules/wavetest.html#load_txt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wavetest.load_txt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens and reads an archive .txt with data only (without dates).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><div class="first last line-block">
+<div class="line"><strong>file:</strong> filename</div>
+<div class="line"><strong>dt:</strong> A number. Time-step of the vector. Example: Hourly, daily, monthly, etc.</div>
+<div class="line"><strong>date1:</strong> A number. The initial time of the data. Example: 1985.</div>
+</div>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><div class="first last line-block">
+<div class="line"><strong>data:</strong> array_like</div>
+<div class="line"><strong>time:</strong> array_like</div>
+</div>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Notes :</th><td class="field-body"><div class="first last line-block">
+<div class="line">This function is linked to data/txt directory, so, if you have any file extension .txt put it in the following folder:</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><pre>/lib/wavelet/data/txt</pre>
+</div>
+<p>Example</p>
+<div class="highlight-python"><pre>&gt;&gt; dt = 0.25
+&gt;&gt; date1 = 1871
+# Test data = sst_nino3.dat is already in the package!
+&gt;&gt; data, time = load_txt('sst_nino3.dat', dt, date1)</pre>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="normalize-with-standard-score">
+<h2>2. Normalize with standard score<a class="headerlink" href="#normalize-with-standard-score" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># normalizing time series</span>
+<span class="n">data_norm</span> <span class="o">=</span> <span class="n">waipy</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<span class="target" id="module-wavetest"></span><dl class="function">
+<dt id="wavetest.normalize">
+<tt class="descclassname">wavetest.</tt><tt class="descname">normalize</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/wavetest.html#normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wavetest.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize by Standard Score - mean = 0 ; Variance = 1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><div class="first last line-block">
+<div class="line"><strong>Data, the loaded data.</strong></div>
+</div>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><div class="first last line-block">
+<div class="line"><strong>normalized_data</strong></div>
+</div>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Notes :</th><td class="field-body"><div class="first last line-block">
+<div class="line">You can skip this function if it the normalization is not necessary (e.g. EOF data).</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="choose-wavelet-and-parameters-for-the-cwt">
+<h2>3. Choose Wavelet and parameters for the cwt<a class="headerlink" href="#choose-wavelet-and-parameters-for-the-cwt" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name):</pre>
+</div>
+<span class="target" id="module-wavetest"></span><dl class="function">
+<dt id="wavetest.cwt">
+<tt class="descclassname">wavetest.</tt><tt class="descname">cwt</tt><big>(</big><em>data</em>, <em>dt=1</em>, <em>pad=1</em>, <em>dj=0.25</em>, <em>s0=2</em>, <em>j1=28.0</em>, <em>lag1=0.72</em>, <em>param=6</em>, <em>mother='Morlet'</em>, <em>name='Name of Time series'</em><big>)</big><a class="reference internal" href="_modules/wavetest.html#cwt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wavetest.cwt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Continuous wavelet transform from data. Wavelet params can be modified as you wish.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><div class="first last line-block">
+<div class="line"><strong>Data:</strong> array_like. Raw of data or normalized data.</div>
+<div class="line"><strong>pad:</strong> 0 or 1 Pad the time series with zeroes to next pow of two length (recommended).</div>
+<div class="line"><strong>dt:</strong> Time-step of the vector. Example: Hourly, daily, monthly, etc...</div>
+<div class="line"><strong>dj:</strong> Divide octave in sub-octaves. If dj = 0.25 this will do 4 sub-octaves per octave.</div>
+<div class="line"><strong>s0:</strong> The maximum frequency resolution. If it is an annual data, s0 = 2*dt say start at a scale of 6 months.</div>
+<div class="line"><strong>j1:</strong> Divide the power-of-teo with dj sub-octaves each.</div>
+<div class="line"><strong>lag1:</strong> Lag-1 autocoorelation for red noise background.</div>
+<div class="line"><strong>param:</strong> The mother wavelet nondimensional time-parameter, depends on wavelet, for other wavelet than Morlet, see Torrence and Compo 1998.</div>
+<div class="line"><strong>mother:</strong> string. The mother wavelet funtion. Can be &#8216;Morlet&#8217;, &#8216;PAUL&#8217;, &#8216;DOG&#8217;.</div>
+<div class="line"><strong>name:</strong> Name of Time Series or your Plot.</div>
+</div>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><div class="first last line-block">
+<div class="line"><strong>result:</strong> as dict. Returns all parameters for plot</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Example</p>
+<div class="highlight-python"><pre>&gt;&gt; dt = 0.25
+&gt;&gt; date1 = 1871
+# Test data = sst_nino3.dat is already in the package!
+&gt;&gt; data,n,time = load_txt('sst_nino3.dat',dt,date1)
+# This normalize by variance
+&gt;&gt; data_norm, variance = normalize(data)
+# Continuous wavelet transform
+&gt;&gt; result = cwt(data_norm,0.25,variance,n,1,0.25,2*0.25,7/0.25,0.72,6,'Morlet')</pre>
+</div>
+</dd></dl>
+
+<p>The CWT calls now lib_wavelet.py where the calculations are made.</p>
+<div class="highlight-python"><pre>                     +----------------+
+                     |    cwt.py      |
+                     +----------------+
+                            |
+                    +----------------+
+                    | lib_wavelet.py |
+                    +----------------+
+                            |
+          +----------------+  +----------------+
+          |  def wavelet   |--| def wave_signif|
+          +----------------+  +----------------+
+                  |
++----------------+  +----------------+
+| def nextpow2   |--| def wave_bases |
++----------------+  +----------------+</pre>
+</div>
+</div>
+<div class="section" id="calculate-the-daughter-wavelets">
+<h2>4. Calculate the daughter wavelets:<a class="headerlink" href="#calculate-the-daughter-wavelets" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># lib_wavelet.wavelet(data, dt, param, dj, s0, j1, mother)</span>
+</pre></div>
+</div>
+<span class="target" id="module-lib_wavelet"></span><dl class="function">
+<dt id="lib_wavelet.wavelet">
+<tt class="descclassname">lib_wavelet.</tt><tt class="descname">wavelet</tt><big>(</big><em>Y</em>, <em>dt</em>, <em>param</em>, <em>dj</em>, <em>s0</em>, <em>j1</em>, <em>mother</em><big>)</big><a class="reference internal" href="_modules/lib_wavelet.html#wavelet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib_wavelet.wavelet" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Computes the wavelet continuous transform of the vector Y, by definition:</div>
+<div class="line"><img class="math" src="_images/math/45adb2009bbeb07ccc30468fb73c288ea43758dd.png" alt="W(a,b) = \sum(f(t)* \psi[a,b](t) dt)"/> a dilation/contraction.</div>
+<div class="line"><img class="math" src="_images/math/a6233cda2a8408cc1b785786ae45fcc82b00e535.png" alt="\Psi[a,b](t) = 1/\sqrt{(a)} \psi(t-b/a)"/> b is displacement.</div>
+<div class="line">The wavelet basis is normalized to have total energy = 1 at all scales</div>
+</div>
 <blockquote>
-<div><div class="highlight-python"><pre>def wave_bases(mother,k,scale,param):
-  """Computes the wavelet function as a function of Fourier frequency
-   used for the CWT in Fourier space (Torrence and Compo, 1998)
-   -- This def is called automatically by def wavelet --
-
-   _____________________________________________________________________
-   Inputs:
-          mother - a string equal to 'Morlet'
-          k      - a vectorm the Fourier frequecies
-          scale  - a number, the wavelet scale
-          param  - the nondimensional parameter for the wavelet function
-
-   Outputs:
-          daughter       - a vector, the wavelet function
-          fourier_factor - the ratio os Fourier period to scale
-          coi            - a number, the cone-of-influence size at the scale
-          dofmin         - a number, degrees of freedom for each point in the wavelet power (Morlet = 2)
-
-   Call function:
-          daughter,fourier_factor,coi,dofmin = wave_bases(mother,k,scale,param)
-   _____________________________________________________________________</pre>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><div class="first last line-block">
+<div class="line"><strong>Y:</strong> Time series.</div>
+<div class="line"><strong>dt:</strong> Sampling rate.</div>
+<div class="line"><strong>mother:</strong> The mother wavelet function.</div>
+<div class="line"><strong>param:</strong> The mother wavelet parameter.</div>
 </div>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return:</th><td class="field-body"><div class="first last line-block">
+<div class="line"><strong>ondaleta:</strong> Wavelet bases at scale 10 dt.</div>
+<div class="line"><strong>wave:</strong> Wavelet transform of Y.</div>
+<div class="line"><strong>period:</strong> The vector of &#8220;Fourier&#8221;periods ( in time units) that correspond to the scales.</div>
+<div class="line"><strong>scale:</strong> The vector of scale indices, given by S0*2(j*DJ), j =0 ...J1.</div>
+<div class="line"><strong>coi:</strong> Cone of influence.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
 </div></blockquote>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The Morlet wavelet is used as default in this code.</p>
+</dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="n">n1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>  <span class="c"># time series length</span>
+<span class="n">s0</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">dt</span>  <span class="c"># smallest scale of the wavelet</span>
+<span class="n">dj</span> <span class="o">=</span> <span class="mf">0.25</span>  <span class="c"># spacing between discrete scales</span>
+</pre></div>
 </div>
+<ul class="simple">
+<li>J1 <a class="reference internal" href="checkitout.html"><em>Check it out</em></a></li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">J1</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">n1</span><span class="o">*</span><span class="n">dt</span><span class="o">/</span><span class="n">s0</span><span class="p">))</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">dj</span><span class="p">))</span>  <span class="c"># J1+1 total os scales</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Call nextpow2 <a class="reference internal" href="checkitout.html"><em>Check it out</em></a></li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="p">(</span><span class="n">pad</span> <span class="o">==</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">base2</span> <span class="o">=</span> <span class="n">nextpow2</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span> <span class="c">#call det nextpow2</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">base2</span>
+</pre></div>
+</div>
+<ul>
+<li><p class="first">k <a class="reference internal" href="checkitout.html"><em>Check it out</em></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># construct wavenumber array used in transform</span>
+<span class="c"># simetric eqn 5</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="n">k_pos</span><span class="p">,</span><span class="n">k_neg</span><span class="o">=</span><span class="p">[],[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">k_pos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">dt</span><span class="p">)))</span>  <span class="c"># frequencies as in eqn5</span>
+        <span class="n">k_neg</span> <span class="o">=</span> <span class="n">k_pos</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c"># inversion vector</span>
+        <span class="n">k_neg</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">k_neg</span><span class="p">]</span>                       <span class="c"># negative part</span>
+        <span class="n">k_neg</span> <span class="o">=</span> <span class="n">k_neg</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c"># delete the first value of k_neg = last value of k_pos</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">k_pos</span><span class="p">,</span><span class="n">k_neg</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c"># vector of symmetric</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="highlight-python"><pre>+---------------------------------------+
+|                 1                     |
+|             +------+                  |
+|             | 0.0  |                  |
+|             |      |                  |
+|len(k) = 512 |      |                  |
+|             |      |                  |
+|             |-0.049|                  |
+|             +------+                  |
++---------------------------------------+</pre>
+</div>
+<ul>
+<li><p class="first">f <a class="reference internal" href="checkitout.html"><em>Check it out</em></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># compute fft of the padded time series</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="highlight-python"><pre>+---------------------------------------+
+|                 1                     |
+|             +------------+            |
+|             |-9.33e-15+0j|            |
+|             |            |            |
+|len(k) = 512 |            |            |
+|             |            |            |
+|             |31.9 -5.55j |            |
+|             +------------+            |
++---------------------------------------+</pre>
+</div>
+</div>
+<div class="section" id="wavebases">
+<h2>5. Wavebases:<a class="headerlink" href="#wavebases" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># daughter, fourier_factor, coi, dofmin = wave_bases(mother, k, scale[a1], param)</span>
+</pre></div>
+</div>
+<span class="target" id="module-lib_wavelet"></span><dl class="function">
+<dt id="lib_wavelet.wave_bases">
+<tt class="descclassname">lib_wavelet.</tt><tt class="descname">wave_bases</tt><big>(</big><em>mother</em>, <em>k</em>, <em>scale</em>, <em>param</em><big>)</big><a class="reference internal" href="_modules/lib_wavelet.html#wave_bases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib_wavelet.wave_bases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the wavelet function as a function of Fourier frequency used for the CWT in Fourier space (Torrence and Compo, 1998)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><div class="first last line-block">
+<div class="line"><strong>mother:</strong> A string equal to &#8216;Morlet&#8217;.</div>
+<div class="line"><strong>k:</strong> A vectorm the Fourier frequecies.</div>
+<div class="line"><strong>scale:</strong> A number, the wavelet scale.</div>
+<div class="line"><strong>param:</strong> The nondimensional parameter for the wavelet functions.</div>
+</div>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><div class="first last line-block">
+<div class="line"><strong>daughter:</strong> A vector, the wavelet function.</div>
+<div class="line"><strong>fourier_factor:</strong> The ratio os Fourier period to scale.</div>
+<div class="line"><strong>coi:</strong> A number, the cone-of-influence size at the scale.</div>
+<div class="line"><strong>dofmin:</strong> A number, degrees of freedom for each point in the wavelet power (Morlet = 2).</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <ul>
 <li><p class="first">expnt <a class="reference internal" href="checkitout.html"><em>Check it out</em></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">expnt</span> <span class="o">=</span> <span class="o">-</span><span class="nb">pow</span><span class="p">(</span><span class="n">scale</span><span class="o">*</span><span class="n">k</span><span class="o">-</span><span class="n">k0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">k</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
@@ -134,12 +397,12 @@
 </div>
 <ul>
 <li><p class="first">daughter <a class="reference internal" href="checkitout.html"><em>Check it out</em></a>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">daughter</span> <span class="o">=</span> <span class="p">[]</span>                                           <span class="c"># define daughter as a list</span>
-<span class="k">for</span> <span class="n">ex</span> <span class="ow">in</span> <span class="n">expnt</span><span class="p">:</span>                                        <span class="c"># for each value scale (equal to next pow of 2)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">daughter</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c"># define daughter as a list</span>
+<span class="k">for</span> <span class="n">ex</span> <span class="ow">in</span> <span class="n">expnt</span><span class="p">:</span>  <span class="c"># for each value scale (equal to next pow of 2)</span>
         <span class="n">daughter</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">norm</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
-<span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>                                         <span class="c"># turn k to array</span>
-<span class="n">daughter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">daughter</span><span class="p">)</span>                           <span class="c"># transform in array</span>
-<span class="n">daughter</span> <span class="o">=</span> <span class="n">daughter</span><span class="o">*</span><span class="p">(</span><span class="n">k</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>                               <span class="c"># Heaviside step function</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>  <span class="c"># turn k to array</span>
+<span class="n">daughter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">daughter</span><span class="p">)</span>  <span class="c"># transform in array</span>
+<span class="n">daughter</span> <span class="o">=</span> <span class="n">daughter</span><span class="o">*</span><span class="p">(</span><span class="n">k</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>  <span class="c"># Heaviside step function</span>
 </pre></div>
 </div>
 </li>
@@ -159,115 +422,69 @@
 |             +-----------------+       |
 +---------------------------------------+</pre>
 </div>
-</div>
-<div class="section" id="find-the-next-pow-of-2">
-<h3>2. Find the next pow of 2<a class="headerlink" href="#find-the-next-pow-of-2" title="Permalink to this headline">¶</a></h3>
-<blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">nextpow2</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span>
-    <span class="k">while</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">i</span><span class="p">:</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="mi">2</span>
-    <span class="k">return</span> <span class="n">n</span>
+<p>6. Significance of Wavelet:
+_____________________________ sketches</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># signif, fft_theor = lib_wavelet.wave_signif(1.0, dt, scale, 0, lag1, 0.95, -1, mother, param)</span>
 </pre></div>
 </div>
-</div></blockquote>
+<span class="target" id="module-lib_wavelet"></span><dl class="function">
+<dt id="lib_wavelet.wave_signif">
+<tt class="descclassname">lib_wavelet.</tt><tt class="descname">wave_signif</tt><big>(</big><em>Y</em>, <em>dt</em>, <em>scale1</em>, <em>sigtest</em>, <em>lag1</em>, <em>sig1v1</em>, <em>dof</em>, <em>mother</em>, <em>param</em><big>)</big><a class="reference internal" href="_modules/lib_wavelet.html#wave_signif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lib_wavelet.wave_signif" title="Permalink to this definition">¶</a></dt>
+<dd><p>Significance testing for the CWT</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><div class="first last line-block">
+<div class="line"><strong>Y:</strong> The time series, or, the VARIANCE of the time series.</div>
+<div class="line"><strong>dt:</strong> Amount of time between each Y value, i.e. the sampling time.</div>
+<div class="line"><strong>Scale1:</strong> The vector of scale indices, from previous call to Wavelet.</div>
+<div class="line"><strong>Sigtest:</strong> = 0, 1, or 2.    If omitted, then assume 0.</div>
+<div class="line"><strong>Lag1:</strong> LAG 1 Autocorrelation, used for SIGNIF levels. Default is 0.0.</div>
+<div class="line"><strong>Sig1v1:</strong> Significance level to use. Default is 0.95.</div>
+<div class="line"><strong>DOF:</strong> Degrees-of-freedom for signif test.</div>
 </div>
-<div class="section" id="compute-wavelet-power-spectrum">
-<h3>3. Compute wavelet power spectrum<a class="headerlink" href="#compute-wavelet-power-spectrum" title="Permalink to this headline">¶</a></h3>
-<blockquote>
-<div><div class="highlight-python"><pre>def wavelet(Y,dt,mother,param):#,pad,dj,s0,J1,mother,param):
-      """Computes the wavelet continuous transform of the vector Y, by definition:
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><div class="first last line-block">
+<div class="line"><strong>signif:</strong> Significance levels as a function of SCALE.</div>
+<div class="line"><strong>fft_theor:</strong> Output theoretical red-noise spectrum as fn of PERIOD.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
-         W(a,b) = sum(f(t)*psi[a,b](t) dt)               a dilate/contract
-         psi[a,b](t) = 1/sqrt(a) psi(t-b/a)              b displace
+</div>
+<div class="section" id="module-wavetest">
+<span id="fft-of-data-and-levels"></span><h2>7. FFT of data and Levels:<a class="headerlink" href="#module-wavetest" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="wavetest.fft">
+<tt class="descclassname">wavetest.</tt><tt class="descname">fft</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/wavetest.html#fft"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wavetest.fft" title="Permalink to this definition">¶</a></dt>
+<dd><p>FFT spectrum</p>
+</dd></dl>
 
-         Only Morlet wavelet (k0=6) is used
-         The wavelet basis is normalized to have total energy = 1 at all scales
-         _____________________________________________________________________
-         Input:
-              Y - time series
-              dt - sampling rate
-              mother - the mother wavelet function
-              param - the mother wavelet parameter
+<span class="target" id="module-wavetest"></span><dl class="function">
+<dt id="wavetest.levels">
+<tt class="descclassname">wavetest.</tt><tt class="descname">levels</tt><big>(</big><em>result</em>, <em>dtmin</em><big>)</big><a class="reference internal" href="_modules/wavetest.html#levels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wavetest.levels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Power levels</p>
+</dd></dl>
 
-         Output:
-              ondaleta - wavelet bases at scale 10 dt
-              wave - wavelet transform of Y
-              period - the vector of "Fourier"periods ( in time units) that correspond to the scales
-              scale - the vector of scale indices, given by S0*2(j*DJ), j =0 ...J1
-              coi - cone of influence
+</div>
+<div class="section" id="module-wavetest">
+<span id="cwt-plot"></span><h2>8. CWT Plot:<a class="headerlink" href="#module-wavetest" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="wavetest.wavelet_plot">
+<tt class="descclassname">wavetest.</tt><tt class="descname">wavelet_plot</tt><big>(</big><em>var</em>, <em>time</em>, <em>data</em>, <em>dtmin</em>, <em>result</em><big>)</big><a class="reference internal" href="_modules/wavetest.html#wavelet_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wavetest.wavelet_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>PLOT WAVELET TRANSFORM
+var = title name from data
+time  = vector get in load function
+data  = from normalize function
+dtmin = minimum resolution :1 octave
+result = dict from cwt function</p>
+</dd></dl>
 
-         Call function:
-         ondaleta, wave, period, scale, coi = wavelet(Y,dt,mother,param)
-         _____________________________________________________________________</pre>
-</div>
-</div></blockquote>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">n1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>                                                     <span class="c"># time series length</span>
-<span class="n">s0</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">dt</span>                                                       <span class="c"># smallest scale of the wavelet</span>
-<span class="n">dj</span> <span class="o">=</span> <span class="mf">0.25</span>                                                       <span class="c"># spacing between discrete scales</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li>J1 <a class="reference internal" href="checkitout.html"><em>Check it out</em></a></li>
-</ul>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">J1</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">n1</span><span class="o">*</span><span class="n">dt</span><span class="o">/</span><span class="n">s0</span><span class="p">))</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">dj</span><span class="p">))</span>          <span class="c"># J1+1 total os scales</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li>Call nextpow2 <a class="reference internal" href="checkitout.html"><em>Check it out</em></a></li>
-</ul>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="p">(</span><span class="n">pad</span> <span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span>
-        <span class="n">base2</span> <span class="o">=</span> <span class="n">nextpow2</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>                                    <span class="c">#call det nextpow2</span>
-<span class="n">n</span> <span class="o">=</span> <span class="n">base2</span>
-</pre></div>
-</div>
-<ul>
-<li><p class="first">k <a class="reference internal" href="checkitout.html"><em>Check it out</em></a>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># construct wavenumber array used in transform</span>
-<span class="c"># simetric eqn 5</span>
-<span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="n">k_pos</span><span class="p">,</span><span class="n">k_neg</span><span class="o">=</span><span class="p">[],[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">k_pos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">dt</span><span class="p">)))</span>                    <span class="c"># frequencies as in eqn5</span>
-        <span class="n">k_neg</span> <span class="o">=</span> <span class="n">k_pos</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>                                     <span class="c"># inversion vector</span>
-        <span class="n">k_neg</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">k_neg</span><span class="p">]</span>                       <span class="c"># negative part</span>
-        <span class="n">k_neg</span> <span class="o">=</span> <span class="n">k_neg</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>                                     <span class="c"># delete the first value of k_neg = last value of k_pos</span>
-<span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">k_pos</span><span class="p">,</span><span class="n">k_neg</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span><span class="mi">1</span><span class="p">)</span>                      <span class="c"># vector of symmetric</span>
-</pre></div>
-</div>
-</li>
-</ul>
-<div class="highlight-python"><pre>+---------------------------------------+
-|                 1                     |
-|             +------+                  |
-|             | 0.0  |                  |
-|             |      |                  |
-|len(k) = 512 |      |                  |
-|             |      |                  |
-|             |-0.049|                  |
-|             +------+                  |
-+---------------------------------------+</pre>
-</div>
-<ul>
-<li><p class="first">f <a class="reference internal" href="checkitout.html"><em>Check it out</em></a>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># compute fft of the padded time series</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
-</ul>
-<div class="highlight-python"><pre>+---------------------------------------+
-|                 1                     |
-|             +------------+            |
-|             |-9.33e-15+0j|            |
-|             |            |            |
-|len(k) = 512 |            |            |
-|             |            |            |
-|             |31.9 -5.55j |            |
-|             +------------+            |
-+---------------------------------------+</pre>
-</div>
-</div>
 </div>
 </div>
 
@@ -279,29 +496,25 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">DIY</a><ul>
-<li><a class="reference internal" href="#cwt-nino3-sst">CWT - Niño3 SST</a><ul>
+<li><a class="reference internal" href="#">How Waipy works</a><ul>
 <li><a class="reference internal" href="#import-python-libraries">0. Import python libraries</a></li>
-<li><a class="reference internal" href="#choose-and-implement-the-wavelet-function">1.Choose and implement the wavelet function</a></li>
-<li><a class="reference internal" href="#find-the-next-pow-of-2">2. Find the next pow of 2</a></li>
-<li><a class="reference internal" href="#compute-wavelet-power-spectrum">3. Compute wavelet power spectrum</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#load-the-data">1. Load the data</a></li>
+<li><a class="reference internal" href="#normalize-with-standard-score">2. Normalize with standard score</a></li>
+<li><a class="reference internal" href="#choose-wavelet-and-parameters-for-the-cwt">3. Choose Wavelet and parameters for the cwt</a></li>
+<li><a class="reference internal" href="#calculate-the-daughter-wavelets">4. Calculate the daughter wavelets:</a></li>
+<li><a class="reference internal" href="#wavebases">5. Wavebases:</a></li>
+<li><a class="reference internal" href="#module-wavetest">7. FFT of data and Levels:</a></li>
+<li><a class="reference internal" href="#module-wavetest">8. CWT Plot:</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="cwa.html"
-                        title="previous chapter">Cross Wavelet Analysis (CWA)</a></p>
+  <p class="topless"><a href="cookbook.html"
+                        title="previous chapter">Installation</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="checkitout.html"
                         title="next chapter">Check it out</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/diy.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -326,10 +539,13 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="checkitout.html" title="Check it out"
              >next</a> |</li>
         <li class="right" >
-          <a href="cwa.html" title="Cross Wavelet Analysis (CWA)"
+          <a href="cookbook.html" title="Installation"
              >previous</a> |</li>
         <li><a href="index.html">Wavelet Analysis 1 documentation</a> &raquo;</li> 
       </ul>
