@@ -49,3 +49,8 @@ The following packages are required (tested on Debian Wheezy):
 * libnetcdf-dev
 * libhdf5-dev
 * netcdf4 (https://github.com/Unidata/netcdf4-python.git)
+
+Support Group
+==============
+
+https://groups.google.com/forum/?hl=en#!forum/waipy-users-support
