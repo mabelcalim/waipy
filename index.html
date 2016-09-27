@@ -1,85 +1,107 @@
-<!doctype html>
-<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
-<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on https://github.com/jonrohan -->
+<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Waipy by mabelcalim</title>
+  </head>
 
-  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
-  <link rel="stylesheet" href="stylesheets/github-dark.css">
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script type="text/javascript" src="javascripts/script.js"></script>
-
-  <title>Waipy</title>
-  <meta name="description" content="This guide includes a Continuous Wavelet Transform (CWT), significance  tests from based on Torrence and Compo (1998) and Cross Wavelet Analysis  (CWA) based on Maraun and Kurths(2004).">
-
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-
-</head>
-
-<body>
-
-  <div class="wrapper">
-    <header>
-      <h1 class="title">Waipy</h1>
-    </header>
+  <body>
     <div id="container">
-      <p class="tagline">This guide includes a Continuous Wavelet Transform (CWT), significance  tests from based on Torrence and Compo (1998) and Cross Wavelet Analysis  (CWA) based on Maraun and Kurths(2004).</p>
-      <div id="main" role="main">
-        <div class="download-bar">
-        <div class="inner">
-          <a href="https://github.com/mabelcalim/waipy/tarball/master" class="download-button tar"><span>Download</span></a>
-          <a href="https://github.com/mabelcalim/waipy/zipball/master" class="download-button zip"><span>Download</span></a>
-          <a href="https://github.com/mabelcalim/waipy" class="code">View Waipy on GitHub</a>
-        </div>
-        <span class="blc"></span><span class="trc"></span>
-        </div>
-        <article class="markdown-body">
-          <h3>
-<a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+      <div class="inner">
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here <a href="https://guides.github.com/features/mastering-markdown/">using GitHub Flavored Markdown</a>, select a template crafted by a designer, and publish. After your page is generated, you can check out the new <code>gh-pages</code> branch locally. If you’re using GitHub Desktop, simply sync your repository and you’ll see the new branch.</p>
+        <header>
+          <h1>Waipy</h1>
+          <h2>This guide includes a Continuous Wavelet Transform (CWT), significance  tests from based on Torrence and Compo (1998) and Cross Wavelet Analysis  (CWA) based on Maraun and Kurths(2004).</h2>
+        </header>
 
-<h3>
-<a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Designer Templates</h3>
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/mabelcalim/waipy/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/mabelcalim/waipy/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/mabelcalim/waipy" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
 
-<p>We’ve crafted some handsome templates for you to use. Go ahead and click 'Continue to layouts' to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved.</p>
+        <hr>
 
-<h3>
-<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating pages manually</h3>
+        <section id="main_content">
+          <h1>
+<a id="waipy" class="anchor" href="#waipy" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>waipy</h1>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>This guide includes a Continuous Wavelet Transform (CWT), significance  tests
+from based on Torrence and Compo (1998)
+<img src="https://wavelet-analysis.readthedocs.org/en/latest/_images/nino_wavelet.png" alt="ScreenShot"></p>
 
-<h3>
-<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<p>and Cross Wavelet Analysis  (CWA) based on Maraun and Kurths(2004).
+<img src="https://wavelet-analysis.readthedocs.org/en/latest/_images/salt_OGCM_cross.png" alt="ScreenShot"></p>
 
-<p>You can @mention a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor’s GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<h1>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h1>
 
-<h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support or Contact</h3>
+<p>A local install can be done using the provided setup.py file:</p>
 
-<p>Having trouble with Pages? Check out our <a href="https://help.github.com/pages">documentation</a> or <a href="https://github.com/contact">contact support</a> and we’ll help you sort it out.</p>
-        </article>
+<pre><code>python setup.py install
+</code></pre>
+
+<p>The installation path can be changed using the <strong>--prefix</strong> switch, e.g.:</p>
+
+<pre><code>python setup.py install --prefix $HOME/inst
+</code></pre>
+
+<p>Make sure to add the corresponding paths to your <code>$PATH</code> and <code>$PYTHONPATH</code>
+environment variables. Alternatively, if the <strong>--user</strong> switch can be used:</p>
+
+<pre><code>export PYTHONUSERBASE=$HOME/inst/pip_installs
+export PYTHONPATH=$HOME/inst/pip_installs/lib/python2.7/\
+    site-packages/:$PYTHONPATH
+export PATH=$HOME/inst/pip_installs/bin:$PATH
+python setup.py install --user
+</code></pre>
+
+<p>If you plan on modifying the code, use the <strong>develop</strong> target in combination
+with the <strong>--user</strong> swich:</p>
+
+<pre><code>export PYTHONUSERBASE=$HOME/inst/pip_installs
+export PYTHONPATH=$HOME/inst/pip_installs/lib/python2.7/\
+    site-packages/:$PYTHONPATH
+export PATH=$HOME/inst/pip_installs/bin:$PATH
+python setup.py develop --user
+</code></pre>
+
+<p>The first three lines should also be included in the <strong>$HOME/.bashrc</strong> file.</p>
+
+<h1>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h1>
+
+<p>The following packages are required (tested on Debian Wheezy):</p>
+
+<ul>
+<li>python-matplotlib</li>
+<li>python-numpy</li>
+<li>libnetcdf-dev</li>
+<li>libhdf5-dev</li>
+<li>netcdf4 (<a href="https://github.com/Unidata/netcdf4-python.git">https://github.com/Unidata/netcdf4-python.git</a>)</li>
+</ul>
+
+<h1>
+<a id="support-group" class="anchor" href="#support-group" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support Group</h1>
+
+<p><a href="https://groups.google.com/forum/?hl=en#!forum/waipy-users-support">https://groups.google.com/forum/?hl=en#!forum/waipy-users-support</a></p>
+        </section>
+
+        <footer>
+          Waipy is maintained by <a href="https://github.com/mabelcalim">mabelcalim</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
       </div>
     </div>
-    <footer>
-      <div class="owner">
-      <p><a href="https://github.com/mabelcalim" class="avatar"><img src="https://avatars0.githubusercontent.com/u/6516493?v=3&amp;s=60" width="48" height="48"></a> <a href="https://github.com/mabelcalim">mabelcalim</a> maintains <a href="https://github.com/mabelcalim/waipy">Waipy</a></p>
-
-
-      </div>
-      <div class="creds">
-        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
-      </div>
-    </footer>
-  </div>
-  <div class="current-section">
-    <a href="#top">Scroll to top</a>
-    <a href="https://github.com/mabelcalim/waipy/tarball/master" class="tar">tar</a><a href="https://github.com/mabelcalim/waipy/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
-    <p class="name"></p>
-  </div>
-
-  
-</body>
+  </body>
 </html>
