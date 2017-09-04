@@ -11,6 +11,12 @@ and Cross Wavelet Analysis  (CWA) based on Maraun and Kurths(2004).
 Installation
 ============
 
+First steps:
+
+    cd  PATH_TO_SAVE_WAIPY_IN_YOUR_HOME   
+    git clone https://github.com/mabelcalim/waipy.git
+    cd waipy/
+
 A local install can be done using the provided setup.py file:
 
     python setup.py install
