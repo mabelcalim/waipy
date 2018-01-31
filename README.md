@@ -64,7 +64,8 @@ Installing requirements for python3.2
 * pip3 install matplotlib
 * pip3 install netCDF4
 * pip3 install pandas
-* git clone https://github.com/scipy/scipy.git
+* pip3 install scipy
+
 As a tip, try to use jupyter !
 * pip3 install jupyter
 
