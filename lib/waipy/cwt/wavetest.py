@@ -79,17 +79,17 @@ def cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name):
     mother = 'Morlet'
     """
 
-    import lib_wavelet
+    from cwt.lib_wavelet import wavelet,wave_signif
 
     variance = np.var(data)
     n = len(data)
     # Wavelet transform
-    ondaleta, wave, period, scale, coi, f = lib_wavelet.wavelet(
+    ondaleta, wave, period, scale, coi, f = wavelet(
         data, dt, param, dj, s0, j1, mother)
     # wave = np.array(wave)
     power = (np.abs(wave) ** 2)
     # Significance levels: (variance=1 for the normalized SST)
-    signif, fft_theor = lib_wavelet.wave_signif(
+    signif, fft_theor = wave_signif(
         1.0, dt, scale, 0, lag1, 0.95, -1, mother, param)
     ones = np.ones((len(signif), n))  # expand signif --> ones (J+1)x(n)
     sig95 = [s * ones[1] for s in signif]   # vstack signif concatenate
@@ -98,7 +98,7 @@ def cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name):
     global_ws = variance * (np.sum(power.conj().transpose(), axis=0) / n)
     dof = [n - s for s in scale]
     """CAUTION - DEFAULT VALUES """
-    global_signif, fft_theor = lib_wavelet.wave_signif(
+    global_signif, fft_theor = wave_signif(
         variance, dt, scale, 1, lag1, 0.95, dof, mother, param)
     # Daughter wavelet
     joint_wavelet = np.concatenate((np.fft.ifft(ondaleta)[np.ceil(
