@@ -56,6 +56,17 @@ The following packages are required (tested on Debian Wheezy):
 * libhdf5-dev
 * netcdf4 (https://github.com/Unidata/netcdf4-python.git)
 
+
+Installing requirements for python3.2
+============
+
+* pip3 install numpy
+* pip3 install matplotlib
+* pip3 install netCDF4
+* pip3 install pandas
+As a tip, try to use jupyter !
+* pip3 install jupyter
+
 Support Group
 ==============
 
