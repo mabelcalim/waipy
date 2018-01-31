@@ -108,7 +108,7 @@ def wave_bases(mother, k, scale, param):
         coi = fourier_factor * math.sqrt(2)
         dofmin = 2
     else:
-        print 'Mother must be one of MORLET,PAUL,DOG'
+        print ('Mother must be one of MORLET,PAUL,DOG')
 
     return daughter, fourier_factor, coi, dofmin
 
