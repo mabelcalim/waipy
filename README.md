@@ -2,11 +2,10 @@ waipy
 =====
 This guide includes a Continuous Wavelet Transform (CWT), significance  tests
 from based on Torrence and Compo (1998)
-![ScreenShot](https://wavelet-analysis.readthedocs.org/en/latest/_images/nino_wavelet.png)
+![ScreenShot](https://github.com/mabelcalim/waipy/blob/master/Sine.png)
 
 
 and Cross Wavelet Analysis  (CWA) based on Maraun and Kurths(2004).
-![ScreenShot](https://wavelet-analysis.readthedocs.org/en/latest/_images/salt_OGCM_cross.png)
 
 Installation
 ============
@@ -19,7 +18,7 @@ First steps:
 
 A local install can be done using the provided setup.py file:
 
-    python setup.py install
+    python3 setup.py install
 
 The installation path can be changed using the **--prefix** switch, e.g.:
 
@@ -57,7 +56,7 @@ The following packages are required (tested on Debian Wheezy):
 * netcdf4 (https://github.com/Unidata/netcdf4-python.git)
 
 
-Installing requirements for python3.2
+Installing requirements for python3
 ============
 
 * pip3 install numpy
