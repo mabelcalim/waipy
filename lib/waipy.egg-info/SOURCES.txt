@@ -10,3 +10,4 @@ lib/waipy/cwa/cross_wavelet.py
 lib/waipy/cwt/__init__.py
 lib/waipy/cwt/lib_wavelet.py
 lib/waipy/cwt/wavetest.py
+lib/waipy/cwt/wavetest_2.7.py
