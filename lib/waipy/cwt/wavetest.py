@@ -4,8 +4,9 @@
 # author: Mabel Calim Costa
 # INPE
 # 23/01/2013
+# reviewed 31/01/2017 for python3.6
 
-"Baseado : Torrence e Combo"
+"Based on  Torrence e Combo"
 
 # data from http://paos.colorado.edu/research/wavelets/software.html
 
@@ -16,6 +17,7 @@ import matplotlib.pyplot as plt
 import os
 import sys
 import netCDF4
+
 
 
 def load_nc(file, var, dt, date1):
@@ -101,10 +103,10 @@ def cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name):
     global_signif, fft_theor = wave_signif(
         variance, dt, scale, 1, lag1, 0.95, dof, mother, param)
     # Daughter wavelet
-    joint_wavelet = np.concatenate((np.fft.ifft(ondaleta)[np.ceil(
-        n / 2.):], np.fft.ifft(ondaleta)[np.ceil(n / 2.):][::-1]), axis=1)
-    imag_wavelet = np.concatenate((np.fft.ifft(ondaleta).imag[np.ceil(
-        n / 2.):], np.fft.ifft(ondaleta).imag[np.ceil(n / 2.):][::-1]), axis=1)
+    joint_wavelet = np.concatenate((np.fft.ifft(ondaleta)[int(np.ceil(
+        n / 2.)):], np.fft.ifft(ondaleta)[int(np.ceil(n / 2.)):][::-1]), axis=0)
+    imag_wavelet = np.concatenate((np.fft.ifft(ondaleta).imag[int(np.ceil(
+        n / 2.)):], np.fft.ifft(ondaleta).imag[int(np.ceil(n / 2.)):][::-1]), axis=0)
     nw = np.size(joint_wavelet)  # daughter's number of points
     # admissibility condition
     mean_wavelet = mean(joint_wavelet.real)
@@ -126,9 +128,9 @@ def fft(data):
     n = len(data)
     X = np.fft.fft(data)
     sxx = ((X * np.conj(X)) / (n))
-    f = -np.fft.fftfreq(n)[np.ceil(n / 2.):]
+    f = -np.fft.fftfreq(n)[int(np.ceil(n / 2.)):]
     sxx = np.abs(sxx)
-    sxx = sxx[np.ceil(n / 2.):]
+    sxx = sxx[int(np.ceil(n / 2.)):]
     return f, sxx
 
 # ---------------------------
@@ -161,7 +163,7 @@ def wavelet_plot(var, time, data, dtmin, result):
 
     from numpy import log2
     import numpy as np
-    import wavetest
+    import cwt.wavetest
     import matplotlib
     import matplotlib.gridspec as gridspec
 
@@ -198,11 +200,11 @@ def wavelet_plot(var, time, data, dtmin, result):
     ax1.grid(True)
     ax1.xaxis.set_visible(False)
     # ----------------------------------------------------------------------------------------------------------------#
-    ax3.plot(range(-result['nw'] / 2, result['nw'] / 2),
+    ax3.plot(arange(-result['nw'] / 2, result['nw'] / 2),
              result['joint_wavelet'], 'k', label='Real part')
-    ax3.plot(range(-result['nw'] / 2, result['nw'] / 2),
+    ax3.plot(arange(-result['nw'] / 2, result['nw'] / 2),
              result['imag_wavelet'], '--k', label='Imag part')
-    ax3.plot(range(-result['nw'] / 2, result['nw'] / 2),
+    ax3.plot(arange(-result['nw'] / 2, result['nw'] / 2),
              result['mean_wavelet'], 'g', label='Mean')
     # ax3.axis('tight')
     ax3.set_xlim(-40, 40)

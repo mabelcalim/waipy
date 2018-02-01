@@ -4,6 +4,7 @@
 # author: Mabel Calim Costa
 # GMAO - INPE
 # 23/01/2013
+# reviewed 31/01/2017 for python3.6
 
 import numpy as np
 import pylab
@@ -157,19 +158,20 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
     if (pad == 1):
         base2 = nextpow2(n1)  # call det nextpow2
     n = base2
+    print ("n")
     """CAUTION"""
     # construct wavenumber array used in transform
     # simetric eqn 5
-    k = np.arange(n / 2)
+    #k = np.arange(n / 2)
     import math
     k_pos, k_neg = [], []
-    for i in range(0, n / 2 + 1):
+    for i in range(0, int(n / 2)):
         k_pos.append(i * ((2 * math.pi) / (n * dt)))  # frequencies as in eqn5
         k_neg = k_pos[::-1]  # inversion vector
         k_neg = [e * (-1) for e in k_neg]  # negative part
         # delete the first value of k_neg = last value of k_pos
-        k_neg = k_neg[1:-1]
-    k = np.concatenate((k_pos, k_neg), axis=1)  # vector of symmetric
+        #k_neg = k_neg[1:-1]
+    k = np.concatenate((k_pos, k_neg), axis=0)  # vector of symmetric
     # compute fft of the padded time series
     f = np.fft.fft(x, n)
     scale = []
@@ -195,14 +197,14 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
     if (((n1) / 2.0).is_integer()) is True:
         # create mirrored array)
         mat = np.concatenate(
-            (range(1, n1 / 2), range(1, n1 / 2)[::-1]), axis=1)
+            (arange(1,int( n1 / 2)), arange(1,int( n1 / 2))[::-1]), axis=0)
         # insert zero at the begining of the array
         mat = np.insert(mat, 0, 0)
         mat = np.append(mat, 0)  # insert zero at the end of the array
     elif (((n1) / 2.0).is_integer()) is False:
         # create mirrored array
         mat = np.concatenate(
-            (range(1, n1 / 2 + 1), range(1, n1 / 2)[::-1]), axis=1)
+            (arange(1,int( n1 / 2) + 1), arange(1, int(n1 / 2))[::-1]), axis=0)
         # insert zero at the begining of the array
         mat = np.insert(mat, 0, 0)
         mat = np.append(mat, 0)  # insert zero at the end of the array
