@@ -5,6 +5,7 @@
 # author: Mabel Calim Costa
 # INPE
 # 23/01/2013
+# 05/03/reviewed
 
 """
 Created on Mon Jun 17 2013
@@ -24,12 +25,12 @@ def cross_wavelet(wave1, wave2):
     wave1 = result['wave'] time serie 1
             wave2 = result['wave'] time serie 2
     A normalized time and scale resolved measure for the relationship
-    between two time series x1(ti) and x2(ti) is the wavelet coherency (WCO),
+    between two time series x1(t) and x2(t) is the wavelet coherency (WCO),
     which is defined as the amplitude of the WCS(wavelet cross spectrum)
     normalized to the two single WPS(wavelet power spectrum) (Maraun and
     Kurths,2004).
 
-    WCOi(s) = |WCSi(s) |/ (WPSi1(s) WPSi2(s)) ˆ1/2
+    WCOi(s)**2  = ((WPS12)*(WPS12)) / ((WPS1 * WPS2))**2
     _____________________________________________________________________
     Inputs:
     wave1 - wavelet transform of time series x1
@@ -41,17 +42,16 @@ def cross_wavelet(wave1, wave2):
     """
 
     cross_power = wave1 * wave2.conjugate()
-    cross_power1 = np.absolute(wave1 * wave2.conjugate())
-    WPS1 = np.absolute(wave1 * wave1.conjugate())
-    WPS2 = np.absolute(wave2 * wave2.conjugate())
-    #coherence = np.sqrt(cross_power*cross_power)/ \
-    #np.sqrt(np.absolute(wave1.real*wave1.imag)* np.absolute(wave2.real*wave2.imag))
-    coherence = (cross_power1) / (np.sqrt(WPS1 * WPS2))
-    phase_angle = np.angle(cross_power)  # ,deg=True)
-    return cross_power1, coherence, phase_angle
+    WPS12 = (wave1 * wave2.conjugate())
+    WPS1  = (wave1 * wave1.conjugate())
+    WPS2  = (wave2 * wave2.conjugate())
+    coherence = ((WPS12)*(WPS12)) / ((WPS1 * WPS2))
+    coherence = np.real(coherence)
+    pot_cohere = np.around(coherence**2,3) # round numbers for digits to be in interval 0 a 1
+    phase_angle = np.angle(cross_power)
+    return WPS12, pot_cohere, phase_angle
 
-
-def plot_cross(var, cross_power, phase_angle, time, result, result1):
+def plot_cross(var, cross_power, phase_angle, time, result, result1,figname):
     """ PLOT CROSS POWER
     cross_power = from cross_wavelet function
     coherence   = from cross_wavelet function
@@ -90,6 +90,8 @@ def plot_cross(var, cross_power, phase_angle, time, result, result1):
     pidx = np.array(pidx)
     X, Y = meshgrid(
         time.astype(np.int64)[tidx], np.log2(result['period'][pidx]))
+
+    #Arrows indicate in phase when pointing to the right and out of phase when pointing left.
     phase_angle1 = phase_angle[:, tidx]
     phase_angle1 = phase_angle1[pidx, :]
     cA = np.exp(1j * phase_angle1)
@@ -103,7 +105,7 @@ def plot_cross(var, cross_power, phase_angle, time, result, result1):
     ax2.plot(time, np.log2(result['coi']), 'k')
     ax2.fill_between(time, np.log2(result['coi']), int(
         np.log2(result['period'][-1]) + 1), alpha=0.5, hatch='/')
-    position = fig.add_axes([0.07, 0.07, 0.6, 0.01])
+    position = fig.add_axes([0.15, 0.05, 0.6, 0.01])
     # ,norm=normal)#,shrink=0.5,pad=0.08)
     cbar = plt.colorbar(CS, cax=position, orientation='horizontal')
     cbar.set_label('Power')
@@ -124,11 +126,11 @@ def plot_cross(var, cross_power, phase_angle, time, result, result1):
     ax2.axhline(y=13.3, xmin=0, xmax=1, linewidth=2, color='k')
     ax2.set_title('Cross Power')
 
-    plt.savefig('Cross Power {0} vs {1}'.format(
-        result['name'], result1['name']), dpi=300)
+    plt.savefig('%s'%figname, dpi=300)
+    return
 
 
-def plot_cohere(var, coherence, time, result, result1):
+def plot_cohere(var, coherence, time, result, result1,figname):
     """
     PLOT COHERENCE
     coherence   =  from cross_wavelet function
@@ -136,6 +138,8 @@ def plot_cohere(var, coherence, time, result, result1):
     result      =  dict from cwt function
     """
     import matplotlib.gridspec as gridspec
+    from copy import copy
+    import matplotlib.colors as colors
     fig = plt.figure(figsize=(15, 14), dpi=300)
     # set plot grid
     gs1 = gridspec.GridSpec(4, 3)
@@ -159,15 +163,19 @@ def plot_cohere(var, coherence, time, result, result1):
     ax3.axis('tight')
     ax1.axis('tight')
     # fig = plt.figure(figsize=(15,10), dpi=100)
-    lev = list(np.linspace(0, 1.0, 10))
-    CS = ax2.contourf(time, np.log2(result['period']), coherence, lev)
+    lev = list(np.linspace(0, 1.0, 21))
+    #palette = copy(plt.cm.inferno)
+    #palette.set_over('r', 1.0)
+    #palette.set_under('k', 1.0)
+    #palette.set_bad('b', 1.0)
+    CS = ax2.contourf(time, np.log2(result['period']), coherence,lev)
     ax2.plot(time, np.log2(result['coi']), 'k')
     ax2.fill_between(time, np.log2(result['coi']), int(
         np.log2(result['period'][-1]) * 2), alpha=0.5, hatch='/')
-    position = fig.add_axes([0.07, 0.07, 0.6, 0.01])
-    # ,norm=normal)#,shrink=0.5,pad=0.08)
+    position = fig.add_axes([0.15, 0.05, 0.6, 0.01])
+
     cbar = plt.colorbar(CS, cax=position, orientation='horizontal')
-    # cbar.set_label('Power')
+    cbar.set_label('coherence')
     yt = range(int(np.log2(result['period'][0])), int(
         np.log2(result['period'][-1]) + 1))  # create the vector of periods
     Yticks = [float(math.pow(2, p)) for p in yt]  # make 2^periods
@@ -183,19 +191,5 @@ def plot_cohere(var, coherence, time, result, result1):
     # ax2.axhline(y=13.3, xmin=0, xmax=1, linewidth=2, color='k')
     ax2.set_title('Coherence')
     #ax2.axis('tight')
-    plt.savefig('Coherence {0} vs {1}'.format(
-        result['name'], result1['name']), dpi=300)
+    plt.savefig('%s'%figname, dpi=300)
     return
-    # cbar = plt.colorbar(CS)
-    # ax = gca() # handle to the current axes
-    # ax.set_ylim(ax.get_ylim()[::-1])  # reverse plot along y axis
-    # yt =  range(int(np.log2(result['period'][0])),
-    #  int(np.log2(result['period'][-1]))+1) # create the vector of periods
-    # xt = range(int(time[0]),int(time[-1]))
-    # Yticks = [(math.pow(2,p)) for p in yt]  # make 2^periods
-    # yticks(yt, map(str,Yticks))
-    # xticks(xt, map(str,xt),rotation=45)
-    # xlim(time[0],time[-1])  # date on the x axis
-    # xlabel('Time')
-    # ylabel('Period')
-    # title('Coherence')
