@@ -7,12 +7,10 @@ from based on Torrence and Compo (1998)
 
 and Cross Wavelet Analysis  (CWA) based on Maraun and Kurths(2004).
 Cross Power Wavelet Analysis:
-
-![ScreenShot](https://github.com/mabelcalim/waipy/blob/master/Waipy%20Examples%20/Jupyter/figs/CrossWavelet_noise_example.png)
+    ![ScreenShot](https://github.com/mabelcalim/waipy/blob/master/Waipy%20Examples%20/Jupyter/figs/CrossWavelet_noise_example.png)
 
 Wavelet Coherence Analysis:
-
-![ScreenShot](https://github.com/mabelcalim/waipy/blob/master/Waipy%20Examples%20/Jupyter/figs/CohereWavelet_noise_example.png)
+    ![ScreenShot](https://github.com/mabelcalim/waipy/blob/master/Waipy%20Examples%20/Jupyter/figs/CohereWavelet_noise_example.png)
 
 
 Installation
@@ -85,6 +83,8 @@ Examples
 Use waipy without install it!
 ============
 Check the prêt-à-porter.ipynb examples!!!
+* https://github.com/mabelcalim/waipy/blob/master/Waipy%20Examples%20/waipy_pr%C3%AAt-%C3%A0-porter.ipynb
+* https://github.com/mabelcalim/waipy/blob/master/Waipy%20Examples%20/cwa_pr%C3%AAt-%C3%A0-porter.ipynb
 
 
 Support Group
