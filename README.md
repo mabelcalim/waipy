@@ -6,6 +6,14 @@ from based on Torrence and Compo (1998)
 
 
 and Cross Wavelet Analysis  (CWA) based on Maraun and Kurths(2004).
+Cross Power Wavelet Analysis:
+
+![ScreenShot](https://github.com/mabelcalim/waipy/blob/master/Waipy%20Examples%20/Jupyter/figs/CrossWavelet_noise_example.png)
+
+Wavelet Coherence Analysis:
+
+![ScreenShot](https://github.com/mabelcalim/waipy/blob/master/Waipy%20Examples%20/Jupyter/figs/CohereWavelet_noise_example.png)
+
 
 Installation
 ============
@@ -67,6 +75,17 @@ Installing requirements for python3
 
 As a tip, try to use jupyter !
 * pip3 install jupyter
+
+
+Examples
+============
+
+* https://github.com/mabelcalim/waipy/tree/master/Waipy%20Examples%20/Jupyter
+
+Use waipy without install it!
+============
+Check the prêt-à-porter.ipynb examples!!!
+
 
 Support Group
 ==============
