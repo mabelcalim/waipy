@@ -21,13 +21,25 @@ import netCDF4
 
 
 def load_nc(file, var, dt, date1):
-    """
+    """Load a netcdf.Dataset from file.
+
+    https://unidata.github.io/netcdf4-python/#netCDF4.Dataset
+
     OPEN ARCHIVE .NC
+
     file = archive.nc
     var  = variable from archive.nc
     dt   = data sampling
-    date1= data intial time
+    date1= data initial time
     """
+    try:
+        import netCDF4
+    except ImportError as e:
+        print(
+            'The module netCDF4 could not be imported. '
+            'Please install it and try again. '
+            'Until then the load_nc() function is not available.'
+        )
 
     f = netCDF4.Dataset(file, 'r+')
     data = f.variables[var][:]
