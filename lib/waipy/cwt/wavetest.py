@@ -161,7 +161,7 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
     # construct wavenumber array used in transform
     # simetric eqn 5
     #k = np.arange(n / 2)
-    
+
     import math
     k_pos, k_neg = [], []
     for i in arange(0, int(n / 2) ):
@@ -170,7 +170,7 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
         k_neg = [e * (-1) for e in k_neg]  # negative part
         # delete the first value of k_neg = last value of k_pos
         #k_neg = k_neg[1:-1]
-    print(len(k_neg),len(k_pos))    
+    print(len(k_neg),len(k_pos))
     k = np.concatenate((k_pos, k_neg), axis=0)  # vector of symmetric
     # compute fft of the padded time series
     f = np.fft.fft(x, n)
@@ -209,7 +209,7 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
         mat = np.insert(mat, 0, 0)
         mat = np.append(mat, 0)  # insert zero at the end of the array
     coi = [coi * dt * m for m in mat]  # create coi matrix
-    # problem with first and last entry in coi added next to lines because 
+    # problem with first and last entry in coi added next to lines because
     # log2 of zero is not defined and cannot be plottet later:
     coi[0] = 0.1  # coi[0] is normally 0
     coi[len(coi)-1] = 0.1 # coi[last entry] is normally 0 too
