@@ -493,7 +493,7 @@ def wavelet_plot(var, time, data, dtmin, result):
     # ----------------------------------------------------------------------------------------------------------------#
     ax1.plot(time, data)
     ax1.axis('tight')
-    ax1.set_ylabel('SP [mV]', fontsize=15)
+    ax1.set_ylabel('Amplitude', fontsize=15)
     ax1.set_title('%s' % var, fontsize=17)
     ax1.yaxis.set_major_locator(MaxNLocator(prune='lower'))
     ax1.grid(True)
