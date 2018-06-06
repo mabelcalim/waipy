@@ -28,7 +28,7 @@ tests from based on Torrence and Compo (1998) and Cross Wavelet Analysis
     packages=['waipy', 'waipy.cwt', 'waipy.cwa' ],
     package_dir={'':'lib'},
     classifiers=['License :: OSI Approved :: BSD License'],
-    install_requires=['numpy', 'scipy', 'matplotlib'],
+    install_requires=['numpy', 'scipy', 'pandas', 'matplotlib'],
     extras_require= {
         'all': ["netCDF4", "jupyter"],
         'load_netcdf': ["netCDF4"],
