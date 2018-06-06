@@ -510,9 +510,26 @@ def wavelet_plot(var, time, data, dtmin, result):
     ax1.grid(True)
     ax1.xaxis.set_visible(False)
     # ----------------------------------------------------------------------------------------------------------------#
-    ax3.plot(arange(-result['nw'] / 2, result['nw'] / 2),result['joint_wavelet'], 'k', label='Real part')
-    ax3.plot(arange(-result['nw'] / 2, result['nw'] / 2),result['imag_wavelet'], '--k', label='Imag part')
-    ax3.plot(arange(-result['nw'] / 2, result['nw'] / 2),result['mean_wavelet'], 'g', label='Mean')
+    joint_wavelet = result['joint_wavelet']
+    ax3.plot(
+        arange(-result['nw'] / 2, result['nw'] / 2),
+        joint_wavelet.real,
+        'k',
+        label='Real part'
+    )
+    ax3.plot(
+        arange(-result['nw'] / 2, result['nw'] / 2),
+        joint_wavelet.imag,
+        '--k',
+        label='Imag part'
+    )
+    ax3.plot(
+        arange(-result['nw'] / 2, result['nw'] / 2),
+        result['mean_wavelet'],
+        'g',
+        label='Mean'
+    )
+
     # ax3.axis('tight')
     ax3.set_xlim(-40, 40)
     # ax3.set_ylim(-0.3,0.3)
