@@ -100,7 +100,7 @@ def plot_cross(var, cross_power, phase_angle, time, result, result1,figname):
     ax4 = ax2.twiny()
     ax4.xaxis.set_visible(False)
     # ax4.set_xlim(0.9,4.4)
-    CS = ax2.contourf(time, np.log2(result['period']), cross_power)
+    CS = ax2.contourf(time, np.log2(result['period']), cross_power.real)
     # cone-of-influence , anything "below"is dubious
     ax2.plot(time, np.log2(result['coi']), 'k')
     ax2.fill_between(time, np.log2(result['coi']), int(
