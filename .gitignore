@@ -1,3 +1,5 @@
 build/*
+dist/
+lib/waipy.egg-info/
 *.pyc
 *~
