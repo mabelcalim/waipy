@@ -161,7 +161,7 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
     # construct wavenumber array used in transform
     # simetric eqn 5
     #k = np.arange(n / 2)
-    
+
     import math
     k_pos, k_neg = [], []
     for i in arange(0, int(n / 2) ):
@@ -170,7 +170,7 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
         k_neg = [e * (-1) for e in k_neg]  # negative part
         # delete the first value of k_neg = last value of k_pos
         #k_neg = k_neg[1:-1]
-    print(len(k_neg),len(k_pos))    
+    print(len(k_neg),len(k_pos))
     k = np.concatenate((k_pos, k_neg), axis=0)  # vector of symmetric
     # compute fft of the padded time series
     f = np.fft.fft(x, n)
@@ -209,7 +209,7 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
         mat = np.insert(mat, 0, 0)
         mat = np.append(mat, 0)  # insert zero at the end of the array
     coi = [coi * dt * m for m in mat]  # create coi matrix
-    # problem with first and last entry in coi added next to lines because 
+    # problem with first and last entry in coi added next to lines because
     # log2 of zero is not defined and cannot be plottet later:
     coi[0] = 0.1  # coi[0] is normally 0
     coi[len(coi)-1] = 0.1 # coi[last entry] is normally 0 too
@@ -315,17 +315,28 @@ from pylab import *
 import matplotlib.pyplot as plt
 import os
 import sys
-import netCDF4
 
 
 def load_nc(file, var, dt, date1):
-    """
+    """Load a netcdf.Dataset from file.
+
+    https://unidata.github.io/netcdf4-python/#netCDF4.Dataset
+
     OPEN ARCHIVE .NC
+
     file = archive.nc
     var  = variable from archive.nc
     dt   = data sampling
-    date1= data intial time
+    date1= data initial time
     """
+    try:
+        import netCDF4
+    except ImportError as e:
+        print(
+            'The module netCDF4 could not be imported. '
+            'Please install it and try again. '
+            'Until then the load_nc() function is not available.'
+        )
 
     f = netCDF4.Dataset(file, 'r+')
     data = f.variables[var][:]
@@ -493,15 +504,32 @@ def wavelet_plot(var, time, data, dtmin, result):
     # ----------------------------------------------------------------------------------------------------------------#
     ax1.plot(time, data)
     ax1.axis('tight')
-    ax1.set_ylabel('SP [mV]', fontsize=15)
+    ax1.set_ylabel('Amplitude', fontsize=15)
     ax1.set_title('%s' % var, fontsize=17)
     ax1.yaxis.set_major_locator(MaxNLocator(prune='lower'))
     ax1.grid(True)
     ax1.xaxis.set_visible(False)
     # ----------------------------------------------------------------------------------------------------------------#
-    ax3.plot(arange(-result['nw'] / 2, result['nw'] / 2),result['joint_wavelet'], 'k', label='Real part')
-    ax3.plot(arange(-result['nw'] / 2, result['nw'] / 2),result['imag_wavelet'], '--k', label='Imag part')
-    ax3.plot(arange(-result['nw'] / 2, result['nw'] / 2),result['mean_wavelet'], 'g', label='Mean')
+    joint_wavelet = result['joint_wavelet']
+    ax3.plot(
+        arange(-result['nw'] / 2, result['nw'] / 2),
+        joint_wavelet.real,
+        'k',
+        label='Real part'
+    )
+    ax3.plot(
+        arange(-result['nw'] / 2, result['nw'] / 2),
+        joint_wavelet.imag,
+        '--k',
+        label='Imag part'
+    )
+    ax3.plot(
+        arange(-result['nw'] / 2, result['nw'] / 2),
+        result['mean_wavelet'],
+        'g',
+        label='Mean'
+    )
+
     # ax3.axis('tight')
     ax3.set_xlim(-40, 40)
     # ax3.set_ylim(-0.3,0.3)
