@@ -4,12 +4,14 @@
 # author: Mabel Calim Costa
 # GMAO - INPE
 # 23/01/2013
-import scipy
-import numpy as np
-import matplotlib.pyplot as plt
 import os
 import sys
 import math
+
+import scipy
+import scipy.special
+import numpy as np
+import matplotlib.pyplot as plt
 import matplotlib as mpl
 from pylab import detrend_mean
 from numpy import log2
@@ -120,7 +122,7 @@ def wave_bases(mother, k, scale, param):
     return daughter, fourier_factor, coi, dofmin
 
 
-def wavelet(Y, dt, param, dj, s0, j1, mother):
+def wavelet(Y, dt, param, dj, s0, j1, mother, J1=None):
     """Computes the wavelet continuous transform of the vector Y,
        by definition:
 
@@ -150,13 +152,13 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
     _____________________________________________________________________
 
     """
-
     n1 = len(Y)  # time series length
     # s0 = 2 * dt  # smallest scale of the wavelet
     # dj = 0.25  # spacing between discrete scales
     # J1 = int(np.floor((np.log10(n1*dt/s0))/np.log10(2)/dj))
-    J1 = int(np.floor(np.log2(n1 * dt / s0) / dj))  # J1+1 total os scales
-    # print 'Nr of Scales:', J1
+    if J1 is None:
+        J1 = int(np.floor(np.log2(n1 * dt / s0) / dj))  # J1+1 total os scales
+    print('Nr of Scales:', J1)
     # J1= 60
     # pad if necessary
     x = detrend_mean(Y)  # extract the mean of time series
@@ -183,6 +185,7 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
     for i in range(J1 + 1):
         scale.append(s0 * pow(2, (i) * dj))
 
+    print('scales', scale)
     period = scale
     # print period
     wave = np.zeros((J1 + 1, n))  # define wavelet array
@@ -383,7 +386,7 @@ def normalize(data):
     return data
 
 
-def cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name):
+def cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name, J1=None):
     """
     CONTINUOUS WAVELET TRANSFORM
     pad = 1         # pad the time series with zeroes (recommended)
@@ -401,7 +404,7 @@ def cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name):
     n = len(data)
     # Wavelet transform
     ondaleta, wave, period, scale, coi, f = wavelet(
-        data, dt, param, dj, s0, j1, mother)
+        data, dt, param, dj, s0, j1, mother, J1=J1)
     # wave = np.array(wave)
     power = (np.abs(wave) ** 2)
     # Significance levels: (variance=1 for the normalized SST)
@@ -605,7 +608,7 @@ def wavelet_plot(var, time, data, dtmin, result, **kwargs):
     def cb_formatter(x, pos):
         # x is in base 2
         linear_number = 2 ** x
-        return '{}'.format(linear_number)
+        return '{:.1f}'.format(linear_number)
 
     cbar = plt.colorbar(
         pc, cax=position, orientation='horizontal',
