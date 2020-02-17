@@ -11,11 +11,12 @@ import math
 import scipy
 import scipy.special
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+import matplotlib.gridspec as gridspec
 from pylab import detrend_mean
 from numpy import log2
-import matplotlib.gridspec as gridspec
 
 """ Translating mfiles of the Torrence and Combo to python functions
     1 - wavetest.m
@@ -420,7 +421,6 @@ def cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name, J1=None):
     global_signif, fft_theor = wave_signif(
         variance, dt, scale, 1, lag1, 0.95, dof, mother, param)
     # Daughter wavelet
-
     joint_wavelet = np.concatenate(
         (
             np.fft.ifft(ondaleta)[int(np.ceil(n / 2.)):],
@@ -437,12 +437,28 @@ def cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name, J1=None):
     # admissibility condition
     mean_wavelet = np.mean(joint_wavelet.real)
     mean_wavelet = np.ones(nw) * mean_wavelet
-    result = {'ondaleta': ondaleta, 'wave': wave, 'period': period,
-              'scale': scale, 'coi': coi, 'power': power, 'sig95': sig95,
-              'global_ws': global_ws, 'global_signif': global_signif,
-              'joint_wavelet': joint_wavelet, 'imag_wavelet': imag_wavelet,
-              'nw': nw, 'mean_wavelet': mean_wavelet, 'dj': dj, 'j1': j1,
-              'dt': dt, 'fft': f, 'mother': mother, 'data': data, 'name': name}
+    result = {
+        'ondaleta': ondaleta,
+        'wave': wave,
+        'period': period,
+        'scale': scale,
+        'coi': coi,
+        'power': power,
+        'sig95': sig95,
+        'global_ws': global_ws,
+        'global_signif': global_signif,
+        'joint_wavelet': joint_wavelet,
+        'imag_wavelet': imag_wavelet,
+        'nw': nw,
+        'mean_wavelet': mean_wavelet,
+        'dj': dj,
+        'j1': j1,
+        'dt': dt,
+        'fft': f,
+        'mother': mother,
+        'data': data,
+        'name': name,
+    }
     return result
 
 # result = cwt(data_norm,0.25,1,0.25,2*0.25,7/0.25,0.72,6,'Morlet')
@@ -471,7 +487,7 @@ def levels(result, dtmin):
 
     dtmax = result['power'].max()
     lev = []
-    for i in range(int(log2(dtmax / dtmin))):
+    for i in range(int(log2(dtmax / dtmin)) + 1):
         dtmin = dtmin * 2
         lev.append(dtmin)
     return lev
@@ -492,6 +508,7 @@ def wavelet_plot(var, time, data, dtmin, result, **kwargs):
         xlabel_cwt
         ylabel_cwt
         ylabel_data
+        plot_phase : bool, defaults to False
 
     """
     # frequency limit
@@ -528,6 +545,7 @@ def wavelet_plot(var, time, data, dtmin, result, **kwargs):
     # ----------------------------------------------------------------------------------------------------------------#
     ax1.plot(time, data)
     ax1.axis('tight')
+    ax1.set_xlim(time.min(), time.max())
     ax1.set_ylabel(kwargs.get('ylabel_data', 'Amplitude'), fontsize=15)
     ax1.set_title('%s' % var, fontsize=17)
     ax1.yaxis.set_major_locator(mpl.ticker.MaxNLocator(prune='lower'))
@@ -575,46 +593,96 @@ def wavelet_plot(var, time, data, dtmin, result, **kwargs):
     # ax4.set_ylabel('Amplitude', fontsize=10)
     # ax4.set_title('$\psi^-$  Frequency domain', fontsize=13)
     # ------------------------------------------------------------------------#
-    """ Contour plot wavelet power spectrum """
-    lev = levels(result, dtmin)
-    pc = ax2.contourf(
-        time,
-        np.log2(result['period']),
-        np.log2(result['power']),
-        np.log2(lev),
-        cmap=mpl.cm.get_cmap('jet'),
-    )
-    # 95% significance contour, levels at -99 (fake) and 1 (95% signif)
-    pc2 = ax2.contour(
-        time,
-        np.log2(result['period']),
-        result['sig95'],
-        [-99, 1],
-        linewidths=2
-    )
-    pc2
-    ax2.plot(time, np.log2(result['coi']), 'k')
-    # cone-of-influence , anything "below"is dubious
-    ax2.fill_between(
-        time,
-        np.log2(result['coi']),
-        int(np.log2(result['period'][-1]) + 1),
-        # color='white',
-        alpha=0.6,
-        hatch='/'
-    )
+    # colorbar location
     position = fig.add_axes([0.07, 0.07, 0.6, 0.01])
 
-    def cb_formatter(x, pos):
-        # x is in base 2
-        linear_number = 2 ** x
-        return '{:.1f}'.format(linear_number)
+    plot_phase = kwargs.get('plot_phase', False)
+    if plot_phase:
+        phases = np.arctan(
+            np.imag(result['wave']),
+            np.real(result['wave'])
+        )
+        # import IPython
+        # IPython.embed()
+        # exit()
+        phase_levels = np.linspace(phases.min(), phases.max(), 10)
+        norm = matplotlib.colors.DivergingNorm(vcenter=0)
+        pc = ax2.contourf(
+            time,
+            np.log2(result['period']),
+            phases,
+            phase_levels,
+            cmap=mpl.cm.get_cmap('seismic'),
+            norm=norm
+        )
+        cbar = plt.colorbar(
+            pc,
+            cax=position,
+            orientation='horizontal',
+        )
+        cbar.set_label('Phase [rad]')
 
-    cbar = plt.colorbar(
-        pc, cax=position, orientation='horizontal',
-        format=mpl.ticker.FuncFormatter(cb_formatter),
-    )
-    cbar.set_label('Power')
+    else:
+        """ Contour plot wavelet power spectrum """
+        lev = levels(result, dtmin)
+        # import IPython
+        # IPython.embed()
+        # exit()
+        cmap = mpl.cm.get_cmap('jet')
+        cmap.set_over('yellow')
+        cmap.set_under('cyan')
+        cmap.set_bad('red')
+        """
+        ax2.imshow(np.log2(result['power']), cmap='jet', interpolation=None)
+        ax2.set_aspect('auto')
+        """
+        pc = ax2.contourf(
+            time,
+            np.log2(result['period']),
+            np.log2(result['power']),
+            np.log2(lev),
+            cmap=cmap,
+        )
+        # print(time.shape)
+        # print(np.log2(result['period']).shape)
+        # print(np.log2(result['power']).shape)
+        # X, Y = np.meshgrid(time, np.log2(result['period']))
+        # ax2.scatter(
+        #     X.flat,
+        #     Y.flat,
+        # )
+
+        # 95% significance contour, levels at -99 (fake) and 1 (95% signif)
+        pc2 = ax2.contour(
+            time,
+            np.log2(result['period']),
+            result['sig95'],
+            [-99, 1],
+            linewidths=2
+        )
+        pc2
+        ax2.plot(time, np.log2(result['coi']), 'k')
+        # cone-of-influence , anything "below"is dubious
+        ax2.fill_between(
+            time,
+            np.log2(result['coi']),
+            int(np.log2(result['period'][-1]) + 1),
+            # color='white',
+            alpha=0.6,
+            hatch='/'
+        )
+
+        def cb_formatter(x, pos):
+            # x is in base 2
+            linear_number = 2 ** x
+            return '{:.1f}'.format(linear_number)
+
+        cbar = plt.colorbar(
+            pc, cax=position, orientation='horizontal',
+            format=mpl.ticker.FuncFormatter(cb_formatter),
+        )
+        cbar.set_label('Power')
+
     yt = range(
         int(np.log2(result['period'][0])),
         int(np.log2(result['period'][-1]) + 1)
@@ -630,8 +698,16 @@ def wavelet_plot(var, time, data, dtmin, result, **kwargs):
     ax2.set_ylim(ax2.get_ylim()[::-1])
     ax2.set_xlabel(kwargs.get('xlabel_cwt', 'Time'), fontsize=12)
     ax2.set_ylabel(kwargs.get('ylabel_cwt', 'Period'), fontsize=12)
-    ax2.axhline(y=10.5, xmin=0, xmax=1, linewidth=2, color='k')
-    ax2.axhline(y=13.3, xmin=0, xmax=1, linewidth=2, color='k')
+    # ax2.axhline(y=10.5, xmin=0, xmax=1, linewidth=2, color='k')
+    # ax2.axhline(y=13.3, xmin=0, xmax=1, linewidth=2, color='k')
+
+    # if requested, limit the time range that we show
+    xmin = kwargs.get('xmin', None)
+    xmax = kwargs.get('xmax', None)
+    if xmin is not None or xmax is not None:
+        for ax in (ax1, ax2):
+            ax.set_xlim(xmin, xmax)
+
     # ----------------------------------------------------------------------------------------------------------------#
     """ Plot global wavelet spectrum """
     f, sxx = fft(data)
