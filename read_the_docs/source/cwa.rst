@@ -1,7 +1,10 @@
 Cross Wavelet Analysis (CWA)
 ============================
 
-A normalized time and scale resolved measure for the relationship between two time series x(ti) and y(ti) is the wavelet coherency (WCO), which is defined as the amplitude of the WCS(wavelet cross spectrum) normalized to the two single WPS(wavelet power spectrum) (Maraun and Kurths, 2004):
+A normalized time and scale resolved measure for the relationship between two
+time series x(ti) and y(ti) is the wavelet coherency (WCO), which is defined as
+the amplitude of the WCS(wavelet cross spectrum) normalized to the two single
+WPS(wavelet power spectrum) (Maraun and Kurths, 2004):
 
 .. math::
 
