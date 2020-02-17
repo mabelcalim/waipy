@@ -23,7 +23,8 @@ import pandas as pd
 def cross_wavelet(wave1, wave2):
     """ Computes the cross wavelet analysis.
     wave1 = result['wave'] time serie 1
-            wave2 = result['wave'] time serie 2
+    wave2 = result['wave'] time serie 2
+
     A normalized time and scale resolved measure for the relationship
     between two time series x1(t) and x2(t) is the wavelet coherency (WCO),
     which is defined as the amplitude of the WCS(wavelet cross spectrum)
@@ -34,7 +35,8 @@ def cross_wavelet(wave1, wave2):
     _____________________________________________________________________
     Inputs:
     wave1 - wavelet transform of time series x1
-            wave2 - wavelet transform of time series x2
+    wave2 - wavelet transform of time series x2
+
     Outputs:
     cohere - wavelet coherency (WCO)
     Call function:
@@ -47,9 +49,10 @@ def cross_wavelet(wave1, wave2):
     WPS2  = (wave2 * wave2.conjugate())
     coherence = ((WPS12)*(WPS12)) / ((WPS1 * WPS2))
     coherence = np.real(coherence)
-    pot_cohere = np.around(coherence**2,3) # round numbers for digits to be in interval 0 a 1
+    pot_cohere = np.around(coherence**2, 3) # round numbers for digits to be in interval 0 a 1
     phase_angle = np.angle(cross_power)
-    return WPS12, pot_cohere, phase_angle
+    return WPS12, pot_cohere, phase_angle, cross_power
+
 
 def plot_cross(var, cross_power, phase_angle, time, result, result1,figname):
     """ PLOT CROSS POWER
