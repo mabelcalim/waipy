@@ -98,10 +98,10 @@ Examples
 Use waipy without install it!
 ============
 Check the prêt-à-porter.ipynb examples!!!
-* [waipy prêt-à-porter.ipynb] (https://github.com/mabelcalim/waipy/blob/master/waipy_examples_jupyter/waipy_pr%C3%AAt-%C3%A0-porter.ipynb)
+* [waipy prêt-à-porter.ipynb](https://github.com/mabelcalim/waipy/blob/master/waipy_examples_jupyter/waipy_pr%C3%AAt-%C3%A0-porter.ipynb)
 *  [cwa prêt-à-porter.ipynb](https://github.com/mabelcalim/waipy/blob/master/waipy_examples_jupyter/cwa_pr%C3%AAt-%C3%A0-porter.ipynb)
 
 Support Group
 ==============
 
-https://groups.google.com/forum/?hl=en#!forum/waipy-users-support
+[waipy users support group](https://groups.google.com/forum/?hl=en#!forum/waipy-users-support)
