@@ -7,7 +7,6 @@
 import os
 import sys
 import math
-
 import scipy
 import scipy.special
 import numpy as np
@@ -58,7 +57,6 @@ def wave_bases(mother, k, scale, param):
     _____________________________________________________________________
     """
     n = len(k)  # length of Fourier frequencies (came from wavelet.py)
-    """CAUTION : default values"""
     if (mother == 'Morlet'):  # choose the wavelet function
         param = 6  # For Morlet this is k0 (wavenumber) default is 6
         k0 = param
@@ -67,7 +65,6 @@ def wave_bases(mother, k, scale, param):
         norm = math.sqrt(scale * k[1]) * \
             (pow(math.pi, -0.25)) * math.sqrt(len(k))
         daughter = []  # define daughter as a list
-
         for ex in expnt:  # for each value scale (equal to next pow of 2)
             daughter.append(norm * math.exp(ex))
         k = np.array(k)  # turn k to array
@@ -78,14 +75,12 @@ def wave_bases(mother, k, scale, param):
         # cone-of- influence
         coi = fourier_factor / math.sqrt(2)
         dofmin = 2  # degrees of freedom
-# ---------------------------------------------------------#
     elif (mother == 'DOG'):
         param = 2
         m = param
         expnt = -pow(scale * k, 2) / 2.0
         pws = (pow(scale * k, m))
         pws = np.array(pws)
-        """CAUTION gamma(m+0.5) = 1.3293"""
         norm = math.sqrt(scale * k[1] / 1.3293) * math.sqrt(n)
         daughter = []
         for ex in expnt:
@@ -95,7 +90,6 @@ def wave_bases(mother, k, scale, param):
         fourier_factor = (2 * math.pi) / math.sqrt(m + 0.5)
         coi = fourier_factor / math.sqrt(2)
         dofmin = 1
-# ---------------------------------------------------------#
     elif (mother == 'PAUL'):  # Paul Wavelet
         param = 4
         m = param
@@ -119,7 +113,6 @@ def wave_bases(mother, k, scale, param):
         dofmin = 2
     else:
         print('Mother must be one of MORLET,PAUL,DOG')
-
     return daughter, fourier_factor, coi, dofmin
 
 
@@ -167,7 +160,6 @@ def wavelet(Y, dt, param, dj, s0, j1, mother, J1=None):
     if (pad == 1):
         base2 = nextpow2(n1)  # call det nextpow2
     n = base2
-    """CAUTION"""
     # construct wavenumber array used in transform
     # simetric eqn 5
     # k = np.arange(n / 2)
@@ -235,18 +227,14 @@ def wavelet(Y, dt, param, dj, s0, j1, mother, J1=None):
 
 
 def wave_signif(Y, dt, scale1, sigtest, lag1, sig1v1, dof, mother, param):
-    """CAUTION : default values"""
-
     n1 = np.size(Y)
     J1 = len(scale1) - 1
     # s0 = np.min(scale1)
     # dj = np.log10(scale1[1] / scale1[0]) / np.log10(2)
-    """CAUTION"""
     if (n1 == 1):
         variance = Y
     else:
         variance = np.var(Y)
-    """CAUTION"""
     # sig1v1 = 0.95
     if (mother == 'Morlet'):
         # get the appropriate parameters [see table2]
@@ -287,13 +275,11 @@ def wave_signif(Y, dt, scale1, sigtest, lag1, sig1v1, dof, mother, param):
     signif = fft_theor
     if(dof == -1):
         dof = dofmin
-    """CAUTION"""
     if(sigtest == 0):
         dof = dofmin
         chisquare = scipy.special.gammaincinv(dof / 2.0, sig1v1) * 2.0 / dof
         signif = [ft * chisquare for ft in fft_theor]
     elif (sigtest == 1):
-        """CAUTION: if len(dof) ==1"""
         dof = np.array(dof)
         truncate = np.where(dof < 1)
         dof[truncate] = np.ones(np.size(truncate))
@@ -311,7 +297,6 @@ def wave_signif(Y, dt, scale1, sigtest, lag1, sig1v1, dof, mother, param):
                 scipy.special.gammaincinv(dof[a1] / 2.0, sig1v1) * 2.0 /
                 dof[a1])
             signif.append(fft_theor[a1] * chisquare[a1])
-    """CAUTION : missing elif(sigtest ==2)"""
     return signif, fft_theor
 # !/usr/bin/python
 # -*- coding: latin-1 -*-
@@ -417,7 +402,6 @@ def cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name, J1=None):
     # Global wavelet spectrum & significance levels:
     global_ws = variance * (np.sum(power.conj().transpose(), axis=0) / n)
     dof = [n - s for s in scale]
-    """CAUTION - DEFAULT VALUES """
     global_signif, fft_theor = wave_signif(
         variance, dt, scale, 1, lag1, 0.95, dof, mother, param)
     # Daughter wavelet
@@ -514,7 +498,7 @@ def wavelet_plot(var, time, data, dtmin, result, **kwargs):
     # frequency limit
     # print result['period']
     # lim = np.where(result['period'] == result['period'][-1]/2)[0][0]
-    """Plot time series """
+    #"""Plot time series """
 
     fig = plt.figure(figsize=(15, 10), dpi=300)
 
@@ -542,7 +526,6 @@ def wavelet_plot(var, time, data, dtmin, result, **kwargs):
     )
     ax3 = plt.subplot(gs3[0, 0])
 
-    # ----------------------------------------------------------------------------------------------------------------#
     ax1.plot(time, data)
     ax1.axis('tight')
     ax1.set_xlim(time.min(), time.max())
@@ -551,7 +534,6 @@ def wavelet_plot(var, time, data, dtmin, result, **kwargs):
     ax1.yaxis.set_major_locator(mpl.ticker.MaxNLocator(prune='lower'))
     ax1.grid(True)
     ax1.xaxis.set_visible(False)
-    # ----------------------------------------------------------------------------------------------------------------#
     joint_wavelet = result['joint_wavelet']
     wavelet_x = np.arange(-result['nw'] / 2, result['nw'] / 2)
     ax3.plot(
@@ -623,19 +605,17 @@ def wavelet_plot(var, time, data, dtmin, result, **kwargs):
         cbar.set_label('Phase [rad]')
 
     else:
-        """ Contour plot wavelet power spectrum """
+        #""" Contour plot wavelet power spectrum """
         lev = levels(result, dtmin)
         # import IPython
         # IPython.embed()
         # exit()
-        cmap = mpl.cm.get_cmap('jet')
+        cmap = mpl.cm.get_cmap('viridis')
         cmap.set_over('yellow')
         cmap.set_under('cyan')
         cmap.set_bad('red')
-        """
-        ax2.imshow(np.log2(result['power']), cmap='jet', interpolation=None)
-        ax2.set_aspect('auto')
-        """
+        #ax2.imshow(np.log2(result['power']), cmap='jet', interpolation=None)
+        #ax2.set_aspect('auto')
         pc = ax2.contourf(
             time,
             np.log2(result['period']),
@@ -708,8 +688,7 @@ def wavelet_plot(var, time, data, dtmin, result, **kwargs):
         for ax in (ax1, ax2):
             ax.set_xlim(xmin, xmax)
 
-    # ----------------------------------------------------------------------------------------------------------------#
-    """ Plot global wavelet spectrum """
+    #Plot global wavelet spectrum
     f, sxx = fft(data)
     ax5.plot(
         sxx, np.log2(1 / f * result['dt']), 'gray', label='Fourier spectrum'

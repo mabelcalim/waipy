@@ -51,7 +51,6 @@ def wave_bases(mother, k, scale, param):
     _____________________________________________________________________
     """
     n = len(k)  # length of Fourier frequencies (came from wavelet.py)
-    """CAUTION : default values"""
     if (mother == 'Morlet'):  # choose the wavelet function
         param = 6  # For Morlet this is k0 (wavenumber) default is 6
         k0 = param
@@ -71,7 +70,6 @@ def wave_bases(mother, k, scale, param):
         # cone-of- influence
         coi = fourier_factor / math.sqrt(2)
         dofmin = 2  # degrees of freedom
-# ---------------------------------------------------------#
     elif (mother == 'DOG'):
         param = 2
         m = param
@@ -88,7 +86,6 @@ def wave_bases(mother, k, scale, param):
         fourier_factor = (2 * math.pi) / math.sqrt(m + 0.5)
         coi = fourier_factor / math.sqrt(2)
         dofmin = 1
-# ---------------------------------------------------------#
     elif (mother == 'PAUL'):  # Paul Wavelet
         param = 4
         m = param
@@ -142,9 +139,7 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
     Call function:
     ondaleta, wave, period, scale, coi = wavelet(Y,dt,mother,param)
     _____________________________________________________________________
-
     """
-
     n1 = len(Y)  # time series length
     #s0 = 2 * dt  # smallest scale of the wavelet
     # dj = 0.25  # spacing between discrete scales
@@ -159,7 +154,6 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
         base2 = nextpow2(n1)  # call det nextpow2
     n = base2
     print ("n")
-    """CAUTION"""
     # construct wavenumber array used in transform
     # simetric eqn 5
     #k = np.arange(n / 2)
@@ -192,7 +186,6 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
     # ondaleta = daughter
     period = np.array(period)
     period = period[:] * fourier_factor
-
     # cone-of-influence, differ for uneven len of timeseries:
     if (((n1) / 2.0).is_integer()) is True:
         # create mirrored array)
@@ -218,20 +211,16 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
 
 
 def wave_signif(Y, dt, scale1, sigtest, lag1, sig1v1, dof, mother, param):
-    """CAUTION : default values"""
     import scipy
     from scipy import stats
-
     n1 = np.size(Y)
     J1 = len(scale1) - 1
     s0 = np.min(scale1)
     dj = np.log10(scale1[1] / scale1[0]) / np.log10(2)
-    """CAUTION"""
     if (n1 == 1):
         variance = Y
     else:
         variance = np.var(Y)
-    """CAUTION"""
     # sig1v1 = 0.95
     if (mother == 'Morlet'):
         # get the appropriate parameters [see table2]
@@ -241,7 +230,6 @@ def wave_signif(Y, dt, scale1, sigtest, lag1, sig1v1, dof, mother, param):
         empir = [2, -1, -1, -1]
         if(k0 == 6):
             empir[1:4] = [0.776, 2.32, 0.6]
-
     if(mother == 'DOG'):
         param = 2
         k0 = param
@@ -250,7 +238,6 @@ def wave_signif(Y, dt, scale1, sigtest, lag1, sig1v1, dof, mother, param):
         empir = [1, -1, -1, -1]
         if(k0 == 2):
             empir[1:4] = [3.541, 1.43, 1.4]
-
     if (mother == 'PAUL'):
         param = 4
         m = param
@@ -258,27 +245,22 @@ def wave_signif(Y, dt, scale1, sigtest, lag1, sig1v1, dof, mother, param):
         empir = [2., -1, -1, -1]
         if (m == 4):
             empir[1:4] = [1.132, 1.17, 1.5]
-
     period = [e * fourier_factor for e in scale1]
     dofmin = empir[0]  # Degrees of  freedom with no smoothing
     Cdelta = empir[1]  # reconstruction factor
     gamma_fac = empir[2]  # time-decorrelation factor
     dj0 = empir[3]  # scale-decorrelation factor
     freq = [dt / p for p in period]
-    fft_theor = [((1 - lag1 * lag1) / (1 - 2 * lag1 *
-                                       np.cos(f * 2 * math.pi) + lag1 * lag1))
-                 for f in freq]
+    fft_theor = [((1 - lag1 * lag1) / (1 - 2 * lag1 *np.cos(f * 2 * math.pi) + lag1 * lag1))for f in freq]
     fft_theor = [variance * ft for ft in fft_theor]
     signif = fft_theor
     if(dof == -1):
         dof = dofmin
-    """CAUTION"""
     if(sigtest == 0):
         dof = dofmin
         chisquare = scipy.special.gammaincinv(dof / 2.0, sig1v1) * 2.0 / dof
         signif = [ft * chisquare for ft in fft_theor]
     elif (sigtest == 1):
-        """CAUTION: if len(dof) ==1"""
         dof = np.array(dof)
         truncate = np.where(dof < 1)
         dof[truncate] = np.ones(np.size(truncate))
@@ -296,5 +278,4 @@ def wave_signif(Y, dt, scale1, sigtest, lag1, sig1v1, dof, mother, param):
                 scipy.special.gammaincinv(dof[a1] / 2.0, sig1v1) * 2.0 /
                 dof[a1])
             signif.append(fft_theor[a1] * chisquare[a1])
-    """CAUTION : missing elif(sigtest ==2)"""
     return signif, fft_theor
