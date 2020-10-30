@@ -17,9 +17,23 @@ Wavelet Coherence Analysis:
 Installation
 ============
 
+If you use pip, install with:
+
+	pip install waipy
+
+The newest version from git can be installed with:
+
+	pip install git+https://github.com/mabelcalim/waipy.git
+
+Waipy has optional features that can be installed with:
+
+	pip install git+https://github.com/mabelcalim/waipy.git#egg=waipy[all]
+
+Manual installation
+-------------------
 First steps:
 
-    cd  PATH_TO_SAVE_WAIPY_IN_YOUR_HOME   
+    cd  PATH_TO_SAVE_WAIPY_IN_YOUR_HOME
     git clone https://github.com/mabelcalim/waipy.git
     cd waipy/
 

@@ -4,11 +4,19 @@
 # author: Mabel Calim Costa
 # GMAO - INPE
 # 23/01/2013
-
-import numpy as np
-import pylab
-from pylab import detrend_mean
+import os
+import sys
 import math
+
+import scipy
+import scipy.special
+import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import matplotlib.gridspec as gridspec
+from pylab import detrend_mean
+from numpy import log2
 
 """ Translating mfiles of the Torrence and Combo to python functions
     1 - wavetest.m
@@ -93,9 +101,11 @@ def wave_bases(mother, k, scale, param):
         m = param
         k = np.array(k)
         expnt = -(scale * k) * (k > 0)
-        norm = math.sqrt(scale * k[1]) * \
-        (2 ** m / math.sqrt(m * \
-                            (math.factorial(2 * m - 1)))) * math.sqrt(n)
+        norm = math.sqrt(
+            scale * k[1]
+        ) * (
+            2 ** m / math.sqrt(m * (math.factorial(2 * m - 1)))
+        ) * math.sqrt(n)
         pws = (pow(scale * k, m))
         pws = np.array(pws)
         daughter = []
@@ -108,12 +118,12 @@ def wave_bases(mother, k, scale, param):
         coi = fourier_factor * math.sqrt(2)
         dofmin = 2
     else:
-        print ('Mother must be one of MORLET,PAUL,DOG')
+        print('Mother must be one of MORLET,PAUL,DOG')
 
     return daughter, fourier_factor, coi, dofmin
 
 
-def wavelet(Y, dt, param, dj, s0, j1, mother):
+def wavelet(Y, dt, param, dj, s0, j1, mother, J1=None):
     """Computes the wavelet continuous transform of the vector Y,
        by definition:
 
@@ -143,13 +153,13 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
     _____________________________________________________________________
 
     """
-
     n1 = len(Y)  # time series length
-    #s0 = 2 * dt  # smallest scale of the wavelet
+    # s0 = 2 * dt  # smallest scale of the wavelet
     # dj = 0.25  # spacing between discrete scales
     # J1 = int(np.floor((np.log10(n1*dt/s0))/np.log10(2)/dj))
-    J1 = int(np.floor(np.log2(n1 * dt / s0) / dj))  # J1+1 total os scales
-    # print 'Nr of Scales:', J1
+    if J1 is None:
+        J1 = int(np.floor(np.log2(n1 * dt / s0) / dj))  # J1+1 total os scales
+    print('Nr of Scales:', J1)
     # J1= 60
     # pad if necessary
     x = detrend_mean(Y)  # extract the mean of time series
@@ -160,17 +170,15 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
     """CAUTION"""
     # construct wavenumber array used in transform
     # simetric eqn 5
-    #k = np.arange(n / 2)
-    
-    import math
+    # k = np.arange(n / 2)
+
     k_pos, k_neg = [], []
-    for i in arange(0, int(n / 2) ):
+    for i in np.arange(0, int(n / 2)):
         k_pos.append(i * ((2 * math.pi) / (n * dt)))  # frequencies as in eqn5
         k_neg = k_pos[::-1]  # inversion vector
         k_neg = [e * (-1) for e in k_neg]  # negative part
         # delete the first value of k_neg = last value of k_pos
-        #k_neg = k_neg[1:-1]
-    print(len(k_neg),len(k_pos))    
+        # k_neg = k_neg[1:-1]
     k = np.concatenate((k_pos, k_neg), axis=0)  # vector of symmetric
     # compute fft of the padded time series
     f = np.fft.fft(x, n)
@@ -178,6 +186,7 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
     for i in range(J1 + 1):
         scale.append(s0 * pow(2, (i) * dj))
 
+    print('scales', scale)
     period = scale
     # print period
     wave = np.zeros((J1 + 1, n))  # define wavelet array
@@ -197,35 +206,41 @@ def wavelet(Y, dt, param, dj, s0, j1, mother):
     if (((n1) / 2.0).is_integer()) is True:
         # create mirrored array)
         mat = np.concatenate(
-            (arange(1, int(n1 / 2)), arange(1, int(n1 / 2))[::-1]), axis=0)
+            (
+                np.arange(1, int(n1 / 2)),
+                np.arange(1, int(n1 / 2))[::-1]
+            ), axis=0
+        )
         # insert zero at the begining of the array
         mat = np.insert(mat, 0, 0)
         mat = np.append(mat, 0)  # insert zero at the end of the array
     elif (((n1) / 2.0).is_integer()) is False:
         # create mirrored array
         mat = np.concatenate(
-            (arange(1, int(n1 / 2) + 1), arange(1, int(n1 / 2))[::-1]), axis=0)
+            (
+                np.arange(1, int(n1 / 2) + 1),
+                np.arange(1, int(n1 / 2))[::-1]
+            ), axis=0
+        )
         # insert zero at the begining of the array
         mat = np.insert(mat, 0, 0)
         mat = np.append(mat, 0)  # insert zero at the end of the array
     coi = [coi * dt * m for m in mat]  # create coi matrix
-    # problem with first and last entry in coi added next to lines because 
+    # problem with first and last entry in coi added next to lines because
     # log2 of zero is not defined and cannot be plottet later:
     coi[0] = 0.1  # coi[0] is normally 0
-    coi[len(coi)-1] = 0.1 # coi[last entry] is normally 0 too
+    coi[len(coi) - 1] = 0.1  # coi[last entry] is normally 0 too
     wave = wave[:, 0:n1]
     return ondaleta, wave, period, scale, coi, f
 
 
 def wave_signif(Y, dt, scale1, sigtest, lag1, sig1v1, dof, mother, param):
     """CAUTION : default values"""
-    import scipy
-    from scipy import stats
 
     n1 = np.size(Y)
     J1 = len(scale1) - 1
-    s0 = np.min(scale1)
-    dj = np.log10(scale1[1] / scale1[0]) / np.log10(2)
+    # s0 = np.min(scale1)
+    # dj = np.log10(scale1[1] / scale1[0]) / np.log10(2)
     """CAUTION"""
     if (n1 == 1):
         variance = Y
@@ -261,9 +276,9 @@ def wave_signif(Y, dt, scale1, sigtest, lag1, sig1v1, dof, mother, param):
 
     period = [e * fourier_factor for e in scale1]
     dofmin = empir[0]  # Degrees of  freedom with no smoothing
-    Cdelta = empir[1]  # reconstruction factor
+    # Cdelta = empir[1]  # reconstruction factor
     gamma_fac = empir[2]  # time-decorrelation factor
-    dj0 = empir[3]  # scale-decorrelation factor
+    # dj0 = empir[3]  # scale-decorrelation factor
     freq = [dt / p for p in period]
     fft_theor = [((1 - lag1 * lag1) / (1 - 2 * lag1 *
                                        np.cos(f * 2 * math.pi) + lag1 * lag1))
@@ -305,27 +320,32 @@ def wave_signif(Y, dt, scale1, sigtest, lag1, sig1v1, dof, mother, param):
 # INPE
 # 23/01/2013
 
-"Baseado : Torrence e Combo"
+# "Baseado : Torrence e Combo"
 
 # data from http://paos.colorado.edu/research/wavelets/software.html
 
-import numpy as np
-import pylab
-from pylab import *
-import matplotlib.pyplot as plt
-import os
-import sys
-import netCDF4
-
 
 def load_nc(file, var, dt, date1):
-    """
+    """Load a netcdf.Dataset from file.
+
+    https://unidata.github.io/netcdf4-python/#netCDF4.Dataset
+
     OPEN ARCHIVE .NC
+
     file = archive.nc
     var  = variable from archive.nc
     dt   = data sampling
-    date1= data intial time
+    date1= data initial time
     """
+    try:
+        import netCDF4
+    except ImportError as e:
+        print(
+            'The module netCDF4 could not be imported. '
+            'Please install it and try again. '
+            'Until then the load_nc() function is not available.'
+        )
+        print(e)
 
     f = netCDF4.Dataset(file, 'r+')
     data = f.variables[var][:]
@@ -367,7 +387,7 @@ def normalize(data):
     return data
 
 
-def cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name):
+def cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name, J1=None):
     """
     CONTINUOUS WAVELET TRANSFORM
     pad = 1         # pad the time series with zeroes (recommended)
@@ -379,13 +399,13 @@ def cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name):
     mother = 'Morlet'
     """
 
-    #from cwt.lib_wavelet import wavelet,wave_signif
+    # from cwt.lib_wavelet import wavelet,wave_signif
 
     variance = np.var(data)
     n = len(data)
     # Wavelet transform
     ondaleta, wave, period, scale, coi, f = wavelet(
-        data, dt, param, dj, s0, j1, mother)
+        data, dt, param, dj, s0, j1, mother, J1=J1)
     # wave = np.array(wave)
     power = (np.abs(wave) ** 2)
     # Significance levels: (variance=1 for the normalized SST)
@@ -401,21 +421,44 @@ def cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name):
     global_signif, fft_theor = wave_signif(
         variance, dt, scale, 1, lag1, 0.95, dof, mother, param)
     # Daughter wavelet
-
-    joint_wavelet = np.concatenate((np.fft.ifft(ondaleta)[int(np.ceil(
-        n / 2.)):], np.fft.ifft(ondaleta)[int(np.ceil(n / 2.)):][::-1]), axis=0)
-    imag_wavelet = np.concatenate((np.fft.ifft(ondaleta).imag[int(np.ceil(
-        n / 2.)):], np.fft.ifft(ondaleta).imag[int(np.ceil(n / 2.)):][::-1]), axis=0)
+    joint_wavelet = np.concatenate(
+        (
+            np.fft.ifft(ondaleta)[int(np.ceil(n / 2.)):],
+            np.fft.ifft(ondaleta)[int(np.ceil(n / 2.)):][::-1]
+        ), axis=0
+    )
+    imag_wavelet = np.concatenate(
+        (
+            np.fft.ifft(ondaleta).imag[int(np.ceil(n / 2.)):],
+            np.fft.ifft(ondaleta).imag[int(np.ceil(n / 2.)):][::-1]
+        ), axis=0
+    )
     nw = np.size(joint_wavelet)  # daughter's number of points
     # admissibility condition
-    mean_wavelet = mean(joint_wavelet.real)
+    mean_wavelet = np.mean(joint_wavelet.real)
     mean_wavelet = np.ones(nw) * mean_wavelet
-    result = {'ondaleta': ondaleta, 'wave': wave, 'period': period,
-              'scale': scale, 'coi': coi, 'power': power, 'sig95': sig95,
-              'global_ws': global_ws, 'global_signif': global_signif,
-              'joint_wavelet': joint_wavelet, 'imag_wavelet': imag_wavelet,
-              'nw': nw, 'mean_wavelet': mean_wavelet, 'dj': dj, 'j1': j1,
-              'dt': dt, 'fft': f, 'mother': mother, 'data': data, 'name': name}
+    result = {
+        'ondaleta': ondaleta,
+        'wave': wave,
+        'period': period,
+        'scale': scale,
+        'coi': coi,
+        'power': power,
+        'sig95': sig95,
+        'global_ws': global_ws,
+        'global_signif': global_signif,
+        'joint_wavelet': joint_wavelet,
+        'imag_wavelet': imag_wavelet,
+        'nw': nw,
+        'mean_wavelet': mean_wavelet,
+        'dj': dj,
+        'j1': j1,
+        'dt': dt,
+        'fft': f,
+        'mother': mother,
+        'data': data,
+        'name': name,
+    }
     return result
 
 # result = cwt(data_norm,0.25,1,0.25,2*0.25,7/0.25,0.72,6,'Morlet')
@@ -444,13 +487,13 @@ def levels(result, dtmin):
 
     dtmax = result['power'].max()
     lev = []
-    for i in range(int(log2(dtmax / dtmin))):
+    for i in range(int(log2(dtmax / dtmin)) + 1):
         dtmin = dtmin * 2
         lev.append(dtmin)
     return lev
 
 
-def wavelet_plot(var, time, data, dtmin, result):
+def wavelet_plot(var, time, data, dtmin, result, **kwargs):
     """
     PLOT WAVELET TRANSFORM
     var = title name from data
@@ -458,14 +501,16 @@ def wavelet_plot(var, time, data, dtmin, result):
     data  = from normalize function
     dtmin = minimum resolution :1 octave
     result = dict from cwt function
+
+    kwargs:
+        no_plot
+        filename
+        xlabel_cwt
+        ylabel_cwt
+        ylabel_data
+        plot_phase : bool, defaults to False
+
     """
-
-    from numpy import log2
-    import numpy as np
-    #import wavetest
-    import matplotlib
-    import matplotlib.gridspec as gridspec
-
     # frequency limit
     # print result['period']
     # lim = np.where(result['period'] == result['period'][-1]/2)[0][0]
@@ -474,79 +519,224 @@ def wavelet_plot(var, time, data, dtmin, result):
     fig = plt.figure(figsize=(15, 10), dpi=300)
 
     gs1 = gridspec.GridSpec(4, 3)
-    gs1.update(left=0.05, right=0.7, wspace=0.5, hspace=0)
+    gs1.update(
+        left=0.07, right=0.7, wspace=0.5, hspace=0, bottom=0.15, top=0.97
+    )
+
     ax1 = plt.subplot(gs1[0, :])
-    ax1 = pylab.gca()
+    ax1 = plt.gca()
     ax1.xaxis.set_visible(False)
     plt.setp(ax1.get_xticklabels(), visible=False)
-    ax2 = plt.subplot(gs1[1:4, :])#, axisbg='#C0C0C0')
+    ax2 = plt.subplot(gs1[1:4, :])  # , axisbg='#C0C0C0')
 
     gs2 = gridspec.GridSpec(4, 1)
-    gs2.update(left=0.7, right=0.98, hspace=0)
+    gs2.update(
+        left=0.7, right=0.98, hspace=0, bottom=0.15, top=0.97
+    )
     ax5 = plt.subplot(gs2[1:4, 0], sharey=ax2)
     plt.setp(ax5.get_yticklabels(), visible=False)
 
     gs3 = gridspec.GridSpec(6, 1)
-    gs3.update(left=0.77, top=0.86, right=0.98, hspace=0.6, wspace=0.01)
+    gs3.update(
+        left=0.77, top=0.97, right=0.98, hspace=0.6, wspace=0.01,
+    )
     ax3 = plt.subplot(gs3[0, 0])
 
     # ----------------------------------------------------------------------------------------------------------------#
     ax1.plot(time, data)
     ax1.axis('tight')
-    ax1.set_ylabel('SP [mV]', fontsize=15)
+    ax1.set_xlim(time.min(), time.max())
+    ax1.set_ylabel(kwargs.get('ylabel_data', 'Amplitude'), fontsize=15)
     ax1.set_title('%s' % var, fontsize=17)
-    ax1.yaxis.set_major_locator(MaxNLocator(prune='lower'))
+    ax1.yaxis.set_major_locator(mpl.ticker.MaxNLocator(prune='lower'))
     ax1.grid(True)
     ax1.xaxis.set_visible(False)
     # ----------------------------------------------------------------------------------------------------------------#
-    ax3.plot(arange(-result['nw'] / 2, result['nw'] / 2),result['joint_wavelet'], 'k', label='Real part')
-    ax3.plot(arange(-result['nw'] / 2, result['nw'] / 2),result['imag_wavelet'], '--k', label='Imag part')
-    ax3.plot(arange(-result['nw'] / 2, result['nw'] / 2),result['mean_wavelet'], 'g', label='Mean')
+    joint_wavelet = result['joint_wavelet']
+    wavelet_x = np.arange(-result['nw'] / 2, result['nw'] / 2)
+    ax3.plot(
+        wavelet_x,
+        joint_wavelet.real,
+        'k',
+        label='Real part'
+    )
+    ax3.plot(
+        wavelet_x,
+        joint_wavelet.imag,
+        '--k',
+        label='Imag part'
+    )
+    ax3.plot(
+        wavelet_x,
+        result['mean_wavelet'],
+        'g',
+        label='Mean'
+    )
+
+    # try to infer the xlims by selecting the limit at 5% of maximum value of
+    # real part
+    limit_index = np.where(
+        np.abs(joint_wavelet.real) > 0.05 * np.max(np.abs(joint_wavelet.real))
+    )
+    ax3.set_xlim(-wavelet_x[limit_index[0][0]], wavelet_x[limit_index[0][0]])
     # ax3.axis('tight')
-    ax3.set_xlim(-40, 40)
+    # ax3.set_xlim(-100, 100)
     # ax3.set_ylim(-0.3,0.3)
-    # ax3.set_ylim([np.min(result['joint_wavelet']),np.max(result['joint_wavelet'])])
+    # ax3.set_ylim(
+    #     [np.min(result['joint_wavelet']),np.max(result['joint_wavelet'])])
     ax3.set_xlabel('Time', fontsize=10)
     ax3.set_ylabel('Amplitude', fontsize=10)
-    ax3.set_title('$\psi$ (t/s) {0} in time domain'.format(result['mother']))
-    # ----------------------------------------------------------------------------------------------------------------#
+    ax3.set_title(r'$\psi$ (t/s) {0} in time domain'.format(result['mother']))
+    # ------------------------------------------------------------------------#
     # ax4.plot(result['ondaleta'],'k')
     # ax4.set_xlabel('Frequency', fontsize=10)
     # ax4.set_ylabel('Amplitude', fontsize=10)
     # ax4.set_title('$\psi^-$  Frequency domain', fontsize=13)
-    # ----------------------------------------------------------------------------------------------------------------#
-    """ Contour plot wavelet power spectrum """
-    lev = levels(result, dtmin)
-    pc = ax2.contourf(time, np.log2(result['period']),np.log2(result['power']), np.log2(lev))
-    # 95% significance contour, levels at -99 (fake) and 1 (95% signif)
-    pc2 = ax2.contour(time, np.log2(result['period']), result['sig95'],[-99, 1], linewidths=2)
-    ax2.plot(time, np.log2(result['coi']), 'k')
-    # cone-of-influence , anything "below"is dubious
-    ax2.fill_between(time, np.log2(result['coi']), int(np.log2(result['period'][-1]) + 1), alpha=0.5, hatch='/')
+    # ------------------------------------------------------------------------#
+    # colorbar location
     position = fig.add_axes([0.07, 0.07, 0.6, 0.01])
-    cbar = plt.colorbar(pc, cax=position, orientation='horizontal')
-    cbar.set_label('Power')
-    yt = range(int(np.log2(result['period'][0])), int(np.log2(result['period'][-1]) + 1))  # create the vector of periods
+
+    plot_phase = kwargs.get('plot_phase', False)
+    if plot_phase:
+        phases = np.arctan(
+            np.imag(result['wave']),
+            np.real(result['wave'])
+        )
+        # import IPython
+        # IPython.embed()
+        # exit()
+        phase_levels = np.linspace(phases.min(), phases.max(), 10)
+        norm = matplotlib.colors.DivergingNorm(vcenter=0)
+        pc = ax2.contourf(
+            time,
+            np.log2(result['period']),
+            phases,
+            phase_levels,
+            cmap=mpl.cm.get_cmap('seismic'),
+            norm=norm
+        )
+        cbar = plt.colorbar(
+            pc,
+            cax=position,
+            orientation='horizontal',
+        )
+        cbar.set_label('Phase [rad]')
+
+    else:
+        """ Contour plot wavelet power spectrum """
+        lev = levels(result, dtmin)
+        # import IPython
+        # IPython.embed()
+        # exit()
+        cmap = mpl.cm.get_cmap('jet')
+        cmap.set_over('yellow')
+        cmap.set_under('cyan')
+        cmap.set_bad('red')
+        """
+        ax2.imshow(np.log2(result['power']), cmap='jet', interpolation=None)
+        ax2.set_aspect('auto')
+        """
+        pc = ax2.contourf(
+            time,
+            np.log2(result['period']),
+            np.log2(result['power']),
+            np.log2(lev),
+            cmap=cmap,
+        )
+        # print(time.shape)
+        # print(np.log2(result['period']).shape)
+        # print(np.log2(result['power']).shape)
+        # X, Y = np.meshgrid(time, np.log2(result['period']))
+        # ax2.scatter(
+        #     X.flat,
+        #     Y.flat,
+        # )
+
+        # 95% significance contour, levels at -99 (fake) and 1 (95% signif)
+        pc2 = ax2.contour(
+            time,
+            np.log2(result['period']),
+            result['sig95'],
+            [-99, 1],
+            linewidths=2
+        )
+        pc2
+        ax2.plot(time, np.log2(result['coi']), 'k')
+        # cone-of-influence , anything "below"is dubious
+        ax2.fill_between(
+            time,
+            np.log2(result['coi']),
+            int(np.log2(result['period'][-1]) + 1),
+            # color='white',
+            alpha=0.6,
+            hatch='/'
+        )
+
+        def cb_formatter(x, pos):
+            # x is in base 2
+            linear_number = 2 ** x
+            return '{:.1f}'.format(linear_number)
+
+        cbar = plt.colorbar(
+            pc, cax=position, orientation='horizontal',
+            format=mpl.ticker.FuncFormatter(cb_formatter),
+        )
+        cbar.set_label('Power')
+
+    yt = range(
+        int(np.log2(result['period'][0])),
+        int(np.log2(result['period'][-1]) + 1)
+    )  # create the vector of periods
     Yticks = [float(math.pow(2, p)) for p in yt]  # make 2^periods
     # Yticks = [int(i) for i in Yticks]
     ax2.set_yticks(yt)
     ax2.set_yticklabels(Yticks)
-    ax2.set_ylim(ymin=(np.log2(np.min(result['period']))), ymax=(np.log2(np.max(result['period']))))
+    ax2.set_ylim(
+        ymin=(np.log2(np.min(result['period']))),
+        ymax=(np.log2(np.max(result['period'])))
+    )
     ax2.set_ylim(ax2.get_ylim()[::-1])
-    ax2.set_xlabel('Time', fontsize=12)
-    ax2.set_ylabel('Period', fontsize=12)
-    ax2.axhline(y=10.5, xmin=0, xmax=1, linewidth=2, color='k')
-    ax2.axhline(y=13.3, xmin=0, xmax=1, linewidth=2, color='k')
+    ax2.set_xlabel(kwargs.get('xlabel_cwt', 'Time'), fontsize=12)
+    ax2.set_ylabel(kwargs.get('ylabel_cwt', 'Period'), fontsize=12)
+    # ax2.axhline(y=10.5, xmin=0, xmax=1, linewidth=2, color='k')
+    # ax2.axhline(y=13.3, xmin=0, xmax=1, linewidth=2, color='k')
+
+    # if requested, limit the time range that we show
+    xmin = kwargs.get('xmin', None)
+    xmax = kwargs.get('xmax', None)
+    if xmin is not None or xmax is not None:
+        for ax in (ax1, ax2):
+            ax.set_xlim(xmin, xmax)
+
     # ----------------------------------------------------------------------------------------------------------------#
     """ Plot global wavelet spectrum """
     f, sxx = fft(data)
-    ax5.plot(sxx, np.log2(1 / f * result['dt']), 'gray', label='Fourier spectrum')
-    ax5.plot(result['global_ws'], np.log2(result['period']), 'b', label='Wavelet spectrum')
-    ax5.plot(result['global_signif'], np.log2(result['period']), 'r--', label='95% confidence spectrum')
+    ax5.plot(
+        sxx, np.log2(1 / f * result['dt']), 'gray', label='Fourier spectrum'
+    )
+    ax5.plot(
+        result['global_ws'], np.log2(result['period']), 'b',
+        label='Wavelet spectrum'
+    )
+    ax5.plot(
+        result['global_signif'], np.log2(result['period']), 'r--',
+        label='95% confidence spectrum'
+    )
     ax5.legend(loc=0)
     ax5.set_xlim(0, 1.25 * np.max(result['global_ws']))
     ax5.set_xlabel('Power', fontsize=10)
     ax5.set_title('Global Wavelet Spectrum', fontsize=12)
     # save fig
-    plt.savefig('%s.png' % var, dpi=300)
+    if not kwargs.get('no_plot', False):
+        filename = kwargs.get('filename', '{}.png'.format(var))
+        fig.savefig(filename, dpi=300)
 
+    ret_dict = {
+        'fig': fig,
+        'ax_data': ax1,
+        'ax_cwt': ax2,
+        'ax_wavelet': ax3,
+        # 'ax:': ax4,
+        'ax_global_spectrum': ax5,
+    }
+    return ret_dict

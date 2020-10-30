@@ -27,7 +27,12 @@ tests from based on Torrence and Compo (1998) and Cross Wavelet Analysis
 (CWA) based on Maraun and Kurths(2004).""",
     packages=['waipy', 'waipy.cwt', 'waipy.cwa' ],
     package_dir={'':'lib'},
-    classifiers=[
-	'License :: OSI Approved :: BSD License'],
+    classifiers=['License :: OSI Approved :: BSD License'],
+    install_requires=['numpy', 'scipy', 'pandas', 'matplotlib'],
+    extras_require= {
+        'all': ["netCDF4", "jupyter"],
+        'load_netcdf': ["netCDF4"],
+        'jupyer': ["jupyter"],
+    },
 )
 
