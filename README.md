@@ -110,3 +110,9 @@ Support Group
 ==============
 
 [waipy users support group](https://groups.google.com/forum/?hl=en#!forum/waipy-users-support)
+
+
+Acknowledgments
+==============
+Thanks to my dear wavelet teacher: [Margarete Oliveira Domingues] (http://www.lac.inpe.br/~margarete/) 
+
