@@ -77,7 +77,7 @@ The following packages are required (tested on Debian Wheezy):
 * netcdf4 (https://github.com/Unidata/netcdf4-python.git)
 
 
-Installing requirements for python3
+Installing requirements for python3 and 3.8
 ============
 
 * pip3 install numpy
@@ -93,7 +93,8 @@ As a tip, try to use jupyter !
 Examples
 ============
 
-* [Waipy examples](https://github.com/mabelcalim/waipy/blob/master/waipy_examples_jupyter/Jupyter) 
+
+* [Nino3 SST seasonal example](https://github.com/mabelcalim/waipy/blob/master/waipy_examples_jupyter/Jupyter/Nino3%20example.ipynb)
 
 Use waipy without install it!
 ============
