@@ -114,5 +114,5 @@ Support Group
 
 Acknowledgments
 ==============
-Thanks to my dear wavelet teacher: [Margarete Oliveira Domingues] (http://www.lac.inpe.br/~margarete/) 
+Thanks to my dear wavelet teacher: [Margarete Oliveira Domingues](http://www.lac.inpe.br/~margarete/) 
 
