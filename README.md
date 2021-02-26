@@ -94,13 +94,17 @@ Examples
 ============
 
 
-* [Nino3 SST seasonal example](https://github.com/mabelcalim/waipy/blob/master/waipy_examples_jupyter/Jupyter/Nino3%20example.ipynb)
+* [Nino3 SST seasonal](https://github.com/mabelcalim/waipy/blob/master/examples/Nino3%20example.ipynb)
+* [Sine and Cosine](https://github.com/mabelcalim/waipy/blob/master/examples/Example%201%20Sine%20and%20Waipy%20.ipynb)
+* [Random signal](https://github.com/mabelcalim/waipy/blob/master/examples/Example%202%20random%20signals.ipynb)
+* [Noisy signals](https://github.com/mabelcalim/waipy/blob/master/examples/Example%203%20signals%20with%20noise.ipynb)
+* [Frequency change](https://github.com/mabelcalim/waipy/blob/master/examples/cwa_changeFreq_example.ipynb)
 
 Use waipy without install it!
 ============
 Check the prêt-à-porter.ipynb examples!!!
-* [waipy prêt-à-porter.ipynb](https://github.com/mabelcalim/waipy/blob/master/waipy_examples_jupyter/waipy_pr%C3%AAt-%C3%A0-porter.ipynb)
-*  [cwa prêt-à-porter.ipynb](https://github.com/mabelcalim/waipy/blob/master/waipy_examples_jupyter/cwa_pr%C3%AAt-%C3%A0-porter.ipynb)
+* [waipy prêt-à-porter.ipynb](https://github.com/mabelcalim/waipy/blob/master/examples/waipy_prêt-à-porter.ipynb)
+* [cwa prêt-à-porter.ipynb](https://github.com/mabelcalim/waipy/blob/master/examples/cwa_prêt-à-porter.ipynb)
 
 Support Group
 ==============
