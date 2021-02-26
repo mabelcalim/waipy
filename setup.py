@@ -9,6 +9,7 @@ import os
 from setuptools import setup
 #from distutils.core import setup
 
+
 for line in open('lib/waipy/__init__.py').readlines():
     if line.startswith('__version__'):
         exec(line.strip())
@@ -28,11 +29,10 @@ tests from based on Torrence and Compo (1998) and Cross Wavelet Analysis
     packages=['waipy', 'waipy.cwt', 'waipy.cwa' ],
     package_dir={'':'lib'},
     classifiers=['License :: OSI Approved :: BSD License'],
-    install_requires=['numpy', 'scipy', 'pandas', 'matplotlib'],
+    #install_requires=['numpy', 'scipy','pandas', 'matplotlib'],
     extras_require= {
         'all': ["netCDF4", "jupyter"],
         'load_netcdf': ["netCDF4"],
         'jupyer': ["jupyter"],
     },
 )
-
