@@ -31,4 +31,4 @@ from .cwa.cross_wavelet import plot_cohere
 __all__ = ['nextpow2', 'wave_bases', 'wavelet', 'wave_signif','load_txt','load_nc','normalize','cwt','wavelet_plot','fft','cross_wavelet','plot_cross', 'plot_cohere']
 
 # Package version number.
-__version__ = '0.0.1.50'
+__version__ = '0.0.1.51'

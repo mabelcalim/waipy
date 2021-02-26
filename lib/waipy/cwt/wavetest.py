@@ -377,7 +377,7 @@ def cwt(data, dt, pad, dj, s0, j1, lag1, param, mother, name, J1=None):
     CONTINUOUS WAVELET TRANSFORM
     pad = 1         # pad the time series with zeroes (recommended)
     dj = 0.25       # this will do 4 sub-octaves per octave
-    s0 = 2*dt       # this says start at a scale of 6 months
+    s0 = 2*dt       # this says start at a scale of 6 months if dt =annual
     j1 = 7/dj       # this says do 7 powers-of-two with dj sub-octaves each
     lag1 = 0.72     # lag-1 autocorrelation for red noise background
     param = 6
