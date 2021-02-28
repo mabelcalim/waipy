@@ -8,10 +8,10 @@ from based on Torrence and Compo (1998)
 and Cross Wavelet Analysis  (CWA) based on Maraun and Kurths(2004).
 
 Cross Power Wavelet Analysis:
-    ![ScreenShot](https://github.com/mabelcalim/waipy/blob/master/waipy_examples_jupyter/Jupyter/figs/CrossWavelet_noise_example.png)
+    ![ScreenShot](https://github.com/mabelcalim/waipy/blob/master/examples/figs/CrossWavelet_noise_example.png)
 
 Wavelet Coherence Analysis:
-    ![ScreenShot](https://github.com/mabelcalim/waipy/blob/master/waipy_examples_jupyter/Jupyter/figs/CohereWavelet_noise_example.png)
+    ![ScreenShot](https://github.com/mabelcalim/waipy/blob/master/examples/figs/CohereWavelet_noise_example.png)
 
 
 Installation
