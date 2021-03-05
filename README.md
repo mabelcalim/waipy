@@ -1,11 +1,10 @@
 waipy
 =====
-This guide includes a Continuous Wavelet Transform (CWT), significance  tests
-from based on Torrence and Compo (1998)
+This guide includes a Continuous Wavelet Transform (CWT)based on Torrence and Compo (1998) + significance  tests
 ![ScreenShot](https://github.com/mabelcalim/waipy/blob/master/Sine.png)
 
 
-and Cross Wavelet Analysis  (CWA) based on Maraun and Kurths(2004).
+and Cross Wavelet Analysis(CWA) based on Maraun and Kurths(2004).
 
 Cross Power Wavelet Analysis:
     ![ScreenShot](https://github.com/mabelcalim/waipy/blob/master/examples/figs/CrossWavelet_noise_example.png)
