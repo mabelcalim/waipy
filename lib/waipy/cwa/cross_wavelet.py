@@ -16,7 +16,7 @@ import numpy as np
 import pylab
 from pylab import *
 import matplotlib.pyplot as plt
-import math #for compatbility
+import math #for compatibility
 import pandas as pd
 
 
