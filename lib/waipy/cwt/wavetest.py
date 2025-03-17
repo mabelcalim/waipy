@@ -164,13 +164,9 @@ def wavelet(Y, dt, param, dj, s0, j1, mother, J1=None):
     # simetric eqn 5
     # k = np.arange(n / 2)
 
-    k_pos, k_neg = [], []
-    for i in np.arange(0, int(n / 2)):
-        k_pos.append(i * ((2 * math.pi) / (n * dt)))  # frequencies as in eqn5
-        k_neg = k_pos[::-1]  # inversion vector
-        k_neg = [e * (-1) for e in k_neg]  # negative part
-        # delete the first value of k_neg = last value of k_pos
-        # k_neg = k_neg[1:-1]
+    k_pos = np.arange(0, n // 2)  * ((2 * np.pi) / (n * dt))
+    k_neg = -k_pos[::-1]
+    
     k = np.concatenate((k_pos, k_neg), axis=0)  # vector of symmetric
     # compute fft of the padded time series
     f = np.fft.fft(x, n)
